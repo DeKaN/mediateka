@@ -101,66 +101,144 @@ public class MediatekaView extends FrameView {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList();
         menuBar = new javax.swing.JMenuBar();
-        javax.swing.JMenu fileMenu = new javax.swing.JMenu();
+        javax.swing.JMenu fileMenuItem = new javax.swing.JMenu();
+        openMenuItem = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        createMenuItem = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
+        importMenuItem = new javax.swing.JMenuItem();
+        exportMenuItem = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        printMenuItem = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
+        editMenuItem = new javax.swing.JMenu();
+        undoMenuItem = new javax.swing.JMenuItem();
+        viewMenuItem = new javax.swing.JMenu();
+        searchMenu = new javax.swing.JMenu();
+        findMenuItem = new javax.swing.JMenuItem();
+        serviceMenuItem = new javax.swing.JMenu();
+        preferencesMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenu helpMenu = new javax.swing.JMenu();
+        helpMenuItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
         statusPanel = new javax.swing.JPanel();
         javax.swing.JSeparator statusPanelSeparator = new javax.swing.JSeparator();
         statusMessageLabel = new javax.swing.JLabel();
         statusAnimationLabel = new javax.swing.JLabel();
         progressBar = new javax.swing.JProgressBar();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(MediatekaView.class);
         mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
         mainPanel.setName("mainPanel"); // NOI18N
 
-        jScrollPane1.setName("jScrollPane1"); // NOI18N
-
-        jList1.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        jList1.setName("jList1"); // NOI18N
-        jScrollPane1.setViewportView(jList1);
-
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 633, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(40, Short.MAX_VALUE))
+            .addGap(0, 683, Short.MAX_VALUE)
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(61, Short.MAX_VALUE))
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         menuBar.setName("menuBar"); // NOI18N
 
-        fileMenu.setText(resourceMap.getString("fileMenu.text")); // NOI18N
-        fileMenu.setName("fileMenu"); // NOI18N
+        fileMenuItem.setText(resourceMap.getString("fileMenuItem.text")); // NOI18N
+        fileMenuItem.setName("fileMenuItem"); // NOI18N
+
+        openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
+        openMenuItem.setName("openMenuItem"); // NOI18N
+        fileMenuItem.add(openMenuItem);
+
+        jSeparator1.setName("jSeparator1"); // NOI18N
+        fileMenuItem.add(jSeparator1);
+
+        createMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        createMenuItem.setText(resourceMap.getString("createMenuItem.text")); // NOI18N
+        createMenuItem.setName("createMenuItem"); // NOI18N
+        fileMenuItem.add(createMenuItem);
+
+        jSeparator2.setName("jSeparator2"); // NOI18N
+        fileMenuItem.add(jSeparator2);
+
+        importMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        importMenuItem.setText(resourceMap.getString("importMenuItem.text")); // NOI18N
+        importMenuItem.setName("importMenuItem"); // NOI18N
+        fileMenuItem.add(importMenuItem);
+
+        exportMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
+        exportMenuItem.setName("exportMenuItem"); // NOI18N
+        fileMenuItem.add(exportMenuItem);
+
+        jSeparator3.setName("jSeparator3"); // NOI18N
+        fileMenuItem.add(jSeparator3);
+
+        printMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
+        printMenuItem.setText(resourceMap.getString("printMenuItem.text")); // NOI18N
+        printMenuItem.setName("printMenuItem"); // NOI18N
+        fileMenuItem.add(printMenuItem);
+
+        jSeparator4.setName("jSeparator4"); // NOI18N
+        fileMenuItem.add(jSeparator4);
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
+        exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
-        fileMenu.add(exitMenuItem);
+        fileMenuItem.add(exitMenuItem);
 
-        menuBar.add(fileMenu);
+        menuBar.add(fileMenuItem);
+
+        editMenuItem.setText(resourceMap.getString("editMenuItem.text")); // NOI18N
+        editMenuItem.setName("editMenuItem"); // NOI18N
+
+        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
+        undoMenuItem.setText(resourceMap.getString("undoMenuItem.text")); // NOI18N
+        undoMenuItem.setName("undoMenuItem"); // NOI18N
+        editMenuItem.add(undoMenuItem);
+
+        menuBar.add(editMenuItem);
+
+        viewMenuItem.setText(resourceMap.getString("viewMenuItem.text")); // NOI18N
+        viewMenuItem.setName("viewMenuItem"); // NOI18N
+        menuBar.add(viewMenuItem);
+
+        searchMenu.setText(resourceMap.getString("searchMenu.text")); // NOI18N
+        searchMenu.setName("searchMenu"); // NOI18N
+
+        findMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
+        findMenuItem.setText(resourceMap.getString("findMenuItem.text")); // NOI18N
+        findMenuItem.setName("findMenuItem"); // NOI18N
+        searchMenu.add(findMenuItem);
+
+        menuBar.add(searchMenu);
+
+        serviceMenuItem.setText(resourceMap.getString("serviceMenuItem.text")); // NOI18N
+        serviceMenuItem.setName("serviceMenuItem"); // NOI18N
+
+        preferencesMenuItem.setText(resourceMap.getString("preferencesMenuItem.text")); // NOI18N
+        preferencesMenuItem.setName("preferencesMenuItem"); // NOI18N
+        serviceMenuItem.add(preferencesMenuItem);
+
+        menuBar.add(serviceMenuItem);
 
         helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
         helpMenu.setName("helpMenu"); // NOI18N
 
+        helpMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+        helpMenuItem.setText(resourceMap.getString("helpMenuItem.text")); // NOI18N
+        helpMenuItem.setName("helpMenuItem"); // NOI18N
+        helpMenu.add(helpMenuItem);
+
         aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
+        aboutMenuItem.setText(resourceMap.getString("aboutMenuItem.text")); // NOI18N
         aboutMenuItem.setName("aboutMenuItem"); // NOI18N
         helpMenu.add(aboutMenuItem);
 
@@ -177,11 +255,29 @@ public class MediatekaView extends FrameView {
 
         progressBar.setName("progressBar"); // NOI18N
 
+        jScrollPane1.setName("jScrollPane1"); // NOI18N
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jTable1.setName("jTable1"); // NOI18N
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout statusPanelLayout = new javax.swing.GroupLayout(statusPanel);
         statusPanel.setLayout(statusPanelLayout);
         statusPanelLayout.setHorizontalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 683, Short.MAX_VALUE)
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addComponent(statusPanelSeparator, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE)
+                .addGap(511, 511, 511))
             .addGroup(statusPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(statusMessageLabel)
@@ -190,10 +286,17 @@ public class MediatekaView extends FrameView {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(statusAnimationLabel)
                 .addContainerGap())
+            .addGroup(statusPanelLayout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(167, Short.MAX_VALUE))
         );
         statusPanelLayout.setVerticalGroup(
             statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(statusPanelLayout.createSequentialGroup()
+                .addGap(46, 46, 46)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(80, 80, 80)
                 .addComponent(statusPanelSeparator, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(statusPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -209,14 +312,31 @@ public class MediatekaView extends FrameView {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList jList1;
+    private javax.swing.JMenuItem createMenuItem;
+    private javax.swing.JMenu editMenuItem;
+    private javax.swing.JMenuItem exportMenuItem;
+    private javax.swing.JMenuItem findMenuItem;
+    private javax.swing.JMenuItem helpMenuItem;
+    private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JTable jTable1;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem preferencesMenuItem;
+    private javax.swing.JMenuItem printMenuItem;
     private javax.swing.JProgressBar progressBar;
+    private javax.swing.JMenu searchMenu;
+    private javax.swing.JMenu serviceMenuItem;
     private javax.swing.JLabel statusAnimationLabel;
     private javax.swing.JLabel statusMessageLabel;
     private javax.swing.JPanel statusPanel;
+    private javax.swing.JMenuItem undoMenuItem;
+    private javax.swing.JMenu viewMenuItem;
     // End of variables declaration//GEN-END:variables
 
     private final Timer messageTimer;
