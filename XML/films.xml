@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<films xmlns="mediateka"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="mediateka films.xsd" autoIndex="3">
+  <film filmID="1">
+    <russianTitle>123</russianTitle>
+    <englishTitle>321</englishTitle>
+    <year>2000</year>
+    <description>qwerty</description>
+    <genres>
+      <genre>qwe</genre>
+      <genre>qdfe</genre>
+      <genre>qdfe</genre>
+    </genres>
+    <countries>
+      <country>rty</country>
+      <country>qwerty</country>
+    </countries>
+    <comment/>
+    <length>120</length>
+    <subtitles>
+      <subtitle>123</subtitle>
+      <subtitle>re</subtitle>
+    </subtitles>
+    <cover>dGVzdA==</cover>
+    <soundLanguages>
+      <soundLanguage>123</soundLanguage>
+      <soundLanguage>gf</soundLanguage>
+    </soundLanguages>
+    <isSeen>false</isSeen>
+  </film>
+  <film filmID="2">
+    <russianTitle>456</russianTitle>
+    <englishTitle>645</englishTitle>
+    <year>2001</year>
+    <description>asd</description>
+    <genres>
+      <genre>rty</genre>
+    </genres>
+    <countries>
+      <country>rty</country>
+    </countries>
+    <comment>asd</comment>
+    <length>130</length>
+    <subtitles>
+      <subtitle>123</subtitle>
+    </subtitles>
+    <cover>dGVzdA==</cover>
+    <soundLanguages>
+      <soundLanguage>123</soundLanguage>
+    </soundLanguages>
+    <isSeen>false</isSeen>
+  </film>
+</films>
+

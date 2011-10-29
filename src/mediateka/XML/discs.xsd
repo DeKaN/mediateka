@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="mediateka" targetNamespace="mediateka" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+ elementFormDefault="qualified">
+  <xs:element name="discs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="disc" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="autoIndex" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="disc">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ownerID"/>
+        <xs:element ref="format"/>
+        <xs:element ref="regionCode"/>
+        <xs:element ref="isPresent"/>
+      </xs:sequence>
+      <xs:attribute name="discID" type="xs:positiveInteger" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ownerID" type="xs:nonNegativeInteger"/>
+  <xs:element name="format" type="xs:string"/>
+  <xs:element name="regionCode" type="xs:nonNegativeInteger"/>
+  <xs:element name="isPresent" type="xs:boolean"/>
+</xs:schema>
+
+
