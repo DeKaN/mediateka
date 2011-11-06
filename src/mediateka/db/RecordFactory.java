@@ -1,7 +1,15 @@
 package mediateka.db;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public interface RecordFactory {
 
-	Record CreateRecord();
+    /**
+     * 
+     * @return
+     */
+    Record CreateRecord();
 
 }

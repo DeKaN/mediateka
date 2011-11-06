@@ -3,6 +3,10 @@ package mediateka.db;
 
 import mediateka.db.Record;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public class Disc implements Record {
 
 	private int discID;
@@ -12,45 +16,82 @@ public class Disc implements Record {
 	private int regionCode = 0;
 	private boolean isPresented = true;
 
-	public Films getFilms() {
+        /**
+         * 
+         * @return
+         */
+        public Films getFilms() {
 		return this.films;
 	}
 
-	public void setFilms(Films films) {
+        /**
+         * 
+         * @param films
+         */
+        public void setFilms(Films films) {
 		this.films = films;
 	}
 
-	public int getOwnerID() {
+        /**
+         * 
+         * @return
+         */
+        public int getOwnerID() {
 		return this.ownerID;
 	}
 
-	public String getFormat() {
+        /**
+         * 
+         * @return
+         */
+        public String getFormat() {
 		return this.format;
 	}
 
-	public void setFormat(String format) {
+        /**
+         * 
+         * @param format
+         */
+        public void setFormat(String format) {
 		this.format = format;
 	}
 
-	public int getRegionCode() {
+        /**
+         * 
+         * @return
+         */
+        public int getRegionCode() {
 		return this.regionCode;
 	}
 
-	public void setRegionCode(int regionCode) {
+        /**
+         * 
+         * @param regionCode
+         */
+        public void setRegionCode(int regionCode) {
 		this.regionCode = regionCode;
 	}
 
-	public boolean isIsPresented() {
+        /**
+         * 
+         * @return
+         */
+        public boolean isIsPresented() {
 		return this.isPresented;
 	}
 
-	public void setIsPresented(boolean isPresented) {
+        /**
+         * 
+         * @param isPresented
+         */
+        public void setIsPresented(boolean isPresented) {
 		this.isPresented = isPresented;
 	}
 
 	/**
 	 * 
-	 * @param discFormat
+         * @param discFormat
+         * @return  
 	 */
 	public Disc Disc(String discFormat) {
 		throw new UnsupportedOperationException();
@@ -61,13 +102,18 @@ public class Disc implements Record {
 	 * @param owner
 	 * @param discFormat
 	 * @param discRegion
-	 * @param presented
+         * @param presented
+         * @return  
 	 */
 	public Disc Disc(int owner, String discFormat, int discRegion, boolean presented) {
 		throw new UnsupportedOperationException();
 	}
 
-    public String ToXmlElement() {
+        /**
+         * 
+         * @return
+         */
+        public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

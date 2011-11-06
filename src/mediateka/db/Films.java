@@ -5,6 +5,10 @@ import mediateka.db.Records;
 import mediateka.db.Record;
 import java.util.List;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public class Films implements Records {
 
 	private int autoIndex;
@@ -24,7 +28,8 @@ public class Films implements Records {
 	 * @param filmSubtitles
 	 * @param filmCover
 	 * @param soundLang
-	 * @param seen
+         * @param seen
+         * @return  
 	 */
 	public Films Find(String russianName, String englishName, int yearOfOutput, String desc, String[] filmGenres, String[] filmCountries, String comm, int len, int rate, String[] filmSubtitles, byte[] filmCover, String soundLang, boolean seen) {
 		throw new UnsupportedOperationException();
@@ -42,10 +47,16 @@ public class Films implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -54,6 +65,10 @@ public class Films implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public Records Export() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -62,6 +77,10 @@ public class Films implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

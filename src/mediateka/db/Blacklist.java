@@ -6,6 +6,10 @@ import mediateka.db.Record;
 import mediateka.db.Person;
 import java.util.List;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public class Blacklist implements Records {
 
 	private int autoIndex;
@@ -14,7 +18,8 @@ public class Blacklist implements Records {
 	/**
 	 * 
 	 * @param person
-	 * @param comment
+         * @param comment
+         * @return  
 	 */
 	public Blacklist Find(Person person, String comment) {
 		throw new UnsupportedOperationException();
@@ -32,10 +37,16 @@ public class Blacklist implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -44,6 +55,10 @@ public class Blacklist implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public Records Export() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -52,6 +67,10 @@ public class Blacklist implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

@@ -5,6 +5,10 @@ import mediateka.db.Records;
 import mediateka.db.Record;
 import java.util.List;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public class Discs implements Records {
 
 	private int autoIndex;
@@ -15,7 +19,8 @@ public class Discs implements Records {
 	 * @param discOwner
 	 * @param discFormat
 	 * @param region
-	 * @param presented
+         * @param presented
+         * @return  
 	 */
 	public Discs Find(int discOwner, String discFormat, int region, boolean presented) {
 		throw new UnsupportedOperationException();
@@ -33,10 +38,16 @@ public class Discs implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -45,6 +56,10 @@ public class Discs implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public Records Export() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -53,6 +68,10 @@ public class Discs implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

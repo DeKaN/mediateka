@@ -15,22 +15,29 @@ public interface Command {
 
         /**
          * 
-         * @param id
+     * @param id
+     * @return  
          */
         Records Execute(int id);
 
         /**
          * 
          * @param record
+         * @return  
          */
         Records Execute(Record record);
 
+        /**
+         * 
+         * @return
+         */
         Records ToString();
 
         /**
          * 
          * @param id
          * @param record
+         * @return  
          */
         Records Execute(int id, Record record);
     }

@@ -4,6 +4,10 @@ package mediateka.db;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public class History implements Records {
 
 	private int autoIndex;
@@ -16,7 +20,8 @@ public class History implements Records {
 	 * @param give
 	 * @param promise
 	 * @param returned
-	 * @param comment
+         * @param comment
+         * @return  
 	 */
 	public History Find(Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
 		throw new UnsupportedOperationException();
@@ -34,10 +39,16 @@ public class History implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -46,6 +57,10 @@ public class History implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public Records Export() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -54,6 +69,10 @@ public class History implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

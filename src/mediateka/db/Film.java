@@ -3,6 +3,10 @@ package mediateka.db;
 
 import mediateka.db.Record;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public final class Film implements Record {
 
 	private int filmID;
@@ -20,119 +24,228 @@ public final class Film implements Record {
 	private String[] soundLanguages = null;
 	private boolean isSeen = false;
 
-	public String getRussianTitle() {
+        /**
+         * 
+         * @return
+         */
+        public String getRussianTitle() {
 		return this.russianTitle;
 	}
 
-	public void setRussianTitle(String russianTitle) {
+        /**
+         * 
+         * @param russianTitle
+         */
+        public void setRussianTitle(String russianTitle) {
 		this.russianTitle = russianTitle;
 	}
 
-	public String getEnglishTitle() {
+        /**
+         * 
+         * @return
+         */
+        public String getEnglishTitle() {
 		return this.englishTitle;
 	}
 
-	public void setEnglishTitle(String englishTitle) {
+        /**
+         * 
+         * @param englishTitle
+         */
+        public void setEnglishTitle(String englishTitle) {
 		this.englishTitle = englishTitle;
 	}
 
-	public int getYear() {
+        /**
+         * 
+         * @return
+         */
+        public int getYear() {
 		return this.year;
 	}
 
-	public void setYear(int year) {
+        /**
+         * 
+         * @param year
+         */
+        public void setYear(int year) {
 		this.year = year;
 	}
 
-	public String getDescription() {
+        /**
+         * 
+         * @return
+         */
+        public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(String description) {
+        /**
+         * 
+         * @param description
+         */
+        public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public String[] getGenres() {
+        /**
+         * 
+         * @return
+         */
+        public String[] getGenres() {
 		return this.genres;
 	}
 
-	public void setGenres(String[] genres) {
+        /**
+         * 
+         * @param genres
+         */
+        public void setGenres(String[] genres) {
 		this.genres = genres;
 	}
 
-	public String[] getCountries() {
+        /**
+         * 
+         * @return
+         */
+        public String[] getCountries() {
 		return this.countries;
 	}
 
-	public void setCountries(String[] countries) {
+        /**
+         * 
+         * @param countries
+         */
+        public void setCountries(String[] countries) {
 		this.countries = countries;
 	}
 
-	public String getComment() {
+        /**
+         * 
+         * @return
+         */
+        public String getComment() {
 		return this.comment;
 	}
 
-	public void setComment(String comment) {
+        /**
+         * 
+         * @param comment
+         */
+        public void setComment(String comment) {
 		this.comment = comment;
 	}
 
-	public int getLength() {
+        /**
+         * 
+         * @return
+         */
+        public int getLength() {
 		return this.length;
 	}
 
-	public void setLength(int length) {
+        /**
+         * 
+         * @param length
+         */
+        public void setLength(int length) {
 		this.length = length;
 	}
 
-	public int getRating() {
+        /**
+         * 
+         * @return
+         */
+        public int getRating() {
 		return this.rating;
 	}
 
-	public void setRating(int rating) {
+        /**
+         * 
+         * @param rating
+         */
+        public void setRating(int rating) {
 		this.rating = rating;
 	}
 
-	public String[] getSubtitles() {
+        /**
+         * 
+         * @return
+         */
+        public String[] getSubtitles() {
 		return this.subtitles;
 	}
 
-	public void setSubtitles(String[] subtitles) {
+        /**
+         * 
+         * @param subtitles
+         */
+        public void setSubtitles(String[] subtitles) {
 		this.subtitles = subtitles;
 	}
 
-	public byte[] getCover() {
+        /**
+         * 
+         * @return
+         */
+        public byte[] getCover() {
 		return this.cover;
 	}
 
-	public void setCover(byte[] cover) {
+        /**
+         * 
+         * @param cover
+         */
+        public void setCover(byte[] cover) {
 		this.cover = cover;
 	}
 
-	public String[] getSoundLanguages() {
+        /**
+         * 
+         * @return
+         */
+        public String[] getSoundLanguages() {
 		return this.soundLanguages;
 	}
 
-	public void setSoundLanguages(String[] soundLanguages) {
+        /**
+         * 
+         * @param soundLanguages
+         */
+        public void setSoundLanguages(String[] soundLanguages) {
 		this.soundLanguages = soundLanguages;
 	}
 
-	public boolean isIsSeen() {
+        /**
+         * 
+         * @return
+         */
+        public boolean isIsSeen() {
 		return this.isSeen;
 	}
 
-	public void setIsSeen(boolean isSeen) {
+        /**
+         * 
+         * @param isSeen
+         */
+        public void setIsSeen(boolean isSeen) {
 		this.isSeen = isSeen;
 	}
 
 	/**
 	 * 
-	 * @param russianName
+         * @param russianName
+         * @return  
 	 */
 	public Film Film(String russianName) {
 		throw new UnsupportedOperationException();
 	}
 
-    public String ToXmlElement() {
+        /**
+         * 
+         * @return
+         */
+        public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

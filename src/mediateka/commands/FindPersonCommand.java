@@ -21,6 +21,10 @@ public class FindPersonCommand implements Command {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        /**
+         * 
+         * @return
+         */
         public Records ToString() {
             throw new UnsupportedOperationException("Not supported yet.");
         }

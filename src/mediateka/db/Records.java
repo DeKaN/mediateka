@@ -1,5 +1,9 @@
 package mediateka.db;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public interface Records {
 
 	/**
@@ -21,9 +25,15 @@ public interface Records {
 	 */
 	void Update(Record oldRecord, Record newRecord);
 
-	void Save();
+        /**
+         * 
+         */
+        void Save();
 
-	void Load();
+        /**
+         * 
+         */
+        void Load();
 
 	/**
 	 * 
@@ -31,14 +41,23 @@ public interface Records {
 	 */
 	void Import(Records records);
 
-	Records Export();
+        /**
+         * 
+         * @return
+         */
+        Records Export();
 
 	/**
 	 * 
-	 * @param record
+         * @param record
+         * @return  
 	 */
 	Records Find(Record record);
 
-	String ToXmlElement();
+        /**
+         * 
+         * @return
+         */
+        String ToXmlElement();
 
 }

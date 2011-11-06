@@ -21,6 +21,10 @@ public class AddFilmCommand implements Command {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
+        /**
+         * 
+         * @return
+         */
         public Records ToString() {
             throw new UnsupportedOperationException("Not supported yet.");
         }

@@ -1,7 +1,15 @@
 package mediateka.db;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public interface Record {
 
-	String ToXmlElement();
+    /**
+     * 
+     * @return
+     */
+    String ToXmlElement();
 
 }

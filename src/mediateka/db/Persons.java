@@ -3,6 +3,10 @@ package mediateka.db;
 
 import java.util.List;
 
+/**
+ * 
+ * @author Alexandr
+ */
 public class Persons implements Records {
 
 	private int autoIndex;
@@ -13,7 +17,8 @@ public class Persons implements Records {
 	 * @param surname
 	 * @param name
 	 * @param secondName
-	 * @param phone
+         * @param phone
+         * @return  
 	 */
 	public Persons Find(String surname, String name, String secondName, String phone) {
 		throw new UnsupportedOperationException();
@@ -31,10 +36,16 @@ public class Persons implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     */
     public void Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -43,6 +54,10 @@ public class Persons implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public Records Export() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
@@ -51,6 +66,10 @@ public class Persons implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    /**
+     * 
+     * @return
+     */
     public String ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
