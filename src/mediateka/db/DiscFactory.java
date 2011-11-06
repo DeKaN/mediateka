@@ -1,3 +1,9 @@
+package mediateka.db;
+
+
+import mediateka.db.Record;
+import mediateka.db.RecordFactory;
+
 public class DiscFactory implements RecordFactory {
 
     public Record CreateRecord() {

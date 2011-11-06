@@ -1,4 +1,8 @@
+package mediateka.db;
 
+
+import mediateka.db.Records;
+import mediateka.db.Record;
 import java.util.List;
 
 public class Films implements Records {

@@ -1,19 +1,24 @@
+package mediateka.db;
 
+
+import java.util.Date;
 import java.util.List;
 
-public class Discs implements Records {
+public class History implements Records {
 
 	private int autoIndex;
-	private List<Disc> discsList;
+	private List<HistoryRecord> historyList;
 
 	/**
 	 * 
-	 * @param discOwner
-	 * @param discFormat
-	 * @param region
-	 * @param presented
+	 * @param disc
+	 * @param person
+	 * @param give
+	 * @param promise
+	 * @param returned
+	 * @param comment
 	 */
-	public Discs Find(int discOwner, String discFormat, int region, boolean presented) {
+	public History Find(Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -1,3 +1,5 @@
+package mediateka.db;
+
 public interface Records {
 
 	/**

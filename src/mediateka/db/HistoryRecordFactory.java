@@ -1,3 +1,8 @@
+package mediateka.db;
+
+
+import mediateka.db.RecordFactory;
+
 public class HistoryRecordFactory implements RecordFactory {
 
     public Record CreateRecord() {

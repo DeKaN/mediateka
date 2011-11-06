@@ -1,3 +1,9 @@
+package mediateka.db;
+
+
+import mediateka.db.Record;
+import mediateka.db.Person;
+
 public class BlackListRecord implements Record {
 
 	private int recordID;

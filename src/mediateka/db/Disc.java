@@ -1,3 +1,8 @@
+package mediateka.db;
+
+
+import mediateka.db.Record;
+
 public class Disc implements Record {
 
 	private int discID;

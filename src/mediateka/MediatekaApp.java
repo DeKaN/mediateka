@@ -4,7 +4,6 @@
 
 package mediateka;
 
-import com.zfqjava.swing.JListView;
 import java.awt.Graphics;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;

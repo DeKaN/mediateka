@@ -1,4 +1,9 @@
+package mediateka.db;
 
+
+import mediateka.db.Records;
+import mediateka.db.Record;
+import mediateka.db.Person;
 import java.util.List;
 
 public class Blacklist implements Records {

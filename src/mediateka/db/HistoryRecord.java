@@ -1,3 +1,5 @@
+package mediateka.db;
+
 
 import java.util.Date;
 

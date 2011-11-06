@@ -1,3 +1,8 @@
+package mediateka.db;
+
+
+import mediateka.db.Record;
+
 public final class Film implements Record {
 
 	private int filmID;

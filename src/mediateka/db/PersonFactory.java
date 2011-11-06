@@ -1,3 +1,8 @@
+package mediateka.db;
+
+
+import mediateka.db.RecordFactory;
+
 public class PersonFactory implements RecordFactory {
 
     public Record CreateRecord() {

@@ -1,3 +1,5 @@
+package mediateka.db;
+
 public class Person implements Record {
 
 	private int personID;

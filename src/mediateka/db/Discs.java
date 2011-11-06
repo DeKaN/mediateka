@@ -1,19 +1,23 @@
+package mediateka.db;
 
+
+import mediateka.db.Records;
+import mediateka.db.Record;
 import java.util.List;
 
-public class Persons implements Records {
+public class Discs implements Records {
 
 	private int autoIndex;
-	private List<Person> personsList;
+	private List<Disc> discsList;
 
 	/**
 	 * 
-	 * @param surname
-	 * @param name
-	 * @param secondName
-	 * @param phone
+	 * @param discOwner
+	 * @param discFormat
+	 * @param region
+	 * @param presented
 	 */
-	public Persons Find(String surname, String name, String secondName, String phone) {
+	public Discs Find(int discOwner, String discFormat, int region, boolean presented) {
 		throw new UnsupportedOperationException();
 	}
 
