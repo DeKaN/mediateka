@@ -57,7 +57,7 @@ public class HistoryRecord implements Record {
 
     /**
      * Установить персональные данные
-     * @param disc Персональные данные, который будет установлены
+     * @param person Персональные данные, который будет установлены
      */
     public void setPerson(Person person) {
         if (person == null) {
@@ -76,7 +76,7 @@ public class HistoryRecord implements Record {
 
     /**
      * Установить дату, когда диск отдан
-     * @param disc Новая дата, когда диск отдан
+     * @param giveDate Новая дата, когда диск отдан
      */
     public void setGiveDate(Date giveDate) {
         if (giveDate == null) {
@@ -95,7 +95,7 @@ public class HistoryRecord implements Record {
 
     /**
      * Установить дату, когда диск обещали вернуть
-     * @param disc Новая дата, когда диск обещали вернуть
+     * @param promisedDate Новая дата, когда диск обещали вернуть
      */
     public void setPromisedDate(Date promisedDate) {
         if (promisedDate == null) {
@@ -114,7 +114,7 @@ public class HistoryRecord implements Record {
 
     /**
      * Установить дату, когда диск вернули
-     * @param disc Новая дата, когда диск вернули
+     * @param returnDate Новая дата, когда диск вернули
      */
     public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
@@ -130,7 +130,7 @@ public class HistoryRecord implements Record {
 
     /**
      * Установить комментарий
-     * @param disc Комментарий, который будет установлен
+     * @param comment Комментарий, который будет установлен
      */
     public void setComment(String comment) {
         this.comment = comment;
