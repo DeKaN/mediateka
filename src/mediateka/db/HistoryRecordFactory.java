@@ -1,10 +1,13 @@
 package mediateka.db;
 
+
+import mediateka.db.RecordFactory;
+
 /**
  * 
  * @author Alexandr
  */
-public class HistoryRecordFactory {
+public class HistoryRecordFactory implements RecordFactory {
 
     /**
      * 
