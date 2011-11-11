@@ -15,6 +15,14 @@ public class BlackListRecord implements Record {
     private String comment;
 
     /**
+     * Получить ID записи
+     * @return ID записи
+     */
+    public int getID() {
+        return this.recordID;
+    }
+
+    /**
      * Получить персональные данные
      * @return Персональные данные
      */
@@ -27,6 +35,9 @@ public class BlackListRecord implements Record {
      * @param person Персональные данные, которые будет установлены
      */
     public void setPerson(Person person) {
+        if (person == null) {
+            throw new NullPointerException();
+        }
         this.person = person;
     }
 
@@ -51,6 +62,9 @@ public class BlackListRecord implements Record {
      * @param person Персональные данные
      */
     public BlackListRecord(Person person) {
+        if (person == null) {
+            throw new NullPointerException();
+        }
         this.person = person;
     }
 
@@ -60,6 +74,9 @@ public class BlackListRecord implements Record {
      * @param comment Комментарий
      */
     public BlackListRecord(Person person, String comment) {
+        if (person == null) {
+            throw new NullPointerException();
+        }
         this.person = person;
         this.comment = comment;
     }
