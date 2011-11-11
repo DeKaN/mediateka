@@ -57,6 +57,9 @@ public class Disc implements Record {
      * @param films Фильмы которые будут установлены
      */
     public void setFilms(Films films) {
+        if (films == null) {
+            throw new NullPointerException();
+        }
         this.films = films;
     }
 
@@ -81,6 +84,9 @@ public class Disc implements Record {
      * @param format Новый формат диска
      */
     public void setFormat(Format format) {
+        if (format == null) {
+            throw new NullPointerException();
+        }
         this.format = format;
     }
 
@@ -150,12 +156,12 @@ public class Disc implements Record {
      */
     public String ToXmlElement() {
         Element elem = new DOMElement("disc");
-        elem.addAttribute("discID", Integer.toString(this.getID()));
-        elem.addElement("ownerID").addText(Integer.toString(this.getOwnerID()));
-        elem.addElement("format").addText(this.getFormat().toString());
-        elem.addElement("regionCode").addText(Integer.toString(this.getRegionCode()));
-        elem.addElement("isPresent").addText(Boolean.toString(this.isIsPresented()));
-        elem.addElement("films").addText(this.getFilms().ToXmlElement());
+        elem.addAttribute("discID", Integer.toString(this.discID));
+        elem.addElement("ownerID").addText(Integer.toString(this.ownerID));
+        elem.addElement("format").addText(this.format.toString());
+        elem.addElement("regionCode").addText(Integer.toString(regionCode));
+        elem.addElement("isPresent").addText(Boolean.toString(isPresented));
+        elem.addElement("films").addText(this.films.ToXmlElement());
         return elem.asXML();
     }
 }
