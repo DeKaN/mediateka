@@ -15,7 +15,7 @@ HistoryRecord.java		+ Конопелькин
 History.java			  Семенов
 HistoryRecordFactory.java	  Конопелькин
 
-Person.java			  Семенов
+Person.java			+ Семенов
 Persons.java			  Конопелькин
 PersonFactory.java		  Семенов
 

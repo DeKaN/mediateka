@@ -1,99 +1,138 @@
 package mediateka.db;
 
+import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.dom.DOMElement;
+
 /**
- * 
+ * Класс, представляющий персональные данные человека
  * @author Alexandr
  */
 public class Person implements Record {
 
-	private int personID;
-	private String surname;
-	private String name;
-	private String secondName;
-	private String phone;
+    private int personID;
+    private String lastName;
+    private String firstName;
+    private String secondName;
+    private String phone;
+    private String comment;
 
-        /**
-         * 
-         * @return
-         */
-        public String getSurname() {
-		return this.surname;
-	}
-
-        /**
-         * 
-         * @param surname
-         */
-        public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-        /**
-         * 
-         * @return
-         */
-        public String getName() {
-		return this.name;
-	}
-
-        /**
-         * 
-         * @param name
-         */
-        public void setName(String name) {
-		this.name = name;
-	}
-
-        /**
-         * 
-         * @return
-         */
-        public String getSecondName() {
-		return this.secondName;
-	}
-
-        /**
-         * 
-         * @param secondName
-         */
-        public void setSecondName(String secondName) {
-		this.secondName = secondName;
-	}
-
-        /**
-         * 
-         * @return
-         */
-        public String getPhone() {
-		return this.phone;
-	}
-
-        /**
-         * 
-         * @param phone
-         */
-        public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	/**
-	 * 
-	 * @param surname
-	 * @param name
-	 * @param secondName
-         * @param phone
-         * @return  
-	 */
-	public Person Person(String surname, String name, String secondName, String phone) {
-		throw new UnsupportedOperationException();
-	}
-
-        /**
-         * 
-         * @return
-         */
-        public String ToXmlElement() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    /**
+     * Получить ID человека
+     * @return ID человека
+     */
+    public int getID() {
+        return this.personID;
     }
 
+    /**
+     * Получить фамилию человека
+     * @return Фамилия человека
+     */
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    /**
+     * Установить фамилию человека
+     * @param lastName Фамилия, которая будет установлена
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * Получить имя человека
+     * @return Имя человека
+     */
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    /**
+     * Установить имя человека
+     * @param firstName Имя, которое будет установлено
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Получить отчество человека
+     * @return Отчество человека
+     */
+    public String getSecondName() {
+        return this.secondName;
+    }
+
+    /**
+     * Установить отчество человека
+     * @param secondName Отчество, которое будет установлено
+     */
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    /**
+     * Получить телефон человека
+     * @return Телефон человека
+     */
+    public String getPhone() {
+        return this.phone;
+    }
+
+    /**
+     * Установить телефон человека
+     * @param phone Телефон, который будет установлен
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * Получить комментарий к персональным данным человека
+     * @return Комментарий к персональным данным
+     */
+    public String getComment() {
+        return this.comment;
+    }
+
+    /**
+     * Установить комментарий к персональным данным человека
+     * @param comment Комментарий, который будет установлен
+     */
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    /**
+     * Конструктор класса
+     * @param lastName Фамилия человека
+     * @param firstName Имя человека
+     * @param secondName Отчество человека
+     * @param phone Телефон человека
+     * @param comment Комментарий персональным данным
+     */
+    public Person(String lastName, String firstName, String secondName, String phone, String comment) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.phone = phone;
+        this.comment = comment;
+    }
+
+    /**
+     * Сериализует запись с персональными данными в XML
+     * @return Строка с записью, сериализованной в XML element
+     */
+    public String ToXmlElement() {
+        Element elem = new DOMElement("person");
+        elem.addAttribute("personID", Integer.toString(this.personID));
+        elem.addElement("firstfirstName").addText(this.firstName);
+        elem.addElement("lastName").addText(this.lastName);
+        elem.addElement("secondName").addText(this.secondName);
+        elem.addElement("phoneNumber").addText(this.phone);
+        elem.addElement("comment").addText(this.comment);
+        return elem.asXML();
+    }
 }
