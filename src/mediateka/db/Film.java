@@ -6,8 +6,8 @@ import org.dom4j.Element;
 import org.dom4j.dom.DOMElement;
 
 /**
- * 
- * @author almostAlexandr
+ * Класс, представляющий фильм
+ * @author Il'ya
  */
 public final class Film implements Record {
 
