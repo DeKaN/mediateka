@@ -243,7 +243,7 @@ public final class Film implements Record {
 
 	/**
 	 * Полный конструктор
-         * @param russianName Русское название фильма
+         * @param russianTitle Русское название фильма
          * @param englishTitle Английское название фильма
          * @param year Год выхода
          * @param description Описание
@@ -276,7 +276,7 @@ public final class Film implements Record {
 
         /**
 	 * Конструктор с обязательными параметрами
-         * @param russianName Русское название фильма
+         * @param russianTitle Русское название фильма
          */
         public  Film(String russianTitle) {
             this(russianTitle,"",0,"",null,null,"",0,0,null,null,null,false);
