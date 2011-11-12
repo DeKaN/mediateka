@@ -1,11 +1,13 @@
 package mediateka.db;
 
 
-import mediateka.db.Record;
+import biz.source_code.base64Coder.Base64Coder;
+import org.dom4j.Element;
+import org.dom4j.dom.DOMElement;
 
 /**
  * 
- * @author Alexandr
+ * @author almostAlexandr
  */
 public final class Film implements Record {
 
@@ -25,228 +27,295 @@ public final class Film implements Record {
 	private boolean isSeen = false;
 
         /**
-         * 
-         * @return
+         * Получить русское название фильма
+         * @return Русское название фильма
          */
         public String getRussianTitle() {
 		return this.russianTitle;
 	}
 
         /**
-         * 
-         * @param russianTitle
+         * Получить ID фильма
+         * @return ID фильма
+         */
+        public int getID() {
+            return this.filmID;
+    }
+        /**
+         * Установить русское название фильма
+         * @param russianTitle Устанавливаемое название фильма на русском языке
          */
         public void setRussianTitle(String russianTitle) {
 		this.russianTitle = russianTitle;
 	}
 
         /**
-         * 
-         * @return
+         * Получить английское название фильма
+         * @return английское название фильма
          */
         public String getEnglishTitle() {
 		return this.englishTitle;
 	}
 
         /**
-         * 
-         * @param englishTitle
+         * Установить английское название фильма
+         * @param englishTitle Устанавливаемое английское название фильма
          */
         public void setEnglishTitle(String englishTitle) {
 		this.englishTitle = englishTitle;
 	}
 
         /**
-         * 
-         * @return
+         * Получить год выхода фидьма
+         * @return год выхода фильма
          */
         public int getYear() {
 		return this.year;
 	}
 
         /**
-         * 
-         * @param year
+         * Установить год выхода фильма
+         * @param year Устанавливаемый год выхода фильма
          */
         public void setYear(int year) {
 		this.year = year;
 	}
 
         /**
-         * 
-         * @return
+         * Получение описания
+         * @return описание фильма
          */
         public String getDescription() {
 		return this.description;
 	}
 
         /**
-         * 
-         * @param description
+         * Установление описания фильма
+         * @param description Устанавливаемое описание фильма
          */
         public void setDescription(String description) {
 		this.description = description;
 	}
 
         /**
-         * 
-         * @return
+         * Получить список жанров
+         * @return список жанров
          */
         public String[] getGenres() {
 		return this.genres;
 	}
 
         /**
-         * 
-         * @param genres
+         * Установить список жанров
+         * @param genres Устанавливаемый список жанров
          */
         public void setGenres(String[] genres) {
 		this.genres = genres;
 	}
 
         /**
-         * 
-         * @return
+         * Получить список стран выбранного фильма
+         * @return список стран выбранного фильма
          */
         public String[] getCountries() {
 		return this.countries;
 	}
 
         /**
-         * 
-         * @param countries
+         * Установить список стран выбранного фильма
+         * @param countries список стран выбранного фильма
          */
         public void setCountries(String[] countries) {
 		this.countries = countries;
 	}
 
         /**
-         * 
-         * @return
+         * Получить комментарий
+         * @return комментарий
          */
         public String getComment() {
 		return this.comment;
 	}
 
         /**
-         * 
-         * @param comment
+         * Установить комментарий
+         * @param comment устанавливаемый комментарий
          */
         public void setComment(String comment) {
 		this.comment = comment;
 	}
 
         /**
-         * 
-         * @return
+         * Получить длительность фильма
+         * @return длительность фильма
          */
         public int getLength() {
 		return this.length;
 	}
 
         /**
-         * 
-         * @param length
+         * Установить длину фильма
+         * @param length длина фильма
          */
         public void setLength(int length) {
 		this.length = length;
 	}
 
         /**
-         * 
-         * @return
+         * Получить оценку фильма
+         * @return оценка фильма
          */
         public int getRating() {
 		return this.rating;
 	}
 
         /**
-         * 
-         * @param rating
+         * Установить оценку фильма
+         * @param rating Устанавливаемая оценка фильма
          */
         public void setRating(int rating) {
 		this.rating = rating;
 	}
 
         /**
-         * 
-         * @return
+         * Получить список доступных субтитров
+         * @return список доступных субтитров
          */
         public String[] getSubtitles() {
 		return this.subtitles;
 	}
 
         /**
-         * 
-         * @param subtitles
+         * Установить список доступных субтитров
+         * @param subtitles список доступных субтитров
          */
         public void setSubtitles(String[] subtitles) {
 		this.subtitles = subtitles;
 	}
 
         /**
-         * 
-         * @return
+         * Получить обложку
+         * @return обложка
          */
         public byte[] getCover() {
 		return this.cover;
 	}
 
         /**
-         * 
-         * @param cover
+         * Установить обложку
+         * @param cover Устанавливаемая обложка
          */
         public void setCover(byte[] cover) {
 		this.cover = cover;
 	}
 
         /**
-         * 
-         * @return
+         * Получить список языков озвучки
+         * @return список языков озвучки
          */
         public String[] getSoundLanguages() {
 		return this.soundLanguages;
 	}
 
         /**
-         * 
-         * @param soundLanguages
+         * Установить список языков озвучки
+         * @param soundLanguages список языков озвучки
          */
         public void setSoundLanguages(String[] soundLanguages) {
 		this.soundLanguages = soundLanguages;
 	}
 
         /**
-         * 
-         * @return
+         * Просмотрен ли фильм
+         * @return true если фильм просмотрен
          */
         public boolean isIsSeen() {
 		return this.isSeen;
 	}
 
         /**
-         * 
-         * @param isSeen
+         * Установить факт просмотра
+         * @param isSeen Если фильм просмотрен true, иначе - false
          */
         public void setIsSeen(boolean isSeen) {
 		this.isSeen = isSeen;
 	}
 
 	/**
-	 * 
-         * @param russianName
-         * @return  
+	 * Полный конструктор
+         * @param russianName Русское название фильма
+         * @param englishTitle Английское название фильма
+         * @param year Год выхода
+         * @param description Описание
+         * @param genres Жанры
+         * @param countries Страны
+         * @param comment Комментарий
+         * @param length Длительность
+         * @param rating Оценка
+         * @param subtitles Субтитры
+         * @param cover Обложка
+         * @param soundLanguages Языки озвучки
+         * @param isSeen Факт просмотра
 	 */
-	public Film Film(String russianName) {
-		throw new UnsupportedOperationException();
+	public Film(String russianTitle, String englishTitle, int year,String description, String[] genres ,String[] countries,String comment,int length, int rating, String[] subtitles, byte[] cover, String[] soundLanguages, boolean isSeen) {
+          
+           this.russianTitle = russianTitle;
+           this.englishTitle = englishTitle;
+           this.year = year;
+           this.description = description;
+           this.genres = genres;
+           this.countries = countries;
+           this.comment = comment;
+           this.length = length;
+           this.rating = rating;
+           this.subtitles = subtitles;
+           this.cover = cover;
+           this.soundLanguages = soundLanguages;
+           this.isSeen = isSeen;
 	}
 
         /**
-         * 
-         * @return
+	 * Конструктор с обязательными параметрами
+         * @param russianName Русское название фильма
+         */
+        public  Film(String russianTitle) {
+            this(russianTitle,"",0,"",null,null,"",0,0,null,null,null,false);
+        }
+        
+        /**
+         * Сериализует фильм в XML
+         * @return Строка с фильмом, сериализованным в XML element
          */
         public String ToXmlElement() {
-        throw new UnsupportedOperationException("Not supported yet.");
+            Element elem = new DOMElement("film");
+            Element tempElem;
+            elem.addAttribute("filmID", Integer.toString(this.filmID));
+            elem.addElement("russianTitle").addText(this.russianTitle);
+            elem.addElement("englishTitle").addText(this.englishTitle);
+            elem.addElement("year").addText(Integer.toString(this.year));
+            elem.addElement("description").addText(this.description);
+            elem.addElement("comment").addText(this.comment);
+            elem.addElement("length").addText(Integer.toString(this.length));
+            elem.addElement("rating").addText(Integer.toString(this.rating));
+            elem.addElement("isSeen").addText(Boolean.toString(isSeen));
+            elem.addElement("cover").addText(Base64Coder.encodeLines(cover));
+            tempElem = new DOMElement("genres");
+            for(int i=0;i<genres.length;i++){
+                elem.add(tempElem);
+            }
+            tempElem = new DOMElement("countries");
+            for(int i=0;i<countries.length;i++){
+                elem.add(tempElem);
+            }
+            tempElem = new DOMElement("soundLanguages");
+            for(int i=0;i<soundLanguages.length;i++){
+                elem.add(tempElem);
+            }
+            tempElem = new DOMElement("subtitles");
+            for(int i=0;i<subtitles.length;i++){
+                elem.add(tempElem);
+            }
+            return elem.asXML();
+        
     }
-
 }
