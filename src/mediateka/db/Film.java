@@ -286,7 +286,7 @@ public final class Film implements Record {
          * Сериализует фильм в XML
          * @return Строка с фильмом, сериализованным в XML element
          */
-        public String ToXmlElement() {
+        public Element ToXmlElement() {
             Element elem = new DOMElement("film");
             Element tempElem;
             elem.addAttribute("filmID", Integer.toString(this.filmID));
@@ -315,7 +315,7 @@ public final class Film implements Record {
             for(int i=0;i<subtitles.length;i++){
                 elem.add(tempElem);
             }
-            return elem.asXML();
+            return elem;
         
     }
 }
