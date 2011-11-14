@@ -1,8 +1,6 @@
 package mediateka.db;
 
 
-import mediateka.db.Records;
-import mediateka.db.Record;
 import java.util.List;
 import org.dom4j.Element;
 
@@ -15,54 +13,33 @@ public class Films implements Records {
 	private int autoIndex;
 	private List<Film> filmsList;
 
-	/**
-	 * 
-	 * @param russianName
-	 * @param englishName
-	 * @param yearOfOutput
-	 * @param desc
-	 * @param filmGenres
-	 * @param filmCountries
-	 * @param comm
-	 * @param len
-	 * @param rate
-	 * @param filmSubtitles
-	 * @param filmCover
-	 * @param soundLang
-         * @param seen
-         * @return  
-	 */
-	public Films Find(String russianName, String englishName, int yearOfOutput, String desc, String[] filmGenres, String[] filmCountries, String comm, int len, int rate, String[] filmSubtitles, byte[] filmCover, String soundLang, boolean seen) {
-		throw new UnsupportedOperationException();
-	}
-
-    public void Add(Record record) {
+    public boolean Add(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Delete(Record record) {
+    public boolean Delete(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Update(Record oldRecord, Record newRecord) {
+    public boolean Update(Record oldRecord, Record newRecord) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Save() {
+    public boolean Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Load() {
+    public boolean Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Import(Records records) {
+    public boolean Import(Records records) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -83,6 +60,18 @@ public class Films implements Records {
      * @return
      */
     public Element ToXmlElement() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Record getRecord(int index) throws IndexOutOfBoundsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean Validate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

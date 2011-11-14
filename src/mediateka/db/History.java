@@ -14,47 +14,33 @@ public class History implements Records {
 	private int autoIndex;
 	private List<HistoryRecord> historyList;
 
-	/**
-	 * 
-	 * @param disc
-	 * @param person
-	 * @param give
-	 * @param promise
-	 * @param returned
-         * @param comment
-         * @return  
-	 */
-	public History Find(Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
-		throw new UnsupportedOperationException();
-	}
-
-    public void Add(Record record) {
+    public boolean Add(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Delete(Record record) {
+    public boolean Delete(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Update(Record oldRecord, Record newRecord) {
+    public boolean Update(Record oldRecord, Record newRecord) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Save() {
+    public boolean Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Load() {
+    public boolean Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Import(Records records) {
+    public boolean Import(Records records) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -75,6 +61,18 @@ public class History implements Records {
      * @return
      */
     public Element ToXmlElement() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Record getRecord(int index) throws IndexOutOfBoundsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean Validate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

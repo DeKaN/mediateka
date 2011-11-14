@@ -6,14 +6,12 @@ package mediateka.datamanagers;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import mediateka.db.Record;
-import org.dom4j.Element;
 import org.dom4j.dom.DOMElement;
 
 /**
- *
+ * Класс условий для поиска
  * @author DeKaN
  */
 public class Condition {

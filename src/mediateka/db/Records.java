@@ -8,58 +8,77 @@ import org.dom4j.Element;
  */
 public interface Records {
 
-	/**
-	 * Добавить запись в таблицу
-	 * @param record Запись для добавления в таблицу
-	 */
-	void Add(Record record);
+    /**
+     * Возвращает запись, которая хранится на указанной позиции
+     * @param index Индекс записи
+     * @return Запись, которая хранится на указанной позиции
+     * @throws IndexOutOfBoundsException Если индекс вышел за пределы (index < 0 || index >= size()) 
+     */
+    Record getRecord(int index) throws IndexOutOfBoundsException;
 
-	/**
-	 * Удалить запись из таблицы
-	 * @param record Запись для удаления из таблицы
-	 */
-	void Delete(Record record);
+    /**
+     * Возвращает количество записей
+     * @return Количество записей
+     */
+    int size();
 
-	/**
-	 * Заменить запись в таблице новой записью
-	 * @param oldRecord Старая запись (уже имеется в таблице)
-	 * @param newRecord Новая запись (будет записана поверх старой)
-	 */
-	void Update(Record oldRecord, Record newRecord);
+    /**
+     * Добавить запись в таблицу
+     * @param record Запись для добавления в таблицу
+     */
+    boolean Add(Record record);
 
-        /**
-         * Сохранить таблицу в базу
-         */
-	void Save();
+    /**
+     * Удалить запись из таблицы
+     * @param record Запись для удаления из таблицы
+     */
+    boolean Delete(Record record);
 
-        /**
-         * Загрузить таблицу из базы
-         */
-	void Load();
+    /**
+     * Заменить запись в таблице новой записью
+     * @param oldRecord Старая запись (уже имеется в таблице)
+     * @param newRecord Новая запись (будет записана поверх старой)
+     */
+    boolean Update(Record oldRecord, Record newRecord);
 
-	/**
-	 * Импортировать данные таблицы в текущую
-	 * @param records Таблица для импорта
-	 */
-	void Import(Records records);
+    /**
+     * Сохранить таблицу в базу
+     */
+    boolean Save();
 
-        /**
-         * Экспортировать таблицу
-         * @return Таблица с данными
-         */
-	Records Export();
+    /**
+     * Загрузить таблицу из базы
+     */
+    boolean Load();
 
-	/**
-	 * Найти записи в таблице, подходящие под шаблон
-	 * @param record Запись-шаблон, по котоорой будет проводиться поиск
-         * @return Виртуальная таблица с записями, подходящими под шаблон
-	 */
-	Records Find(Record record);
+    /**
+     * Проверяет на валидность таблицу
+     * @return true, если таблица валидна, иначе false
+     */
+    boolean Validate();
 
-        /**
-         * Сериализует таблицу в XML
-         * @return Строка с таблицей, сериализованной в XML element 
-         */
-	Element ToXmlElement();
+    /**
+     * Импортировать данные таблицы в текущую
+     * @param records Таблица для импорта
+     */
+    boolean Import(Records records);
 
+    /**
+     * Экспортировать таблицу
+     * @return Таблица с данными
+     */
+    Records Export();
+
+    /**
+     * Найти записи в таблице, подходящие под шаблон
+     * @param record Запись-шаблон, по котоорой будет проводиться поиск
+     * @return Виртуальная таблица с записями, подходящими под шаблон
+     */
+    Records Find(Record record);
+
+    /**
+     * Сериализует таблицу в XML
+     * @return Строка с таблицей, сериализованной в XML element 
+     */
+    Element ToXmlElement();
 }

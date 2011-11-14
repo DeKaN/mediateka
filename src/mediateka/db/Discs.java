@@ -1,8 +1,5 @@
 package mediateka.db;
 
-
-import mediateka.db.Records;
-import mediateka.db.Record;
 import java.util.List;
 import org.dom4j.Element;
 
@@ -12,48 +9,36 @@ import org.dom4j.Element;
  */
 public class Discs implements Records {
 
-	private int autoIndex;
-	private List<Disc> discsList;
+    private int autoIndex;
+    private List<Disc> discsList;
 
-	/**
-	 * 
-	 * @param discOwner
-	 * @param discFormat
-	 * @param region
-         * @param presented
-         * @return  
-	 */
-	public Discs Find(int discOwner, String discFormat, int region, boolean presented) {
-		throw new UnsupportedOperationException();
-	}
-
-    public void Add(Record record) {
+    public boolean Add(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Delete(Record record) {
+    public boolean Delete(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Update(Record oldRecord, Record newRecord) {
+    public boolean Update(Record oldRecord, Record newRecord) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Save() {
+    public boolean Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Load() {
+    public boolean Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Import(Records records) {
+    public boolean Import(Records records) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -77,4 +62,15 @@ public class Discs implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    public Record getRecord(int index) throws IndexOutOfBoundsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean Validate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

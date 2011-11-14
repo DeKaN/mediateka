@@ -1,7 +1,6 @@
 package mediateka.db;
 
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
 
 /**
@@ -77,6 +76,13 @@ public class BlackListRecord implements Record {
         if (person == null) {
             throw new NullPointerException();
         }
+        this.person = person;
+        this.comment = comment;
+    }
+
+    //TODO: Add JavaDoc
+    BlackListRecord(int recordID, Person person, String comment) {
+        this.recordID = recordID;
         this.person = person;
         this.comment = comment;
     }

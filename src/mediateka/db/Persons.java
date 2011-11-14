@@ -13,45 +13,33 @@ public class Persons implements Records {
 	private int autoIndex;
 	private List<Person> personsList;
 
-	/**
-	 * 
-	 * @param surname
-	 * @param name
-	 * @param secondName
-         * @param phone
-         * @return  
-	 */
-	public Persons Find(String surname, String name, String secondName, String phone) {
-		throw new UnsupportedOperationException();
-	}
-
-    public void Add(Record record) {
+    public boolean Add(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Delete(Record record) {
+    public boolean Delete(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Update(Record oldRecord, Record newRecord) {
+    public boolean Update(Record oldRecord, Record newRecord) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Save() {
+    public boolean Save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public void Load() {
+    public boolean Load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public void Import(Records records) {
+    public boolean Import(Records records) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -72,6 +60,18 @@ public class Persons implements Records {
      * @return
      */
     public Element ToXmlElement() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Record getRecord(int index) throws IndexOutOfBoundsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean Validate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
