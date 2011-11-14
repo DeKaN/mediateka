@@ -3,6 +3,7 @@ package mediateka.db;
 
 import java.util.Date;
 import java.util.List;
+import org.dom4j.Element;
 
 /**
  * 
@@ -73,7 +74,7 @@ public class History implements Records {
      * 
      * @return
      */
-    public String ToXmlElement() {
+    public Element ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

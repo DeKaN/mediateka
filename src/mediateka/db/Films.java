@@ -4,6 +4,7 @@ package mediateka.db;
 import mediateka.db.Records;
 import mediateka.db.Record;
 import java.util.List;
+import org.dom4j.Element;
 
 /**
  * 
@@ -81,7 +82,7 @@ public class Films implements Records {
      * 
      * @return
      */
-    public String ToXmlElement() {
+    public Element ToXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

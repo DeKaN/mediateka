@@ -172,7 +172,7 @@ public class HistoryRecord implements Record {
      * Сериализует запись в XML
      * @return Строка с записью, сериализованной в XML element
      */
-    public String ToXmlElement() {
+    public Element ToXmlElement() {
         Element elem = new DOMElement("record");
         elem.addAttribute("recordID", Integer.toString(this.recordID));
         elem.addElement("discID").addText(Integer.toString(this.disc.getID()));
@@ -183,6 +183,6 @@ public class HistoryRecord implements Record {
         elem.addElement("dateOfReturn").addText(this.returnDate == null
                 ? "" : formatter.format(this.returnDate));
         elem.addElement("promisingDate").addText(formatter.format(this.promisedDate));
-        return elem.asXML();
+        return elem;
     }
 }

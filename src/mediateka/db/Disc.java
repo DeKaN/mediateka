@@ -154,14 +154,14 @@ public class Disc implements Record {
      * Сериализует диск в XML
      * @return Строка с диском, сериализованным в XML element
      */
-    public String ToXmlElement() {
+    public Element ToXmlElement() {
         Element elem = new DOMElement("disc");
         elem.addAttribute("discID", Integer.toString(this.discID));
         elem.addElement("ownerID").addText(Integer.toString(this.ownerID));
         elem.addElement("format").addText(this.format.toString());
         elem.addElement("regionCode").addText(Integer.toString(regionCode));
         elem.addElement("isPresent").addText(Boolean.toString(isPresented));
-        elem.addElement("films").addText(this.films.ToXmlElement());
-        return elem.asXML();
+        elem.addElement("films").addText(this.films.ToXmlElement().asXML());
+        return elem;
     }
 }

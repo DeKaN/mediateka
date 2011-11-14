@@ -1,5 +1,7 @@
 package mediateka.db;
 
+import org.dom4j.Element;
+
 /**
  * Интерфейс, представляющий таблицу в базу
  * @author DeKaN
@@ -58,6 +60,6 @@ public interface Records {
          * Сериализует таблицу в XML
          * @return Строка с таблицей, сериализованной в XML element 
          */
-	String ToXmlElement();
+	Element ToXmlElement();
 
 }

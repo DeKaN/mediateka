@@ -85,11 +85,11 @@ public class BlackListRecord implements Record {
      * Сериализует запись в XML
      * @return Строка с записью, сериализованной в XML element
      */
-    public String ToXmlElement() {
+    public Element ToXmlElement() {
         Element elem = new DOMElement("record");
         elem.addAttribute("recordID", Integer.toString(this.recordID));
         elem.addElement("personID").addText(Integer.toString(this.person.getID()));
         elem.addElement("comment").addText(this.comment);
-        return elem.asXML();
+        return elem;
     }
 }

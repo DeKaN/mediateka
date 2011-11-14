@@ -125,7 +125,7 @@ public class Person implements Record {
      * Сериализует запись с персональными данными в XML
      * @return Строка с записью, сериализованной в XML element
      */
-    public String ToXmlElement() {
+    public Element ToXmlElement() {
         Element elem = new DOMElement("person");
         elem.addAttribute("personID", Integer.toString(this.personID));
         elem.addElement("firstfirstName").addText(this.firstName);
@@ -133,6 +133,6 @@ public class Person implements Record {
         elem.addElement("secondName").addText(this.secondName);
         elem.addElement("phoneNumber").addText(this.phone);
         elem.addElement("comment").addText(this.comment);
-        return elem.asXML();
+        return elem;
     }
 }
