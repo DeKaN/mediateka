@@ -242,7 +242,7 @@ public final class Film implements Record {
     }
 
     /**
-     * Внутренний конструктор
+     * Внутренний полный конструктор
      * @param filmId ID фильма
      * @param russianTitle Русское название фильма
      * @param englishTitle Английское название фильма
@@ -274,6 +274,15 @@ public final class Film implements Record {
         this.soundLanguages = soundLanguages;
         this.isSeen = isSeen;
     }
+    
+    /**
+     * Внутренний конструктор
+     * @param filmId ID фильма
+     * @param russianTitle Русское название фильма
+     */
+    Film(int filmId, String russianTitle){
+        this(filmId, russianTitle, "", 0, "", null, null, "", 0, 0, null, null, null, false);
+    }
 
     /**
      * Полный конструктор
@@ -300,7 +309,7 @@ public final class Film implements Record {
      * @param russianTitle Русское название фильма
      */
     public Film(String russianTitle) {
-        this(russianTitle, "", 0, "", null, null, "", 0, 0, null, null, null, false);
+        this(0, russianTitle);
     }
 
     /**
