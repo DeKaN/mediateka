@@ -161,7 +161,7 @@ public class Disc implements Record {
         elem.addElement("format").addText(this.format.toString());
         elem.addElement("regionCode").addText(Integer.toString(regionCode));
         elem.addElement("isPresent").addText(Boolean.toString(isPresented));
-        elem.addElement("films").addText(this.films.ToXmlElement().asXML());
+        elem.addElement("films").addText(this.films.toXmlElement().asXML());
         return elem;
     }
 }

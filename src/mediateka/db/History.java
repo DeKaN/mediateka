@@ -35,6 +35,7 @@ public class History implements Records {
         return historyList.get(index);
     }
 
+<<<<<<< HEAD
     /**
      * Возвращает количество записей таблицы истории
      * @return Количество записей таблицы истории
@@ -106,6 +107,18 @@ public class History implements Records {
             return true;
         }
         return false;
+=======
+    public boolean add(Record record) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean delete(Record record) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean update(Record oldRecord, Record newRecord) {
+        throw new UnsupportedOperationException("Not supported yet.");
+>>>>>>> e8d4ae1c18b7452a22a121369f57838b5a61faea
     }
 
     
@@ -120,7 +133,7 @@ public class History implements Records {
     /**
      * 
      */
-    public boolean Save() {
+    public boolean save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -131,7 +144,7 @@ public class History implements Records {
     /**
      * 
      */
-    public boolean Load() {
+    public boolean load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -147,6 +160,7 @@ public class History implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+<<<<<<< HEAD
     
     
     
@@ -195,12 +209,17 @@ public class History implements Records {
             }
         }
         return retVal;
+=======
+    public Records find(Record record) {
+        throw new UnsupportedOperationException("Not supported yet.");
+>>>>>>> e8d4ae1c18b7452a22a121369f57838b5a61faea
     }
 
     /**
      * Сериализует таблицу в XML
      * @return Строка с таблицей, сериализованной в XML element
      */
+<<<<<<< HEAD
     public Element ToXmlElement() {
         Element elem = new DOMElement("history", Namespace.get("mediateka"));
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
@@ -213,3 +232,22 @@ public class History implements Records {
         return elem;
     }
 }
+=======
+    public Element toXmlElement() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public Record getRecord(int index) throws IndexOutOfBoundsException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public int size() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean validate() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+}
+>>>>>>> e8d4ae1c18b7452a22a121369f57838b5a61faea
