@@ -28,14 +28,14 @@ public class Films implements Records {
     /**
      * 
      */
-    public boolean save() {
+    public boolean save(String fileName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public boolean load() {
+    public boolean load(String fileName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -68,10 +68,6 @@ public class Films implements Records {
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean validate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

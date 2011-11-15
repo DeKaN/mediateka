@@ -1,12 +1,26 @@
 package mediateka.db;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import mediateka.datamanagers.Condition;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.dom4j.dom.DOMDocument;
 import org.dom4j.dom.DOMElement;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 /**
  * 
@@ -98,28 +112,54 @@ public class Blacklist implements Records {
     }
 
     /**
-     * 
-     * @return 
+     * Сохранение в XML
+     * @return true, если сохранение успешно, иначе false
      */
-    public boolean save() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean validate() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean save(String fileName) {
+        try {
+            Document doc = DocumentHelper.createDocument(this.toXmlElement());
+            FileOutputStream fos = new FileOutputStream(fileName);
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter writer = new XMLWriter(fos, format);
+            writer.write(doc);
+            writer.flush();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**
-     * 
-     * @return 
+     * Загрузка из XML
+     * @return true, если загрузка завершилась успешно, иначе false
      */
-    public boolean load() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean load(String fileName) {
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setValidating(true);
+            SAXParser parser = factory.newSAXParser();
+            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+                    "http://www.w3.org/2001/XMLSchema");
+            SAXReader reader = new SAXReader(parser.getXMLReader(), true);
+            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            blackListRecs = new ArrayList<BlackListRecord>();
+            for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
+                DOMElement elem = (DOMElement) it.next();
+                int id = Integer.parseInt(elem.getFirstChild().getNodeValue());
+                //TODO получать Person из Persons
+//                BlackListRecord rec = new BlackListRecord(Integer.parseInt(elem.getAttribute("recordID")), id, elem.getLastChild().getNodeValue());
+//                blackListRecs.add(rec);
+            }
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**
      * Найти записи в таблице, подходящие под шаблон
-     * @param record Запись-шаблон, по котоорой будет проводиться поиск
+     * @param record Запись-шаблон, по которой будет проводиться поиск
      * @return Виртуальная таблица с записями, подходящими под шаблон
      */
     public Records find(Record record) {
@@ -143,7 +183,7 @@ public class Blacklist implements Records {
                 retVal.add(blackListRecord);
             }
         }
-        return retVal;
+        return retVal.size() > 0 ? retVal : null;
     }
 
     /**

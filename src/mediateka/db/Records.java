@@ -44,18 +44,12 @@ public interface Records {
     /**
      * Сохранить таблицу в базу
      */
-    boolean save();
+    boolean save(String fileName);
 
     /**
      * Загрузить таблицу из базы
      */
-    boolean load();
-
-    /**
-     * Проверяет на валидность таблицу
-     * @return true, если таблица валидна, иначе false
-     */
-    boolean validate();
+    boolean load(String fileName);
 
     /**
      * Найти записи в таблице, подходящие под шаблон

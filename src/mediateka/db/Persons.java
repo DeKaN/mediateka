@@ -28,14 +28,14 @@ public class Persons implements Records {
     /**
      * 
      */
-    public boolean save() {
+    public boolean save(String fileName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public boolean load() {
+    public boolean load(String fileName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -71,7 +71,7 @@ public class Persons implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean validate() {
+    public boolean validate(String fileName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
