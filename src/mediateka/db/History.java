@@ -12,7 +12,7 @@ import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
 
 /**
- * 
+ * Класс, представляющий таблицу истории
  * @author Alexandr
  */
 public class History implements Records {
