@@ -13,39 +13,39 @@ import mediateka.db.Records;
  */
 public interface RecordsManager {
 
-        /**
-         * 
+    /**
+     * 
      * @param record
      * @return  
-         */
-        boolean Add(Record record);
+     */
+    boolean Add(Record record);
 
-        /**
-         * 
-         * @param id
-         * @return  
-         */
-        boolean Delete(int id);
+    /**
+     * 
+     * @param id
+     * @return  
+     */
+    boolean Delete(int id);
 
-        /**
-         * 
-         * @param id
-         * @param newData
-         * @return  
-         */
-        Records Edit(int id, Record newData);
+    /**
+     * 
+     * @param id
+     * @param newData
+     * @return  
+     */
+    Records Edit(int id, Record newData);
 
-        /**
-         * 
-         * @param id
-         * @return  
-         */
-        Records Find(int id);
+    /**
+     * 
+     * @param id
+     * @return  
+     */
+    Record Find(int id);
 
-        /**
-         * 
-         * @param record
-         * @return  
-         */
-        Records Find(Record record);
-    }
+    /**
+     * 
+     * @param record
+     * @return  
+     */
+    Records Find(Record record);
+}

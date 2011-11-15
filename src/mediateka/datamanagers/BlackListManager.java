@@ -26,7 +26,7 @@ class BlackListManager implements RecordsManager {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public Records Find(int id) {
+        public Record Find(int id) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
