@@ -157,17 +157,19 @@ public class HistoryRecord implements Record {
      * @param comment Комментарий
      */
     public HistoryRecord(Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
-        if ((disc == null) || (person == null) || (give == null) || (promise == null)) {
-            throw new NullPointerException();
-        }
-        this.disc = disc;
-        this.person = person;
-        this.giveDate = give;
-        this.promisedDate = promise;
-        this.returnDate = returned;
-        this.comment = comment;
+        this(0, disc, person, give, promise, returned, comment);
     }
 
+    /**
+     * Внутренний конструктор
+     * @param recordID ID записи
+     * @param disc Диск, который отдали
+     * @param person Человек, которому отдали диск
+     * @param give Дата, когда отдан диск
+     * @param promise Дата, когда диск обещали вернуть
+     * @param returned Дата, когда диск вернули
+     * @param comment Комментарий
+     */
     HistoryRecord(int recordID, Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
         if ((disc == null) || (person == null) || (give == null) || (promise == null)) {
             throw new NullPointerException();

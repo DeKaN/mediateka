@@ -76,7 +76,12 @@ public class BlackListRecord implements Record {
         this(0, person, comment);
     }
 
-    //TODO: Add JavaDoc
+    /**
+     * Внутренний конструктор
+     * @param recordID ID записи
+     * @param person Персональные данные
+     * @param comment Комментарий к записи
+     */
     BlackListRecord(int recordID, Person person, String comment) {
         if (person == null) {
             throw new NullPointerException();
