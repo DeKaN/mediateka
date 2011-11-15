@@ -13,29 +13,29 @@ public class Persons implements Records {
 	private int autoIndex;
 	private List<Person> personsList;
 
-    public boolean Add(Record record) {
+    public boolean add(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean Delete(Record record) {
+    public boolean delete(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean Update(Record oldRecord, Record newRecord) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * 
-     */
-    public boolean Save() {
+    public boolean update(Record oldRecord, Record newRecord) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
      */
-    public boolean Load() {
+    public boolean save() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     * 
+     */
+    public boolean load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -51,7 +51,7 @@ public class Persons implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public Records Find(Record record) {
+    public Records find(Record record) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -59,7 +59,7 @@ public class Persons implements Records {
      * 
      * @return
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -71,7 +71,7 @@ public class Persons implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean Validate() {
+    public boolean validate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

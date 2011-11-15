@@ -43,9 +43,10 @@ public class Blacklist implements Records {
     /**
      * Добавляет запись в таблицу, если она еще не существует
      * @param record Запись для добавления
+     * @return true, если добавление успешно, иначе false
      */
-    public boolean Add(Record record) {
-        if (Find(record) == null) {
+    public boolean add(Record record) {
+        if (find(record) == null) {
             try {
                 BlackListRecord rec = (BlackListRecord) record;
                 if (rec.getID() == 0) {
@@ -53,7 +54,7 @@ public class Blacklist implements Records {
                     autoIndex++;
                     blackListRecs.add(rec);
                     return true;
-                } else if (Find(new BlackListRecord(rec.getID(), null, "")) == null) {
+                } else if (find(new BlackListRecord(rec.getID(), null, "")) == null) {
                     blackListRecs.add(rec);
                     return true;
                 }
@@ -65,12 +66,13 @@ public class Blacklist implements Records {
     }
 
     /**
-     * 
-     * @param record 
+     * Удаляет запись из таблицы, если она существует
+     * @param record Запись для удаления
+     * @return true, если удаление успешно, иначе false
      */
-    public boolean Delete(Record record) {
+    public boolean delete(Record record) {
         Blacklist bl = null;
-        if ((bl = (Blacklist) Find(record)) != null) {
+        if ((bl = (Blacklist) find(record)) != null) {
             blackListRecs.remove(bl.getRecord(0));
             return true;
         }
@@ -78,13 +80,14 @@ public class Blacklist implements Records {
     }
 
     /**
-     * 
-     * @param oldRecord
-     * @param newRecord 
+     * Обновляет запись в таблице
+     * @param oldRecord Текущая запись
+     * @param newRecord Новая запись
+     * @return true, если обновление успешно, иначе false
      */
-    public boolean Update(Record oldRecord, Record newRecord) {
+    public boolean update(Record oldRecord, Record newRecord) {
         Blacklist bl = null;
-        if ((bl = (Blacklist) Find(oldRecord)) != null) {
+        if ((bl = (Blacklist) find(oldRecord)) != null) {
             BlackListRecord br = blackListRecs.get(blackListRecs.indexOf(bl.getRecord(0))),
                     newRec = (BlackListRecord) newRecord;
             br.setPerson(newRec.getPerson());
@@ -96,31 +99,21 @@ public class Blacklist implements Records {
 
     /**
      * 
+     * @return 
      */
-    public boolean Save() {
+    public boolean save() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean Validate() {
+    public boolean validate() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     /**
      * 
+     * @return 
      */
-    public boolean Load() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean Import(Records records) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public Records Export() {
+    public boolean load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -129,7 +122,7 @@ public class Blacklist implements Records {
      * @param record Запись-шаблон, по котоорой будет проводиться поиск
      * @return Виртуальная таблица с записями, подходящими под шаблон
      */
-    public Records Find(Record record) {
+    public Records find(Record record) {
         Blacklist retVal = new Blacklist();
         HashMap<String, String> map = new HashMap<String, String>();
         BlackListRecord rec;
@@ -147,7 +140,7 @@ public class Blacklist implements Records {
         Condition cond = new Condition(map);
         for (BlackListRecord blackListRecord : blackListRecs) {
             if (cond.isEquals(blackListRecord)) {
-                retVal.Add(blackListRecord);
+                retVal.add(blackListRecord);
             }
         }
         return retVal;
@@ -157,7 +150,7 @@ public class Blacklist implements Records {
      * Сериализует таблицу в XML
      * @return Строка с таблицей, сериализованной в XML element
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("blackList", Namespace.get("mediateka"));
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         elem.addAttribute("xsi:schemaLocation", "mediateka blackList.xsd");
