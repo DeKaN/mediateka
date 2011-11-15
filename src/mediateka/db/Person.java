@@ -1,7 +1,6 @@
 package mediateka.db;
 
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
 
 /**
@@ -120,6 +119,18 @@ public class Person implements Record {
         this.phone = phone;
         this.comment = comment;
     }
+
+    //TODO: Add JavaDoc
+    public Person(int personID, String lastName, String firstName, String secondName, String phone, String comment) {
+        this.personID = personID;
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.phone = phone;
+        this.comment = comment;
+    }
+    
+    
 
     /**
      * Сериализует запись с персональными данными в XML
