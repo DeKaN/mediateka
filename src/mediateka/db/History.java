@@ -35,7 +35,6 @@ public class History implements Records {
         return historyList.get(index);
     }
 
-<<<<<<< HEAD
     /**
      * Возвращает количество записей таблицы истории
      * @return Количество записей таблицы истории
@@ -48,8 +47,8 @@ public class History implements Records {
      * Добавляет запись в таблицу истории, если запись еще не существует
      * @param record Запись для добавления
      */
-    public boolean Add(Record record) {
-        if (Find(record) == null) {
+    public boolean add(Record record) {
+        if (find(record) == null) {
             try {
                 HistoryRecord rec = (HistoryRecord) record;
                 if (rec.getID() == 0) {
@@ -64,7 +63,7 @@ public class History implements Records {
                     autoIndex++;
                     historyList.add(rec);
                     return true;
-                } else if (Find(new HistoryRecord(rec.getID(), null, null, null, null, null, "")) == null) {
+                } else if (find(new HistoryRecord(rec.getID(), null, null, null, null, null, "")) == null) {
                     historyList.add(rec);
                     return true;
                 }
@@ -79,9 +78,9 @@ public class History implements Records {
      * Удалить запись из таблицы истории
      * @param record Запись для удаления из таблицы истории
      */
-    public boolean Delete(Record record) {
+    public boolean delete(Record record) {
         History hist = null;
-        if ((hist = (History) Find(record)) != null) {
+        if ((hist = (History) find(record)) != null) {
             historyList.remove(hist.getRecord(0));
             return true;
         }
@@ -93,9 +92,9 @@ public class History implements Records {
      * @param oldRecord Старая запись в таблице
      * @param newRecord Новая запись в таблице
      */
-    public boolean Update(Record oldRecord, Record newRecord) {
+    public boolean update(Record oldRecord, Record newRecord) {
         History hist = null;
-        if ((hist = (History) Find(oldRecord)) != null) {
+        if ((hist = (History) find(oldRecord)) != null) {
             HistoryRecord histRec = historyList.get(historyList.indexOf(hist.getRecord(0))),
                     newRec = (HistoryRecord) newRecord;
             histRec.setDisc(newRec.getDisc());
@@ -107,18 +106,6 @@ public class History implements Records {
             return true;
         }
         return false;
-=======
-    public boolean add(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean delete(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean update(Record oldRecord, Record newRecord) {
-        throw new UnsupportedOperationException("Not supported yet.");
->>>>>>> e8d4ae1c18b7452a22a121369f57838b5a61faea
     }
 
     
@@ -137,30 +124,12 @@ public class History implements Records {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean Validate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     /**
      * 
      */
     public boolean load() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-    public boolean Import(Records records) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    /**
-     * 
-     * @return
-     */
-    public Records Export() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-<<<<<<< HEAD
     
     
     
@@ -174,7 +143,7 @@ public class History implements Records {
      * @param record Запись-шаблон, по которой будет проводиться поиск
      * @return Виртуальная таблица с записями, подходящими под шаблон
      */
-    public Records Find(Record record) {
+    public Records find(Record record) {
         History retVal = new History();
         HashMap<String, String> map = new HashMap<String, String>();
         HistoryRecord rec;
@@ -205,22 +174,17 @@ public class History implements Records {
         Condition cond = new Condition(map);
         for (HistoryRecord historyRecord : historyList) {
             if (cond.isEquals(historyRecord)) {
-                retVal.Add(historyRecord);
+                retVal.add(historyRecord);
             }
         }
         return retVal;
-=======
-    public Records find(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
->>>>>>> e8d4ae1c18b7452a22a121369f57838b5a61faea
     }
 
     /**
      * Сериализует таблицу в XML
      * @return Строка с таблицей, сериализованной в XML element
      */
-<<<<<<< HEAD
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("history", Namespace.get("mediateka"));
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         elem.addAttribute("xsi:schemaLocation", "mediateka history.xsd");
@@ -232,22 +196,3 @@ public class History implements Records {
         return elem;
     }
 }
-=======
-    public Element toXmlElement() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public Record getRecord(int index) throws IndexOutOfBoundsException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean validate() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-}
->>>>>>> e8d4ae1c18b7452a22a121369f57838b5a61faea
