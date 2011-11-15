@@ -2,21 +2,16 @@ package mediateka.db;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import mediateka.datamanagers.Condition;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
-import org.dom4j.dom.DOMDocument;
 import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
@@ -24,7 +19,7 @@ import org.dom4j.io.XMLWriter;
 
 /**
  * 
- * @author Alexandr
+ * @author DeKaN
  */
 public class Blacklist implements Records {
 
@@ -113,6 +108,7 @@ public class Blacklist implements Records {
 
     /**
      * Сохранение в XML
+     * @param fileName Имя файла, в который будет сохранен XML
      * @return true, если сохранение успешно, иначе false
      */
     public boolean save(String fileName) {
@@ -123,6 +119,7 @@ public class Blacklist implements Records {
             XMLWriter writer = new XMLWriter(fos, format);
             writer.write(doc);
             writer.flush();
+            fos.close();
             return true;
         } catch (Exception ex) {
             return false;
@@ -130,7 +127,8 @@ public class Blacklist implements Records {
     }
 
     /**
-     * Загрузка из XML
+     * Загрузка из XML с валидацией
+     * @param fileName Имя файла, из которого будет загружен XML
      * @return true, если загрузка завершилась успешно, иначе false
      */
     public boolean load(String fileName) {
@@ -174,7 +172,7 @@ public class Blacklist implements Records {
         if (rec.getPerson() != null) {
             map.put("personID", Integer.toString(rec.getPerson().getID()));
         }
-        if (rec.getComment() != null) {
+        if (rec.getComment() != "") {
             map.put("comment", rec.getComment());
         }
         Condition cond = new Condition(map);
@@ -187,7 +185,7 @@ public class Blacklist implements Records {
     }
 
     /**
-     * Сериализует таблицу в XML
+     * Записывает таблицу в XML Element
      * @return Строка с таблицей, сериализованной в XML element
      */
     public Element toXmlElement() {

@@ -25,12 +25,14 @@ public interface Records {
     /**
      * Добавить запись в таблицу
      * @param record Запись для добавления в таблицу
+     * @return true, если добавление успешно, иначе false
      */
     boolean add(Record record);
 
     /**
      * Удалить запись из таблицы
      * @param record Запись для удаления из таблицы
+     * @return true, если удаление успешно, иначе false
      */
     boolean delete(Record record);
 
@@ -38,16 +40,21 @@ public interface Records {
      * Заменить запись в таблице новой записью
      * @param oldRecord Старая запись (уже имеется в таблице)
      * @param newRecord Новая запись (будет записана поверх старой)
+     * @return true, если обновление успешно, иначе false
      */
     boolean update(Record oldRecord, Record newRecord);
 
     /**
-     * Сохранить таблицу в базу
+     * Сохранение в XML
+     * @param fileName Имя файла, в который будет сохранен XML
+     * @return true, если сохранение успешно, иначе false
      */
     boolean save(String fileName);
 
     /**
-     * Загрузить таблицу из базы
+     * Загрузка из XML с валидацией
+     * @param fileName Имя файла, из которого будет загружен XML
+     * @return true, если загрузка завершилась успешно, иначе false 
      */
     boolean load(String fileName);
 
@@ -59,7 +66,7 @@ public interface Records {
     Records find(Record record);
 
     /**
-     * Сериализует таблицу в XML
+     * Записывает таблицу в XML Element
      * @return Строка с таблицей, сериализованной в XML element 
      */
     Element toXmlElement();

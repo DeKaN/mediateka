@@ -18,6 +18,11 @@ public class Condition {
 
     HashMap<String, String> conds;
 
+    enum CombineMode {
+
+        AND, OR
+    };
+
     public Condition(HashMap<String, String> conds) {
         if (conds == null) {
             throw new NullPointerException();
@@ -25,6 +30,7 @@ public class Condition {
         this.conds = conds;
     }
 
+    //TODO необходимо переделать
     public boolean isEquals(Record rec) {
         DOMElement elem = (DOMElement) rec.ToXmlElement();
         Set<String> keys = conds.keySet();
@@ -32,7 +38,7 @@ public class Condition {
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
             String key = it.next();
             String val = elem.getAttribute(key);
-            if ((val.isEmpty()) || (!conds.get(key).equals(val))) {
+            if ((val.isEmpty()) || (!conds.get(key).contains(val))) {
                 retVal = false;
                 break;
             }

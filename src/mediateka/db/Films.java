@@ -1,74 +1,267 @@
 package mediateka.db;
 
-
-import java.util.List;
+import biz.source_code.base64Coder.Base64Coder;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import mediateka.datamanagers.Condition;
+import org.apache.commons.lang.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Namespace;
+import org.dom4j.dom.DOMElement;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
+import org.w3c.dom.NodeList;
 
 /**
  * 
- * @author Alexandr
+ * @author DeKaN
  */
 public class Films implements Records {
 
-	private int autoIndex;
-	private List<Film> filmsList;
+    private int autoIndex;
+    private ArrayList<Film> filmsList;
 
-    public boolean add(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean delete(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean update(Record oldRecord, Record newRecord) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private Films() {
+        autoIndex = 1;
+        filmsList = new ArrayList<Film>();
     }
 
     /**
-     * 
+     * Добавить фильм в таблицу
+     * @param record Фильм, который будет удален
+     * @return true, если добавление успешно, иначе false
+     */
+    public boolean add(Record record) {
+        if (find(record) == null) {
+            try {
+                Film rec = (Film) record;
+                if (rec.getID() == 0) {
+                    rec = new Film(autoIndex, rec.getRussianTitle(),
+                            rec.getEnglishTitle(), rec.getYear(), rec.getDescription(),
+                            rec.getGenres(), rec.getCountries(), rec.getComment(),
+                            rec.getLength(), rec.getRating(), rec.getSubtitles(),
+                            rec.getCover(), rec.getSoundLanguages(), rec.isIsSeen());
+                    autoIndex++;
+                    filmsList.add(rec);
+                    return true;
+                } else if (find(new Film(rec.getID(), "")) == null) {
+                    filmsList.add(rec);
+                    return true;
+                }
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Удалить фильм из таблицы
+     * @param record Фильм, который будет удален
+     * @return true, если удаление успешно, иначе false
+     */
+    public boolean delete(Record record) {
+        Films f = null;
+        if ((f = (Films) find(record)) != null) {
+            filmsList.remove(f.getRecord(0));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Обновляет запись фильма в таблице
+     * @param oldRecord Текущая запись
+     * @param newRecord Новая запись
+     * @return true, если обновление успешно, иначе false
+     */
+    public boolean update(Record oldRecord, Record newRecord) {
+        Films f = null;
+        if ((f = (Films) find(oldRecord)) != null) {
+            Film f2 = filmsList.get(filmsList.indexOf(f.getRecord(0))),
+                    newRec = (Film) newRecord;
+            f2.setRussianTitle(newRec.getRussianTitle());
+            f2.setEnglishTitle(newRec.getEnglishTitle());
+            f2.setYear(newRec.getYear());
+            f2.setDescription(newRec.getDescription());
+            f2.setGenres(newRec.getGenres());
+            f2.setCountries(newRec.getCountries());
+            f2.setComment(newRec.getComment());
+            f2.setLength(newRec.getLength());
+            f2.setRating(newRec.getRating());
+            f2.setSubtitles(newRec.getSubtitles());
+            f2.setCover(newRec.getCover());
+            f2.setSoundLanguages(newRec.getSoundLanguages());
+            f2.setIsSeen(newRec.isIsSeen());
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Сохранение в XML
+     * @param fileName Имя файла, в который будет сохранен XML
+     * @return true, если сохранение успешно, иначе false
      */
     public boolean save(String fileName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            Document doc = DocumentHelper.createDocument(this.toXmlElement());
+            FileOutputStream fos = new FileOutputStream(fileName);
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter writer = new XMLWriter(fos, format);
+            writer.write(doc);
+            writer.flush();
+            fos.close();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**
-     * 
+     * Загрузка из XML с валидацией
+     * @param fileName Имя файла, из которого будет загружен XML
+     * @return true, если загрузка завершилась успешно, иначе false
      */
     public boolean load(String fileName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    public boolean Import(Records records) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setValidating(true);
+            SAXParser parser = factory.newSAXParser();
+            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+                    "http://www.w3.org/2001/XMLSchema");
+            SAXReader reader = new SAXReader(parser.getXMLReader(), true);
+            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            filmsList = new ArrayList<Film>();
+            for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
+                DOMElement elem = (DOMElement) it.next();
+                NodeList nodes = elem.getChildNodes(),
+                        nodes2 = nodes.item(4).getChildNodes();
+                String[] genres = new String[nodes2.getLength()];
+                for (int i = 0; i < genres.length; i++) {
+                    genres[i] = nodes2.item(i).getNodeValue();
+                }
+                nodes2 = nodes.item(5).getChildNodes();
+                String[] countries = new String[nodes2.getLength()];
+                for (int i = 0; i < countries.length; i++) {
+                    countries[i] = nodes2.item(i).getNodeValue();
+                }
+                nodes2 = nodes.item(9).getChildNodes();
+                String[] subtitles = new String[nodes2.getLength()];
+                for (int i = 0; i < subtitles.length; i++) {
+                    subtitles[i] = nodes2.item(i).getNodeValue();
+                }
+                nodes2 = nodes.item(11).getChildNodes();
+                String[] soundLanguages = new String[nodes2.getLength()];
+                for (int i = 0; i < soundLanguages.length; i++) {
+                    soundLanguages[i] = nodes2.item(i).getNodeValue();
+                }
+                filmsList.add(new Film(nodes.item(0).getNodeValue(),
+                        nodes.item(1).getNodeValue(),
+                        Integer.parseInt(nodes.item(2).getNodeValue()),
+                        nodes.item(3).getNodeValue(),
+                        genres, countries, nodes.item(6).getNodeValue(),
+                        Integer.parseInt(nodes.item(7).getNodeValue()),
+                        Integer.parseInt(nodes.item(8).getNodeValue()), subtitles,
+                        Base64Coder.decodeLines(nodes.item(10).getNodeValue()),
+                        soundLanguages, nodes.item(12).getNodeValue().equals("true")));
+            }
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**
-     * 
-     * @return
+     * Найти записи в таблице, подходящие под шаблон
+     * @param record Запись-шаблон, по которой будет проводиться поиск
+     * @return Виртуальная таблица с записями, подходящими под шаблон
      */
-    public Records Export() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public Records find(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Films retVal = new Films();
+        HashMap<String, String> map = new HashMap<String, String>();
+        Film rec;
+        try {
+            rec = (Film) record;
+        } catch (Exception e) {
+            return null;
+        }
+        if (!rec.getRussianTitle().equals("")) {
+            map.put("russianTitle", rec.getRussianTitle());
+        }
+        if (!rec.getEnglishTitle().equals("")) {
+            map.put("englishTitle", rec.getEnglishTitle());
+        }
+        if (rec.getYear() != 0) {
+            map.put("year", Integer.toString(rec.getYear()));
+        }
+        if (!rec.getDescription().equals("")) {
+            map.put("description", rec.getDescription());
+        }
+        if (rec.getGenres() != null) {
+            map.put("genre", StringUtils.join(rec.getGenres(), ','));
+        }
+        if (rec.getCountries() != null) {
+            map.put("country", StringUtils.join(rec.getCountries(), ','));
+        }
+        if (!rec.getComment().equals("")) {
+            map.put("comment", rec.getComment());
+        }
+        if (rec.getLength() != 0) {
+            map.put("length", Integer.toString(rec.getLength()));
+        }
+        if (rec.getRating() != 0) {
+            map.put("rating", Integer.toString(rec.getRating()));
+        }
+        if (rec.getSubtitles() != null) {
+            map.put("subtitle", StringUtils.join(rec.getSubtitles(), ','));
+        }
+        if (rec.getCover() != null) {
+            map.put("cover", Base64Coder.encodeLines(rec.getCover()));
+        }
+        if (rec.getSoundLanguages() != null) {
+            map.put("soundLanguage", StringUtils.join(rec.getSoundLanguages(), ','));
+        }
+        map.put("isSeen", Boolean.toString(rec.isIsSeen()));
+        Condition cond = new Condition(map);
+        for (Film film : filmsList) {
+            if (cond.isEquals(film)) {
+                retVal.add(film);
+            }
+        }
+        return retVal.size() > 0 ? retVal : null;
     }
 
     /**
-     * 
-     * @return
+     * Записывает таблицу в XML Element
+     * @return Строка с таблицей, сериализованной в XML element
      */
     public Element toXmlElement() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Element elem = new DOMElement("films", Namespace.get("mediateka"));
+        elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        elem.addAttribute("xsi:schemaLocation", "mediateka films.xsd");
+        elem.addAttribute("autoIndex", Integer.toString(autoIndex));
+        for (Iterator<Film> it = filmsList.iterator(); it.hasNext();) {
+            Film film = it.next();
+            elem.addText(film.ToXmlElement().asXML());
+        }
+        return elem;
     }
 
     public Record getRecord(int index) throws IndexOutOfBoundsException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return filmsList.get(index);
     }
 
     public int size() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return filmsList.size();
     }
-
 }
