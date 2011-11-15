@@ -168,6 +168,19 @@ public class HistoryRecord implements Record {
         this.comment = comment;
     }
 
+    HistoryRecord(int recordID, Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
+        if ((disc == null) || (person == null) || (give == null) || (promise == null)) {
+            throw new NullPointerException();
+        }
+        this.recordID = recordID;
+        this.disc = disc;
+        this.person = person;
+        this.giveDate = give;
+        this.promisedDate = promise;
+        this.returnDate = returned;
+        this.comment = comment;
+    }
+
     /**
      * Сериализует запись в XML
      * @return Строка с записью, сериализованной в XML element

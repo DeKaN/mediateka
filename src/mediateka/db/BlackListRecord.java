@@ -73,15 +73,14 @@ public class BlackListRecord implements Record {
      * @param comment Комментарий
      */
     public BlackListRecord(Person person, String comment) {
-        if (person == null) {
-            throw new NullPointerException();
-        }
-        this.person = person;
-        this.comment = comment;
+        this(0, person, comment);
     }
 
     //TODO: Add JavaDoc
     BlackListRecord(int recordID, Person person, String comment) {
+        if (person == null) {
+            throw new NullPointerException();
+        }
         this.recordID = recordID;
         this.person = person;
         this.comment = comment;
