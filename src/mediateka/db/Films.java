@@ -29,7 +29,7 @@ public class Films implements Records {
     private int autoIndex;
     private ArrayList<Film> filmsList;
 
-    private Films() {
+    public Films() {
         autoIndex = 1;
         filmsList = new ArrayList<Film>();
     }
@@ -144,7 +144,7 @@ public class Films implements Records {
             filmsList = new ArrayList<Film>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
-                    
+
                     DOMElement elem = (DOMElement) it.next();
                     NodeList nodes = elem.getChildNodes(),
                             nodes2 = nodes.item(4).getChildNodes();
@@ -172,14 +172,14 @@ public class Films implements Records {
                             nodes.item(1).getNodeValue(),
                             Integer.parseInt(nodes.item(2).getNodeValue()),
                             nodes.item(3).getNodeValue(),
-                            genres, 
-                            countries, 
+                            genres,
+                            countries,
                             nodes.item(6).getNodeValue(),
                             Integer.parseInt(nodes.item(7).getNodeValue()),
-                            Integer.parseInt(nodes.item(8).getNodeValue()), 
+                            Integer.parseInt(nodes.item(8).getNodeValue()),
                             subtitles,
                             Base64Coder.decodeLines(nodes.item(10).getNodeValue()),
-                            soundLanguages, 
+                            soundLanguages,
                             nodes.item(12).getNodeValue().equals("true")));
                 } catch (Exception exc) {
                 }
@@ -204,43 +204,47 @@ public class Films implements Records {
         } catch (Exception e) {
             return null;
         }
-        if (!rec.getRussianTitle().equals("")) {
-            map.put("russianTitle", rec.getRussianTitle());
+        if (rec.getID() > 0) {
+            map.put("filmID", Integer.toString(rec.getID()));
+        } else {
+            if (!rec.getRussianTitle().equals("")) {
+                map.put("russianTitle", rec.getRussianTitle());
+            }
+            if (!rec.getEnglishTitle().equals("")) {
+                map.put("englishTitle", rec.getEnglishTitle());
+            }
+            if (rec.getYear() != 0) {
+                map.put("year", Integer.toString(rec.getYear()));
+            }
+            if (!rec.getDescription().equals("")) {
+                map.put("description", rec.getDescription());
+            }
+            if (rec.getGenres() != null) {
+                map.put("genre", StringUtils.join(rec.getGenres(), ','));
+            }
+            if (rec.getCountries() != null) {
+                map.put("country", StringUtils.join(rec.getCountries(), ','));
+            }
+            if (!rec.getComment().equals("")) {
+                map.put("comment", rec.getComment());
+            }
+            if (rec.getLength() != 0) {
+                map.put("length", Integer.toString(rec.getLength()));
+            }
+            if (rec.getRating() != 0) {
+                map.put("rating", Integer.toString(rec.getRating()));
+            }
+            if (rec.getSubtitles() != null) {
+                map.put("subtitle", StringUtils.join(rec.getSubtitles(), ','));
+            }
+            if (rec.getCover() != null) {
+                map.put("cover", Base64Coder.encodeLines(rec.getCover()));
+            }
+            if (rec.getSoundLanguages() != null) {
+                map.put("soundLanguage", StringUtils.join(rec.getSoundLanguages(), ','));
+            }
+            map.put("isSeen", Boolean.toString(rec.isIsSeen()));
         }
-        if (!rec.getEnglishTitle().equals("")) {
-            map.put("englishTitle", rec.getEnglishTitle());
-        }
-        if (rec.getYear() != 0) {
-            map.put("year", Integer.toString(rec.getYear()));
-        }
-        if (!rec.getDescription().equals("")) {
-            map.put("description", rec.getDescription());
-        }
-        if (rec.getGenres() != null) {
-            map.put("genre", StringUtils.join(rec.getGenres(), ','));
-        }
-        if (rec.getCountries() != null) {
-            map.put("country", StringUtils.join(rec.getCountries(), ','));
-        }
-        if (!rec.getComment().equals("")) {
-            map.put("comment", rec.getComment());
-        }
-        if (rec.getLength() != 0) {
-            map.put("length", Integer.toString(rec.getLength()));
-        }
-        if (rec.getRating() != 0) {
-            map.put("rating", Integer.toString(rec.getRating()));
-        }
-        if (rec.getSubtitles() != null) {
-            map.put("subtitle", StringUtils.join(rec.getSubtitles(), ','));
-        }
-        if (rec.getCover() != null) {
-            map.put("cover", Base64Coder.encodeLines(rec.getCover()));
-        }
-        if (rec.getSoundLanguages() != null) {
-            map.put("soundLanguage", StringUtils.join(rec.getSoundLanguages(), ','));
-        }
-        map.put("isSeen", Boolean.toString(rec.isIsSeen()));
         Condition cond = new Condition(map);
         for (Film film : filmsList) {
             if (cond.isEquals(film)) {

@@ -18,7 +18,7 @@ public class Managers {
     static Managers instance = null;
 
     /**
-     * 
+     * Возвращает объект класса
      * @param blListFile XML файл, с таблицей BlackList
      * @param discFile XML файл, с таблицей Discs
      * @param filmFile XML файл, с таблицей Films
@@ -26,7 +26,7 @@ public class Managers {
      * @param persFile XML файл, с таблицей Persons
      * @throws Exception Если хотя бы одна из таблиц не загрузилась
      */
-    static Managers getInstance(String blListFile, String discFile, String filmFile, String histFile, String persFile) throws Exception {
+    public static Managers getInstance(String blListFile, String discFile, String filmFile, String histFile, String persFile) throws Exception {
         if (instance == null) {
             instance = new Managers(blListFile, discFile, filmFile, histFile, persFile);
         }

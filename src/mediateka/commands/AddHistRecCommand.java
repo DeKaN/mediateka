@@ -4,16 +4,17 @@
  */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 
 /**
- *
+ * Класс, представляющий команду добавления записи в историю
  * @author DeKaN
  */
 public class AddHistRecCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getHistManager().add(record);
     }
 
     public String ToString() {

@@ -171,6 +171,7 @@ public class Discs implements Records {
         } catch (Exception e) {
             return null;
         }
+        //TODO добавить поиск по id
         Films filmsCollection = disc.getFilms();
         if (filmsCollection != null) {
             String[] films = new String[filmsCollection.size()];

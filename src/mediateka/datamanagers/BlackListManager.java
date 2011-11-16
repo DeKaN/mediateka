@@ -10,7 +10,7 @@ import mediateka.db.*;
  * Менеджер черного списка
  * @author DeKaN
  */
-class BlackListManager implements RecordsManager {
+public class BlackListManager implements RecordsManager {
 
     private Blacklist blackList = null;
 

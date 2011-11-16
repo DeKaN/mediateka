@@ -29,7 +29,7 @@ public class History implements Records {
     private int autoIndex;
     private ArrayList<HistoryRecord> historyList;
 
-    private History() {
+    public History() {
         autoIndex = 1;
         historyList = new ArrayList<HistoryRecord>();
     }

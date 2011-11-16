@@ -1,9 +1,10 @@
 /*
  * MediatekaView.java
  */
-
 package mediateka;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
@@ -15,11 +16,19 @@ import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import mediateka.datamanagers.Managers;
 
 /**
  * The application's main frame.
  */
 public class MediatekaView extends FrameView {
+
+    private static final String blackListFile = "blacklist.xml",
+            discsFile = "discs.xml",
+            filmsFile = "films.xml",
+            historyFile = "history.xml",
+            personsFile = "persons.xml";
+    public static Managers managers = null;
 
     public MediatekaView(SingleFrameApplication app) {
         super(app);
@@ -30,6 +39,7 @@ public class MediatekaView extends FrameView {
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 statusMessageLabel.setText("");
             }
@@ -40,6 +50,7 @@ public class MediatekaView extends FrameView {
             busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
+
             public void actionPerformed(ActionEvent e) {
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
                 statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
@@ -52,6 +63,7 @@ public class MediatekaView extends FrameView {
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
         taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
@@ -68,17 +80,22 @@ public class MediatekaView extends FrameView {
                     progressBar.setVisible(false);
                     progressBar.setValue(0);
                 } else if ("message".equals(propertyName)) {
-                    String text = (String)(evt.getNewValue());
+                    String text = (String) (evt.getNewValue());
                     statusMessageLabel.setText((text == null) ? "" : text);
                     messageTimer.restart();
                 } else if ("progress".equals(propertyName)) {
-                    int value = (Integer)(evt.getNewValue());
+                    int value = (Integer) (evt.getNewValue());
                     progressBar.setVisible(true);
                     progressBar.setIndeterminate(false);
                     progressBar.setValue(value);
                 }
             }
         });
+        try {
+            managers = Managers.getInstance(blackListFile, discsFile, filmsFile, historyFile, personsFile);
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Action
@@ -389,9 +406,8 @@ public class MediatekaView extends FrameView {
 
 private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 // TODO add your handling code here:
-    int f=evt.getButton();
+    int f = evt.getButton();
 }//GEN-LAST:event_jTable1MouseClicked
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem createMenuItem;
     private javax.swing.JMenu editMenuItem;
@@ -429,6 +445,5 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     private final Icon idleIcon;
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
-
     private JDialog aboutBox;
 }
