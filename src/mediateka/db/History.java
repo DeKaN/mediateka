@@ -2,6 +2,7 @@ package mediateka.db;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+import org.w3c.dom.NodeList;
 
 /**
  * Класс, представляющий таблицу истории
@@ -53,6 +55,7 @@ public class History implements Records {
     /**
      * Добавляет запись в таблицу истории, если запись еще не существует
      * @param record Запись для добавления
+     * @return true, если добавление прошло успешно, иначе - false
      */
     public boolean add(Record record) {
         if (find(record) == null) {
@@ -113,8 +116,8 @@ public class History implements Records {
             return true;
         }
         return false;
-    }    
-    
+    }
+
     /**
      * Сохранение в XML
      * @param fileName Имя файла
@@ -141,7 +144,8 @@ public class History implements Records {
      * @return true, если загрузка завершилась успешно, иначе false
      */
     public boolean load(String fileName) {
-               try {
+        //TODO написать конструктор HistoryRecord!!
+        try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setValidating(true);
             SAXParser parser = factory.newSAXParser();
@@ -149,21 +153,26 @@ public class History implements Records {
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
             DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
+            SimpleDateFormat format = new SimpleDateFormat("");
             autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
             historyList = new ArrayList<HistoryRecord>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DOMElement elem = (DOMElement) it.next();
-                int id = Integer.parseInt(elem.getFirstChild().getNodeValue());
-                //TODO получать Person из Persons
-                //HistoryRecord rec = new HistoryRecord(Integer.parseInt(elem.getAttribute("recordID")), id, elem.getLastChild().getNodeValue());
-//                historyList.add(rec);
+                NodeList nodes = elem.getChildNodes();
+//                historyList.add(new HistoryRecord(
+//                        Integer.parseInt(elem.getAttribute("recordID")),
+//                        Integer.parseInt(nodes.item(0).getNodeValue()),
+//                        Integer.parseInt(nodes.item(1).getNodeValue()),
+//                        format.parse(nodes.item(2).getNodeValue()),
+//                        format.parse(nodes.item(3).getNodeValue()),
+//                        format.parse(nodes.item(4).getNodeValue());
             }
             return true;
         } catch (Exception ex) {
             return false;
         }
     }
-    
+
     /**
      * Найти записи в таблице истории, подходящие под шаблон
      * @param record Запись-шаблон, по которой будет проводиться поиск
@@ -178,24 +187,28 @@ public class History implements Records {
         } catch (Exception e) {
             return null;
         }
-        if (rec.getDisc() != null) {
-            map.put("discID", Integer.toString(rec.getDisc().getID()));
-        }
-        if (rec.getPerson() != null) {
-            map.put("personID", Integer.toString(rec.getPerson().getID()));
-        }
-        if (rec.getComment() != "") {
-            map.put("comment", rec.getComment());
-        }
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        if (rec.getGiveDate() != null) {
-            map.put("dateOfIssue", formatter.format(rec.getGiveDate()));
-        }
-        if (rec.getGiveDate() != null) {
-            map.put("dateOfReturn", formatter.format(rec.getReturnDate()));
-        }
-        if (rec.getGiveDate() != null) {
-            map.put("promisingDate", formatter.format(rec.getPromisedDate()));
+        if (rec.getID() > 0) {
+            map.put("personID", Integer.toString(rec.getID()));
+        } else {
+            if (rec.getDisc() != null) {
+                map.put("discID", Integer.toString(rec.getDisc().getID()));
+            }
+            if (rec.getPerson() != null) {
+                map.put("personID", Integer.toString(rec.getPerson().getID()));
+            }
+            if (rec.getComment() != "") {
+                map.put("comment", rec.getComment());
+            }
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            if (rec.getGiveDate() != null) {
+                map.put("dateOfIssue", formatter.format(rec.getGiveDate()));
+            }
+            if (rec.getGiveDate() != null) {
+                map.put("dateOfReturn", formatter.format(rec.getReturnDate()));
+            }
+            if (rec.getGiveDate() != null) {
+                map.put("promisingDate", formatter.format(rec.getPromisedDate()));
+            }
         }
         Condition cond = new Condition(map);
         for (HistoryRecord historyRecord : historyList) {

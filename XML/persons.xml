@@ -7,12 +7,14 @@
 		<lastName>John</lastName>
 		<secondName>Smith</secondName>
 		<phoneNumber>12345678</phoneNumber>
+                <comment>SomeComment1</comment>
 	</person>
 	<person personID="2">
 		<firstName>Mitrich</firstName>
 		<lastName>Alex</lastName>
 		<secondName>Smith</secondName>
 		<phoneNumber>12345678</phoneNumber>
+                <comment>SomeComment2</comment>
 	</person>
 </persons>
 

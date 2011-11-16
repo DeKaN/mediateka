@@ -105,12 +105,12 @@ public class Person implements Record {
     }
 
     /**
-     * Конструктор класса
+     * Полный конструктор
      * @param lastName Фамилия человека
      * @param firstName Имя человека
      * @param secondName Отчество человека
      * @param phone Телефон человека
-     * @param comment Комментарий персональным данным
+     * @param comment Комментарий к персональным данным
      */
     public Person(String lastName, String firstName, String secondName, String phone, String comment) {
         this.lastName = lastName;
@@ -120,8 +120,16 @@ public class Person implements Record {
         this.comment = comment;
     }
 
-    //TODO: Add JavaDoc
-    public Person(int personID, String lastName, String firstName, String secondName, String phone, String comment) {
+    /**
+     * Внутренний полный конструктор
+     * @param personID ID человека
+     * @param lastName Фамилия человека
+     * @param firstName Имя человека
+     * @param secondName Отчество человека
+     * @param phone Телефон человека
+     * @param comment Комментарий к персональным данным
+     */
+    Person(int personID, String lastName, String firstName, String secondName, String phone, String comment) {
         this.personID = personID;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -129,8 +137,6 @@ public class Person implements Record {
         this.phone = phone;
         this.comment = comment;
     }
-    
-    
 
     /**
      * Сериализует запись с персональными данными в XML
