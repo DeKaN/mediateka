@@ -276,7 +276,7 @@ public final class Film implements Record {
     }
 
     /**
-     * Внутренний конструктор
+     * Внутренний конструктор по обязательным параметрам
      * @param filmId ID фильма
      * @param russianTitle Русское название фильма
      */
@@ -305,7 +305,7 @@ public final class Film implements Record {
     }
 
     /**
-     * Конструктор с обязательными параметрами
+     * Конструктор по обязательным параметрам
      * @param russianTitle Русское название фильма
      */
     public Film(String russianTitle) {

@@ -9,9 +9,9 @@ import org.dom4j.dom.DOMElement;
  */
 public class BlackListRecord implements Record {
 
-    private int recordID;
-    private Person person;
-    private String comment;
+    private int recordID = 0;
+    private Person person = null;
+    private String comment = "";
 
     /**
      * Получить ID записи
@@ -84,12 +84,12 @@ public class BlackListRecord implements Record {
         this.person = person;
         this.comment = comment;
     }
-    
+
     /**
      * Внутренний конструктор
      * @param recordID ID записи
      */
-    public BlackListRecord(int recordID){
+    public BlackListRecord(int recordID) {
         this.recordID = recordID;
     }
 

@@ -9,12 +9,12 @@ import org.dom4j.dom.DOMElement;
  */
 public class Person implements Record {
 
-    private int personID;
-    private String lastName;
-    private String firstName;
-    private String secondName;
-    private String phone;
-    private String comment;
+    private int personID = 0;
+    private String lastName = "";
+    private String firstName = "";
+    private String secondName = "";
+    private String phone = "";
+    private String comment = "";
 
     /**
      * Получить ID человека

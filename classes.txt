@@ -1,15 +1,15 @@
 -----КЛАССЫ-----
 BlackListRecord.java		+ Семенов
-Blacklist.java		      ++- Конопелькин
+Blacklist.java		      ++- Конопелькин	//public boolean load(String fileName)
 
 Disc.java			+ Семенов
-Discs.java			  Юдин
+Discs.java		      ++- Семенов	//public boolean load(String fileName)
 
 Film.java			+ Юдин
 Films.java		        + Конопелькин
 
 HistoryRecord.java		+ Конопелькин
-History.java		      ++- Семенов
+History.java		      ++- Семенов	//public boolean load(String fileName)
 
 Person.java			+ Семенов
 Persons.java			+ Семенов

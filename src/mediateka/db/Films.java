@@ -21,7 +21,7 @@ import org.dom4j.io.XMLWriter;
 import org.w3c.dom.NodeList;
 
 /**
- * 
+ * Класс, представляющий коллекцию фильмов
  * @author DeKaN
  */
 public class Films implements Records {
@@ -36,7 +36,7 @@ public class Films implements Records {
 
     /**
      * Добавить фильм в таблицу
-     * @param record Фильм, который будет удален
+     * @param record Фильм, который будет добавлен
      * @return true, если добавление успешно, иначе false
      */
     public boolean add(Record record) {
@@ -144,6 +144,7 @@ public class Films implements Records {
             filmsList = new ArrayList<Film>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
+                    
                     DOMElement elem = (DOMElement) it.next();
                     NodeList nodes = elem.getChildNodes(),
                             nodes2 = nodes.item(4).getChildNodes();
@@ -166,15 +167,20 @@ public class Films implements Records {
                     for (int i = 0; i < soundLanguages.length; i++) {
                         soundLanguages[i] = nodes2.item(i).getNodeValue();
                     }
-                    filmsList.add(new Film(nodes.item(0).getNodeValue(),
+                    filmsList.add(new Film(Integer.parseInt(elem.getAttribute("discID")),
+                            nodes.item(0).getNodeValue(),
                             nodes.item(1).getNodeValue(),
                             Integer.parseInt(nodes.item(2).getNodeValue()),
                             nodes.item(3).getNodeValue(),
-                            genres, countries, nodes.item(6).getNodeValue(),
+                            genres, 
+                            countries, 
+                            nodes.item(6).getNodeValue(),
                             Integer.parseInt(nodes.item(7).getNodeValue()),
-                            Integer.parseInt(nodes.item(8).getNodeValue()), subtitles,
+                            Integer.parseInt(nodes.item(8).getNodeValue()), 
+                            subtitles,
                             Base64Coder.decodeLines(nodes.item(10).getNodeValue()),
-                            soundLanguages, nodes.item(12).getNodeValue().equals("true")));
+                            soundLanguages, 
+                            nodes.item(12).getNodeValue().equals("true")));
                 } catch (Exception exc) {
                 }
             }

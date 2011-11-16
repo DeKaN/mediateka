@@ -29,10 +29,10 @@ public class Disc implements Record {
          */
         BD
     };
-    private int discID;
-    private Films films;
+    private int discID = 0;
+    private Films films = null;
     private int ownerID = 0;
-    private Format format;
+    private Format format = null;
     private int regionCode = 0;
     private boolean isPresented = true;
 
@@ -123,6 +123,16 @@ public class Disc implements Record {
     }
 
     /**
+     * Внутренний конструктор по обязательным параметрам
+     * @param discID ID диска
+     * @param format Формат диска
+     * @param films Список фильмов
+     */
+    public Disc(int discID, Format format, Films films) {
+        this(discID, films, 0, format, 0, true);
+    }
+
+    /**
      * Конструктор по обязательным параметрам
      * @param format Формат диска
      * @param films Список фильмов
@@ -140,9 +150,23 @@ public class Disc implements Record {
      * @param presented Наличие диска
      */
     public Disc(Films films, int ownerID, Format format, int discRegion, boolean presented) {
+        this(0, films, ownerID, format, discRegion, presented);
+    }
+
+    /**
+     * Внутренний полный конструктор
+     * @param discID ID диска
+     * @param films Список фильмов
+     * @param ownerID Владелец диска
+     * @param format Формат диска
+     * @param discRegion Регион диска
+     * @param presented Наличие диска
+     */
+    public Disc(int discID, Films films, int ownerID, Format format, int discRegion, boolean presented) {
         if ((format == null) || (films == null)) {
             throw new NullPointerException();
         }
+        this.discID = discID;
         this.films = films;
         this.ownerID = ownerID;
         this.format = format;
