@@ -1,15 +1,22 @@
 package mediateka.db;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import mediateka.datamanagers.Condition;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.SAXReader;
+import org.dom4j.io.XMLWriter;
 
 /**
  * Класс, представляющий таблицу истории
@@ -18,7 +25,7 @@ import org.dom4j.dom.DOMElement;
 public class History implements Records {
 
     private int autoIndex;
-    private List<HistoryRecord> historyList;
+    private ArrayList<HistoryRecord> historyList;
 
     private History() {
         autoIndex = 1;
@@ -106,37 +113,56 @@ public class History implements Records {
             return true;
         }
         return false;
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
+    }    
     
     /**
-     * 
+     * Сохранение в XML
+     * @param fileName Имя файла
+     * @return true, если сохранение успешно, иначе false
      */
     public boolean save(String fileName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            Document doc = DocumentHelper.createDocument(this.toXmlElement());
+            FileOutputStream fos = new FileOutputStream(fileName);
+            OutputFormat format = OutputFormat.createPrettyPrint();
+            XMLWriter writer = new XMLWriter(fos, format);
+            writer.write(doc);
+            writer.flush();
+            fos.close();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     /**
-     * 
+     * Загрузка из XML
+     * @param fileName Имя файла
+     * @return true, если загрузка завершилась успешно, иначе false
      */
     public boolean load(String fileName) {
-        throw new UnsupportedOperationException("Not supported yet.");
+               try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+            factory.setValidating(true);
+            SAXParser parser = factory.newSAXParser();
+            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
+                    "http://www.w3.org/2001/XMLSchema");
+            SAXReader reader = new SAXReader(parser.getXMLReader(), true);
+            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            historyList = new ArrayList<HistoryRecord>();
+            for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
+                DOMElement elem = (DOMElement) it.next();
+                int id = Integer.parseInt(elem.getFirstChild().getNodeValue());
+                //TODO получать Person из Persons
+                //HistoryRecord rec = new HistoryRecord(Integer.parseInt(elem.getAttribute("recordID")), id, elem.getLastChild().getNodeValue());
+//                historyList.add(rec);
+            }
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
     }
-    
-    
-    
-    
-    
-    
-    
     
     /**
      * Найти записи в таблице истории, подходящие под шаблон

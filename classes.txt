@@ -1,22 +1,25 @@
 -----КЛАССЫ-----
 BlackListRecord.java		+ Семенов
 Blacklist.java		       +- Конопелькин
-BlackListRecordFactory.java	  ?
 
 Disc.java			+ Семенов
 Discs.java			  Юдин
-DiscFactory.java		  ?
 
 Film.java			+ Юдин
-Films.java			  Конопелькин
-FilmFactory.java		  ?
+Films.java		       +- Конопелькин
 
 HistoryRecord.java		+ Конопелькин
 History.java		       +- Семенов
-HistoryRecordFactory.java	  ?
 
 Person.java			+ Семенов
 Persons.java			  Юдин
+
+
+
+BlackListRecordFactory.java	  ?
+DiscFactory.java		  ?
+FilmFactory.java		  ?
+HistoryRecordFactory.java	  ?
 PersonFactory.java		  ?
 
 
