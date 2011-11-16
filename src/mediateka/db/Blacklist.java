@@ -18,7 +18,7 @@ import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 
 /**
- * 
+ * Класс, представляющий таблицу черного списка
  * @author DeKaN
  */
 public class Blacklist implements Records {
@@ -26,7 +26,7 @@ public class Blacklist implements Records {
     private int autoIndex;
     private ArrayList<BlackListRecord> blackListRecs;
 
-    private Blacklist() {
+    public Blacklist() {
         autoIndex = 1;
         blackListRecs = new ArrayList<BlackListRecord>();
     }
@@ -169,11 +169,15 @@ public class Blacklist implements Records {
         } catch (Exception e) {
             return null;
         }
-        if (rec.getPerson() != null) {
-            map.put("personID", Integer.toString(rec.getPerson().getID()));
-        }
-        if (rec.getComment() != "") {
-            map.put("comment", rec.getComment());
+        if (rec.getID() > 0) {
+            map.put("filmID", Integer.toString(rec.getID()));
+        } else {
+            if (rec.getPerson() != null) {
+                map.put("personID", Integer.toString(rec.getPerson().getID()));
+            }
+            if (!rec.getComment().equals("")) {
+                map.put("comment", rec.getComment());
+            }
         }
         Condition cond = new Condition(map);
         for (BlackListRecord blackListRecord : blackListRecs) {

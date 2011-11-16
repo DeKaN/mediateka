@@ -10,8 +10,8 @@ import org.dom4j.dom.DOMElement;
  */
 public final class Film implements Record {
 
-    private int filmID;
-    private String russianTitle;
+    private int filmID = 0;
+    private String russianTitle = "";
     private String englishTitle = "";
     private int year = 0;
     private String description = "";
@@ -258,7 +258,7 @@ public final class Film implements Record {
      * @param soundLanguages Языки озвучки
      * @param isSeen Факт просмотра
      */
-    Film(int filmId, String russianTitle, String englishTitle, int year, String description, String[] genres, String[] countries, String comment, int length, int rating, String[] subtitles, byte[] cover, String[] soundLanguages, boolean isSeen) {
+    public Film(int filmId, String russianTitle, String englishTitle, int year, String description, String[] genres, String[] countries, String comment, int length, int rating, String[] subtitles, byte[] cover, String[] soundLanguages, boolean isSeen) {
         this.filmID = filmId;
         this.russianTitle = russianTitle;
         this.englishTitle = englishTitle;
@@ -274,13 +274,13 @@ public final class Film implements Record {
         this.soundLanguages = soundLanguages;
         this.isSeen = isSeen;
     }
-    
+
     /**
      * Внутренний конструктор
      * @param filmId ID фильма
      * @param russianTitle Русское название фильма
      */
-    Film(int filmId, String russianTitle){
+    public Film(int filmId, String russianTitle) {
         this(filmId, russianTitle, "", 0, "", null, null, "", 0, 0, null, null, null, false);
     }
 

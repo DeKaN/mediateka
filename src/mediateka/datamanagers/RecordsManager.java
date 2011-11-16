@@ -18,14 +18,14 @@ public interface RecordsManager {
      * @param record
      * @return  
      */
-    boolean Add(Record record);
+    boolean add(Record record);
 
     /**
      * 
      * @param id
      * @return  
      */
-    boolean Delete(int id);
+    boolean delete(int id);
 
     /**
      * 
@@ -33,19 +33,19 @@ public interface RecordsManager {
      * @param newData
      * @return  
      */
-    Records Edit(int id, Record newData);
+    boolean edit(int id, Record newData);
 
     /**
      * 
      * @param id
      * @return  
      */
-    Record Find(int id);
+    Record find(int id);
 
     /**
      * 
      * @param record
      * @return  
      */
-    Records Find(Record record);
+    Records find(Record record);
 }

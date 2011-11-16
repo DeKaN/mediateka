@@ -61,10 +61,7 @@ public class BlackListRecord implements Record {
      * @param person Персональные данные
      */
     public BlackListRecord(Person person) {
-        if (person == null) {
-            throw new NullPointerException();
-        }
-        this.person = person;
+        this(person, "");
     }
 
     /**
@@ -82,13 +79,18 @@ public class BlackListRecord implements Record {
      * @param person Персональные данные
      * @param comment Комментарий к записи
      */
-    BlackListRecord(int recordID, Person person, String comment) {
-        if (person == null) {
-            throw new NullPointerException();
-        }
+    public BlackListRecord(int recordID, Person person, String comment) {
         this.recordID = recordID;
         this.person = person;
         this.comment = comment;
+    }
+    
+    /**
+     * Внутренний конструктор
+     * @param recordID ID записи
+     */
+    public BlackListRecord(int recordID){
+        this.recordID = recordID;
     }
 
     /**

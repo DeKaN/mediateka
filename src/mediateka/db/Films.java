@@ -143,37 +143,40 @@ public class Films implements Records {
             autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
             filmsList = new ArrayList<Film>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
-                DOMElement elem = (DOMElement) it.next();
-                NodeList nodes = elem.getChildNodes(),
-                        nodes2 = nodes.item(4).getChildNodes();
-                String[] genres = new String[nodes2.getLength()];
-                for (int i = 0; i < genres.length; i++) {
-                    genres[i] = nodes2.item(i).getNodeValue();
+                try {
+                    DOMElement elem = (DOMElement) it.next();
+                    NodeList nodes = elem.getChildNodes(),
+                            nodes2 = nodes.item(4).getChildNodes();
+                    String[] genres = new String[nodes2.getLength()];
+                    for (int i = 0; i < genres.length; i++) {
+                        genres[i] = nodes2.item(i).getNodeValue();
+                    }
+                    nodes2 = nodes.item(5).getChildNodes();
+                    String[] countries = new String[nodes2.getLength()];
+                    for (int i = 0; i < countries.length; i++) {
+                        countries[i] = nodes2.item(i).getNodeValue();
+                    }
+                    nodes2 = nodes.item(9).getChildNodes();
+                    String[] subtitles = new String[nodes2.getLength()];
+                    for (int i = 0; i < subtitles.length; i++) {
+                        subtitles[i] = nodes2.item(i).getNodeValue();
+                    }
+                    nodes2 = nodes.item(11).getChildNodes();
+                    String[] soundLanguages = new String[nodes2.getLength()];
+                    for (int i = 0; i < soundLanguages.length; i++) {
+                        soundLanguages[i] = nodes2.item(i).getNodeValue();
+                    }
+                    filmsList.add(new Film(nodes.item(0).getNodeValue(),
+                            nodes.item(1).getNodeValue(),
+                            Integer.parseInt(nodes.item(2).getNodeValue()),
+                            nodes.item(3).getNodeValue(),
+                            genres, countries, nodes.item(6).getNodeValue(),
+                            Integer.parseInt(nodes.item(7).getNodeValue()),
+                            Integer.parseInt(nodes.item(8).getNodeValue()), subtitles,
+                            Base64Coder.decodeLines(nodes.item(10).getNodeValue()),
+                            soundLanguages, nodes.item(12).getNodeValue().equals("true")));
+                } catch (Exception exc) {
                 }
-                nodes2 = nodes.item(5).getChildNodes();
-                String[] countries = new String[nodes2.getLength()];
-                for (int i = 0; i < countries.length; i++) {
-                    countries[i] = nodes2.item(i).getNodeValue();
-                }
-                nodes2 = nodes.item(9).getChildNodes();
-                String[] subtitles = new String[nodes2.getLength()];
-                for (int i = 0; i < subtitles.length; i++) {
-                    subtitles[i] = nodes2.item(i).getNodeValue();
-                }
-                nodes2 = nodes.item(11).getChildNodes();
-                String[] soundLanguages = new String[nodes2.getLength()];
-                for (int i = 0; i < soundLanguages.length; i++) {
-                    soundLanguages[i] = nodes2.item(i).getNodeValue();
-                }
-                filmsList.add(new Film(nodes.item(0).getNodeValue(),
-                        nodes.item(1).getNodeValue(),
-                        Integer.parseInt(nodes.item(2).getNodeValue()),
-                        nodes.item(3).getNodeValue(),
-                        genres, countries, nodes.item(6).getNodeValue(),
-                        Integer.parseInt(nodes.item(7).getNodeValue()),
-                        Integer.parseInt(nodes.item(8).getNodeValue()), subtitles,
-                        Base64Coder.decodeLines(nodes.item(10).getNodeValue()),
-                        soundLanguages, nodes.item(12).getNodeValue().equals("true")));
             }
             return true;
         } catch (Exception ex) {

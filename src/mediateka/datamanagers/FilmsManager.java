@@ -14,23 +14,23 @@ class FilmsManager implements RecordsManager {
 
         private Films films = null;
 
-        public boolean Add(Record record) {
+        public boolean add(Record record) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public boolean Delete(int id) {
+        public boolean delete(int id) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public Records Edit(int id, Record newData) {
+        public boolean edit(int id, Record newData) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public Record Find(int id) {
+        public Record find(int id) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
-        public Records Find(Record record) {
+        public Records find(Record record) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }

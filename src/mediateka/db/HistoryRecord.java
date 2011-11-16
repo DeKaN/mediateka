@@ -3,7 +3,6 @@ package mediateka.db;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
 
 /**
@@ -12,11 +11,11 @@ import org.dom4j.dom.DOMElement;
  */
 public class HistoryRecord implements Record {
 
-    private int recordID;
-    private Disc disc;
-    private Person person;
-    private Date giveDate;
-    private Date promisedDate;
+    private int recordID = 0;
+    private Disc disc = null;
+    private Person person = null;
+    private Date giveDate = null;
+    private Date promisedDate = null;
     private Date returnDate = null;
     private String comment = "";
 
@@ -170,10 +169,7 @@ public class HistoryRecord implements Record {
      * @param returned Дата, когда диск вернули
      * @param comment Комментарий
      */
-    HistoryRecord(int recordID, Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
-        if ((disc == null) || (person == null) || (give == null) || (promise == null)) {
-            throw new NullPointerException();
-        }
+    public HistoryRecord(int recordID, Disc disc, Person person, Date give, Date promise, Date returned, String comment) {
         this.recordID = recordID;
         this.disc = disc;
         this.person = person;
@@ -181,6 +177,14 @@ public class HistoryRecord implements Record {
         this.promisedDate = promise;
         this.returnDate = returned;
         this.comment = comment;
+    }
+
+    /**
+     * Внутренний конструктор
+     * @param recordID ID записи
+     */
+    public HistoryRecord(int recordID) {
+        this.recordID = recordID;
     }
 
     /**
