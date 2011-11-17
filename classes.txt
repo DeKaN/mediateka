@@ -19,40 +19,40 @@ Persons.java			+ Семенов
 
 ---------------МЕНЕДЖЕРЫ ДАННЫХ--------------------
 
-BlackListManager.java	        ?
-Condition.java			?
-DiscsManager.java		?
+BlackListManager.java	        +	Конопелькин
+Condition.java					+-	Конопелькин
+DiscsManager.java				+	Конопелькин
 FilmsManager.java		?
 HistoryManager.java		?
-Managers.java			?
-PersonsManager.java		?
+Managers.java					+	Конопелькин
+PersonsManager.java				+	Конопелькин
 
 
 
 ---------------КОММАНДЫ--------------------
 
 AddBlRecordCommand.java		
-AddCommand.java			?
-AddDiscCommand.java		?
-AddFilmCommand.java		?
-AddHistRecCommand.java		?
+AddCommand.java				+	Конопелькин
+AddDiscCommand.java			?
+AddFilmCommand.java			?
+AddHistRecCommand.java		+	Конопелькин
 AddPersonCommand.java		?
 DeleteBlRecordCommand.java	?
-DeleteCommand.java		?
-DeleteDiscCommand.java		?
+DeleteCommand.java			+	Конопелькин
+DeleteDiscCommand.java		+	Конопелькин
 DeleteFilmCommand.java		?
 DeleteHistRecCommand.java	?
 DeletePersonCommand.java	?
 EditBlRecordCommand.java	?
-EditCommand.java		?
+EditCommand.java			+	Конопелькин
 EditDiscCommand.java		?
 EditFilmCommand.java		?
 EditHistRecCommand.java		?
-EditPersonCommand.java		?
+EditPersonCommand.java		+	Конопелькин
 FindBlRecordCommand.java	?
-FindCommand.java		?
+FindCommand.java			+	Конопелькин
 FindDiscCommand.java		?
-FindFilmCommand.java		?
+FindFilmCommand.java		+	Конопелькин
 FindHistRecCommand.java		?
 FindPersonCommand.java		?
 
@@ -60,7 +60,7 @@ FindPersonCommand.java		?
 
 -----ИНТЕРФЕЙСЫ-----
 
-Record.java			+ Конопелькин
+Record.java				+ Конопелькин
 Records.java			+ Конопелькин
 RecordFactory.java		+ Конопелькин
 RecordsManager.java		+ Конопелькин
