@@ -163,9 +163,6 @@ public class Disc implements Record {
      * @param presented Наличие диска
      */
     public Disc(int discID, Films films, int ownerID, Format format, int discRegion, boolean presented) {
-        if ((format == null) || (films == null)) {
-            throw new NullPointerException();
-        }
         this.discID = discID;
         this.films = films;
         this.ownerID = ownerID;

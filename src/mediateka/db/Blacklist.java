@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -144,10 +145,10 @@ public class Blacklist implements Records {
             blackListRecs = new ArrayList<BlackListRecord>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DOMElement elem = (DOMElement) it.next();
-                int id = Integer.parseInt(elem.getFirstChild().getNodeValue());
-                //TODO получать Person из Persons
-//                BlackListRecord rec = new BlackListRecord(Integer.parseInt(elem.getAttribute("recordID")), id, elem.getLastChild().getNodeValue());
-//                blackListRecs.add(rec);
+                blackListRecs.add(new BlackListRecord(
+                        Integer.parseInt(elem.getAttribute("recordID")),
+                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(elem.getFirstChild().getNodeValue())),
+                        elem.getLastChild().getNodeValue()));
             }
             return true;
         } catch (Exception ex) {

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
 import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
@@ -132,22 +133,20 @@ public class Discs implements Records {
             discsList = new ArrayList<Disc>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
-                    //TODO исправить!!!
-//                    DOMElement elem = (DOMElement) it.next();
-//                    NodeList nodes = elem.getChildNodes(),
-//                            nodes2 = nodes.item(4).getChildNodes();
-//                    Films films = new Films();
-//                    String[] films2 = new String[nodes2.getLength()];
-//                    for (int i = 0; i < films2.length; i++) {
-//                        films2[i] = nodes2.item(i).getNodeValue();
-//                    }
-//                    discsList.add(new Disc(
-//                            films2,
-//                            Integer.getInteger(elem.getAttribute("discID")),
-//                            nodes.item(0).getNodeValue(),
-//                            Disc.Format.valueOf(nodes.item(1).getNodeValue()),
-//                            Integer.parseInt(nodes.item(2).getNodeValue()),
-//                            nodes.item(3).getNodeValue().equals("true"));
+                    DOMElement elem = (DOMElement) it.next();
+                    NodeList nodes = elem.getChildNodes(),
+                            nodes2 = nodes.item(4).getChildNodes();
+                    Films films = new Films();
+                    for (int i = 0; i < nodes2.getLength(); i++) {
+                        films.add(MediatekaView.managers.getFilmsManager().find(Integer.parseInt(nodes2.item(i).getNodeValue())));
+                    }
+                    discsList.add(new Disc(
+                            Integer.parseInt(elem.getAttribute("discID")),
+                            films,
+                            Integer.parseInt(nodes.item(0).getNodeValue()),
+                            Disc.Format.valueOf(nodes.item(1).getNodeValue()),
+                            Integer.parseInt(nodes.item(2).getNodeValue()),
+                            nodes.item(3).getNodeValue().equals("true")));
                 } catch (Exception exc) {
                 }
             }
@@ -171,24 +170,27 @@ public class Discs implements Records {
         } catch (Exception e) {
             return null;
         }
-        //TODO добавить поиск по id
-        Films filmsCollection = disc.getFilms();
-        if (filmsCollection != null) {
-            String[] films = new String[filmsCollection.size()];
-            for (int i = 0; i < films.length; i++) {
-                films[i] = ((Film) filmsCollection.getRecord(i)).getRussianTitle();
+        if (disc.getID() > 0) {
+            map.put("discID", Integer.toString(disc.getID()));
+        } else {
+            Films filmsCollection = disc.getFilms();
+            if (filmsCollection != null) {
+                String[] films = new String[filmsCollection.size()];
+                for (int i = 0; i < films.length; i++) {
+                    films[i] = ((Film) filmsCollection.getRecord(i)).getRussianTitle();
+                }
+                map.put("films", StringUtils.join(films, ','));
             }
-            map.put("films", StringUtils.join(films, ','));
+            Disc.Format format = disc.getFormat();
+            if (format != null) {
+                map.put("format", format.toString());
+            }
+            int region = disc.getRegionCode();
+            if (region != 0) {
+                map.put("regionCode", Integer.toString(region));
+            }
+            map.put("isPresent", Boolean.toString(disc.isIsPresented()));
         }
-        Disc.Format format = disc.getFormat();
-        if (format != null) {
-            map.put("format", format.toString());
-        }
-        int region = disc.getRegionCode();
-        if (region != 0) {
-            map.put("regionCode", Integer.toString(region));
-        }
-        map.put("isPresent", Boolean.toString(disc.isIsPresented()));
         Condition cond = new Condition(map);
         for (Disc d : discsList) {
             if (cond.isEquals(d)) {
