@@ -1,16 +1,16 @@
 ---------------СУЩНОСТИ & КОЛЛЕКЦИИ--------------------
 
 BlackListRecord.java		+ Семенов
-Blacklist.java		      ++- Конопелькин	//public boolean load(String fileName)
+Blacklist.java		        + Конопелькин
 
 Disc.java			+ Семенов
-Discs.java		      ++- Семенов	//public boolean load(String fileName)
+Discs.java		        + Семенов
 
 Film.java			+ Юдин
 Films.java		        + Конопелькин
 
 HistoryRecord.java		+ Конопелькин
-History.java		      ++- Семенов	//public boolean load(String fileName)
+History.java		        + Семенов
 
 Person.java			+ Семенов
 Persons.java			+ Семенов
