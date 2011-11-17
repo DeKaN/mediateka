@@ -22,22 +22,31 @@ public class FilmsManager implements RecordsManager {
     }
 
     public boolean add(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (record == null) {
+            throw new NullPointerException();
+        }
+        return films.add(record);
     }
 
     public boolean delete(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return films.delete(find(id));
     }
 
     public boolean edit(int id, Record newData) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (newData == null) {
+            throw new NullPointerException();
+        }
+        return films.update(find(id), newData);
     }
 
     public Record find(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return films.find(new BlackListRecord(id)).getRecord(0);
     }
 
     public Records find(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        if (record == null) {
+            throw new NullPointerException();
+        }
+        return films.find(record);
     }
 }
