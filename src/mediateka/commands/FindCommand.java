@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
 import mediateka.db.Record;
 import mediateka.db.Records;
 
 /**
- *
+ * Интерфейс для команды поиска
  * @author DeKaN
  */
 public interface FindCommand extends Command {

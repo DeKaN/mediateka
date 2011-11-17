@@ -1,22 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
+
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду редактирования записи истории
+ * @author Alexandr
  */
 public class EditHistRecCommand implements EditCommand {
 
     public boolean Execute(int id, Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getHistManager().edit(id, record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Изменить запись истории";
     }
-
 }

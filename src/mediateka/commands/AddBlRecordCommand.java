@@ -1,23 +1,20 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду добавления записи в таблицу черный список
+ * @author Alexandr
  */
 public class AddBlRecordCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getBlListManager().add(record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Добавить запись в историю";
     }
 
 }

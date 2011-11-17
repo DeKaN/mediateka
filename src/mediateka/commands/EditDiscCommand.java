@@ -1,23 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду редактирования диска
+ * @author Alexandr
  */
 public class EditDiscCommand implements EditCommand {
 
     public boolean Execute(int id, Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getDiscsManager().edit(id, record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Изменить диск";
     }
-
 }

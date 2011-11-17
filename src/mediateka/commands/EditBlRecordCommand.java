@@ -1,23 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду редактирования записи таблицы черного списка
+ * @author Alexandr
  */
 public class EditBlRecordCommand implements EditCommand {
 
     public boolean Execute(int id, Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getBlListManager().edit(id, record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Изменить запись черного списка";
     }
-
 }

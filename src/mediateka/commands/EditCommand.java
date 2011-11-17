@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
 import mediateka.db.Record;
 
 /**
- *
+ * Интерфейс для команды редактирования
  * @author DeKaN
  */
 public interface EditCommand extends Command {

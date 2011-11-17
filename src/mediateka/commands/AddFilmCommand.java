@@ -1,23 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду добавления фильма в коллекцию
+ * @author Alexandr
  */
 public class AddFilmCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getFilmsManager().add(record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Добавить фильм в коллекцию";
     }
-
 }

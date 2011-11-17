@@ -1,28 +1,24 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 import mediateka.db.Records;
 
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду поиска записи в черном списке
+ * @author Alexandr
  */
 public class FindBlRecordCommand implements FindCommand {
 
     public Record Execute(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getBlListManager().find(id);
     }
 
     public Records Execute(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getBlListManager().find(record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Найти запись в черном списке";
     }
-
 }

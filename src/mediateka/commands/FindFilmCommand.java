@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
 import mediateka.MediatekaView;
@@ -9,7 +5,7 @@ import mediateka.db.Record;
 import mediateka.db.Records;
 
 /**
- * Класс, представляющий команду поиска фильмов
+ * Класс, представляющий команду поиска фильма
  * @author DeKaN
  */
 public class FindFilmCommand implements FindCommand {

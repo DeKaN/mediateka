@@ -1,28 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 import mediateka.db.Records;
 
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду поиска диска
+ * @author Alexandr
  */
 public class FindDiscCommand implements FindCommand {
 
     public Record Execute(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getDiscsManager().find(id);
     }
 
     public Records Execute(Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getDiscsManager().find(record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Найти диск";
     }
 
 }

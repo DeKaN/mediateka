@@ -19,48 +19,49 @@ Persons.java			+ Семенов
 
 ---------------МЕНЕДЖЕРЫ ДАННЫХ--------------------
 
-BlackListManager.java	        +	Конопелькин
-Condition.java					+-	Конопелькин
-DiscsManager.java				+	Конопелькин
-FilmsManager.java		?
-HistoryManager.java		?
-Managers.java					+	Конопелькин
-PersonsManager.java				+	Конопелькин
+BlackListManager.java	        + Конопелькин
+Condition.java		       +- Конопелькин
+DiscsManager.java		+ Конопелькин
+FilmsManager.java		? 
+HistoryManager.java		? 
+Managers.java			+ Конопелькин
+PersonsManager.java		+ Конопелькин
 
 
 
 ---------------КОММАНДЫ--------------------
 
-AddBlRecordCommand.java		
-AddCommand.java				+	Конопелькин
-AddDiscCommand.java			?
-AddFilmCommand.java			?
-AddHistRecCommand.java		+	Конопелькин
-AddPersonCommand.java		?
-DeleteBlRecordCommand.java	?
-DeleteCommand.java			+	Конопелькин
-DeleteDiscCommand.java		+	Конопелькин
-DeleteFilmCommand.java		?
-DeleteHistRecCommand.java	?
-DeletePersonCommand.java	?
-EditBlRecordCommand.java	?
-EditCommand.java			+	Конопелькин
-EditDiscCommand.java		?
-EditFilmCommand.java		?
-EditHistRecCommand.java		?
-EditPersonCommand.java		+	Конопелькин
-FindBlRecordCommand.java	?
-FindCommand.java			+	Конопелькин
-FindDiscCommand.java		?
-FindFilmCommand.java		+	Конопелькин
-FindHistRecCommand.java		?
-FindPersonCommand.java		?
+AddBlRecordCommand.java		+ Семенов
+AddDiscCommand.java		+ Семенов
+AddFilmCommand.java		+ Семенов
+AddHistRecCommand.java		+ Конопелькин
+AddPersonCommand.java		+ Семенов
+DeleteBlRecordCommand.java	+ Семенов
+DeleteDiscCommand.java		+ Конопелькин
+DeleteFilmCommand.java		+ Семенов 
+DeleteHistRecCommand.java	+ Семенов
+DeletePersonCommand.java	+ Семенов 
+EditBlRecordCommand.java	+ Семенов 
+EditDiscCommand.java		+ Семенов  
+EditFilmCommand.java		+ Семенов 
+EditHistRecCommand.java		+ Семенов 
+EditPersonCommand.java		+ Конопелькин
+FindBlRecordCommand.java	+ Семенов 
+FindDiscCommand.java		+ Семенов 
+FindFilmCommand.java		+ Конопелькин
+FindHistRecCommand.java		+ Семенов 
+FindPersonCommand.java		+ Семенов 
 
 
 
 -----ИНТЕРФЕЙСЫ-----
 
-Record.java				+ Конопелькин
+
+AddCommand.java			+ Конопелькин
+DeleteCommand.java		+ Конопелькин
+EditCommand.java		+ Конопелькин
+FindCommand.java		+ Конопелькин
+Record.java			+ Конопелькин
 Records.java			+ Конопелькин
 RecordFactory.java		+ Конопелькин
 RecordsManager.java		+ Конопелькин

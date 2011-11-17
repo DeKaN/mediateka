@@ -1,21 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
+
 /**
- *
- * @author DeKaN
+ * Класс, представляющий команду удаления записи из черного списка
+ * @author Alexandr
  */
 public class DeleteBlRecordCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getBlListManager().delete(id);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Удалить запись из черного списка";
     }
-
 }
