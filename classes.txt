@@ -1,4 +1,5 @@
------КЛАССЫ-----
+---------------СУЩНОСТИ & КОЛЛЕКЦИИ--------------------
+
 BlackListRecord.java		+ Семенов
 Blacklist.java		      ++- Конопелькин	//public boolean load(String fileName)
 
@@ -14,16 +15,53 @@ History.java		      ++- Семенов	//public boolean load(String fileName)
 Person.java			+ Семенов
 Persons.java			+ Семенов
 
-BlackListManager.java	        
-Condition.java
-DiscsManager.java		
-FilmsManager.java
-HistoryManager.java	
-PersonsManager.java
+
+
+---------------МЕНЕДЖЕРЫ ДАННЫХ--------------------
+
+BlackListManager.java	        ?
+Condition.java			?
+DiscsManager.java		?
+FilmsManager.java		?
+HistoryManager.java		?
+Managers.java			?
+PersonsManager.java		?
+
+
+
+---------------КОММАНДЫ--------------------
+
+AddBlRecordCommand.java		
+AddCommand.java			?
+AddDiscCommand.java		?
+AddFilmCommand.java		?
+AddHistRecCommand.java		?
+AddPersonCommand.java		?
+DeleteBlRecordCommand.java	?
+DeleteCommand.java		?
+DeleteDiscCommand.java		?
+DeleteFilmCommand.java		?
+DeleteHistRecCommand.java	?
+DeletePersonCommand.java	?
+EditBlRecordCommand.java	?
+EditCommand.java		?
+EditDiscCommand.java		?
+EditFilmCommand.java		?
+EditHistRecCommand.java		?
+EditPersonCommand.java		?
+FindBlRecordCommand.java	?
+FindCommand.java		?
+FindDiscCommand.java		?
+FindFilmCommand.java		?
+FindHistRecCommand.java		?
+FindPersonCommand.java		?
+
 
 
 -----ИНТЕРФЕЙСЫ-----
+
 Record.java			+ Конопелькин
-RecordFactory.java		+ Конопелькин
 Records.java			+ Конопелькин
+RecordFactory.java		+ Конопелькин
 RecordsManager.java		+ Конопелькин
+Command.java			+ Конопелькин
