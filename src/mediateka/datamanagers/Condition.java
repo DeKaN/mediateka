@@ -30,7 +30,8 @@ public class Condition {
         this.conds = conds;
     }
 
-    //TODO необходимо переделать
+    //TODO необходимо протестить и потом переделать 
+    //(contains надо заменить на что-то типа regex, чтобы избежать true при val=1, conds.get(key)=2,10)
     public boolean isEquals(Record rec) {
         DOMElement elem = (DOMElement) rec.ToXmlElement();
         Set<String> keys = conds.keySet();

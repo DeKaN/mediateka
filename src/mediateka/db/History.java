@@ -2,13 +2,13 @@ package mediateka.db;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -73,7 +73,7 @@ public class History implements Records {
                     autoIndex++;
                     historyList.add(rec);
                     return true;
-                } else if (find(new HistoryRecord(rec.getID(), null, null, null, null, null, "")) == null) {
+                } else if (find(new HistoryRecord(rec.getID())) == null) {
                     historyList.add(rec);
                     return true;
                 }
@@ -144,7 +144,6 @@ public class History implements Records {
      * @return true, если загрузка завершилась успешно, иначе false
      */
     public boolean load(String fileName) {
-        //TODO написать конструктор HistoryRecord!!
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             factory.setValidating(true);
@@ -159,13 +158,14 @@ public class History implements Records {
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DOMElement elem = (DOMElement) it.next();
                 NodeList nodes = elem.getChildNodes();
-//                historyList.add(new HistoryRecord(
-//                        Integer.parseInt(elem.getAttribute("recordID")),
-//                        Integer.parseInt(nodes.item(0).getNodeValue()),
-//                        Integer.parseInt(nodes.item(1).getNodeValue()),
-//                        format.parse(nodes.item(2).getNodeValue()),
-//                        format.parse(nodes.item(3).getNodeValue()),
-//                        format.parse(nodes.item(4).getNodeValue());
+                historyList.add(new HistoryRecord(
+                        Integer.parseInt(elem.getAttribute("recordID")),
+                        (Disc) MediatekaView.managers.getDiscsManager().find(Integer.parseInt(nodes.item(0).getNodeValue())),
+                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(nodes.item(0).getNodeValue())),
+                        format.parse(nodes.item(2).getNodeValue()),
+                        format.parse(nodes.item(3).getNodeValue()),
+                        format.parse(nodes.item(4).getNodeValue()),
+                        nodes.item(5).getNodeValue()));
             }
             return true;
         } catch (Exception ex) {

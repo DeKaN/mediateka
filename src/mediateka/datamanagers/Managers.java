@@ -26,14 +26,16 @@ public class Managers {
      * @param persFile XML файл, с таблицей Persons
      * @throws Exception Если хотя бы одна из таблиц не загрузилась
      */
-    public static Managers getInstance(String blListFile, String discFile, String filmFile, String histFile, String persFile) throws Exception {
+    public static Managers getInstance(String blListFile, String discFile,
+            String filmFile, String histFile, String persFile) throws Exception {
         if (instance == null) {
             instance = new Managers(blListFile, discFile, filmFile, histFile, persFile);
         }
         return instance;
     }
-    
-    private Managers(String blListFile, String discFile, String filmFile, String histFile, String persFile) throws Exception {
+
+    private Managers(String blListFile, String discFile, String filmFile,
+            String histFile, String persFile) throws Exception {
         StringBuilder errors = new StringBuilder();
         try {
             blListManager = new BlackListManager(blListFile);
