@@ -4,20 +4,20 @@
  */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
 import mediateka.db.Record;
 
 /**
- *
+ * Класс, представляющий команду редактирования персональных данных
  * @author DeKaN
  */
 public class EditPersonCommand implements EditCommand {
 
     public boolean Execute(int id, Record record) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getPersManager().edit(id, record);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Изменить персональные данные";
     }
-
 }

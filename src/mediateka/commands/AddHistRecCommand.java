@@ -20,5 +20,4 @@ public class AddHistRecCommand implements AddCommand {
     public String ToString() {
         return "Добавить запись в историю";
     }
-
 }

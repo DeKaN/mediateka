@@ -4,18 +4,19 @@
  */
 package mediateka.commands;
 
+import mediateka.MediatekaView;
+
 /**
- *
+ * Класс, представляющий команду удаления диска
  * @author DeKaN
  */
 public class DeleteDiscCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return MediatekaView.managers.getDiscsManager().delete(id);
     }
 
     public String ToString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "Удалить диск";
     }
-
 }
