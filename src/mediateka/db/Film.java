@@ -242,6 +242,14 @@ public final class Film implements Record {
     }
 
     /**
+     * Внутренний конструктор
+     * @param filmID ID фильма
+     */
+    public Film(int filmID) {
+        this.filmID = filmID;
+    }
+
+    /**
      * Внутренний полный конструктор
      * @param filmId ID фильма
      * @param russianTitle Русское название фильма

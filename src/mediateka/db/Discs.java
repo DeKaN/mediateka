@@ -29,6 +29,11 @@ public class Discs implements Records {
     private int autoIndex = 1;
     private ArrayList<Disc> discsList = null;
 
+    public Discs() {
+        autoIndex = 1;
+        discsList = new ArrayList<Disc>();
+    }
+
     /**
      * Добавить диск в коллекцию
      * @param record Диск, который будет добавлен

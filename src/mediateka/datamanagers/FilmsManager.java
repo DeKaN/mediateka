@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.datamanagers;
 
 import mediateka.db.*;
 
 /**
- *
- * @author DeKaN
+ * Менеджер фильмов
+ * @author Il'ya
  */
 public class FilmsManager implements RecordsManager {
 
@@ -40,7 +36,7 @@ public class FilmsManager implements RecordsManager {
     }
 
     public Record find(int id) {
-        return films.find(new BlackListRecord(id)).getRecord(0);
+        return films.find(new Film(id)).getRecord(0);
     }
 
     public Records find(Record record) {

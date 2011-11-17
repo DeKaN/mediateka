@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.datamanagers;
 
 import mediateka.db.*;
 
 /**
- *
+ * Менеджер дисков
  * @author DeKaN
  */
 public class DiscsManager implements RecordsManager {
@@ -40,7 +36,7 @@ public class DiscsManager implements RecordsManager {
     }
 
     public Record find(int id) {
-        return discs.find(new BlackListRecord(id)).getRecord(0);
+        return discs.find(new Disc(id)).getRecord(0);
     }
 
     public Records find(Record record) {

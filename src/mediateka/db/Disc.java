@@ -154,6 +154,14 @@ public class Disc implements Record {
     }
 
     /**
+     * Внутренний конструктор
+     * @param discID ID диска
+     */
+    public Disc(int discID) {
+        this.discID = discID;
+    }
+
+    /**
      * Внутренний полный конструктор
      * @param discID ID диска
      * @param films Список фильмов

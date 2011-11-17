@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.datamanagers;
 
 import mediateka.db.*;
 
 /**
- *
- * @author DeKaN
+ * Менеджер истории
+ * @author Il'ya
  */
 public class HistoryManager implements RecordsManager {
 
@@ -29,7 +25,7 @@ public class HistoryManager implements RecordsManager {
     }
 
     public boolean delete(int id) {
-       return history.delete(find(id));
+        return history.delete(find(id));
     }
 
     public boolean edit(int id, Record newData) {
@@ -40,7 +36,7 @@ public class HistoryManager implements RecordsManager {
     }
 
     public Record find(int id) {
-        return history.find(new BlackListRecord(id)).getRecord(0);
+        return history.find(new HistoryRecord(id)).getRecord(0);
     }
 
     public Records find(Record record) {
@@ -48,6 +44,5 @@ public class HistoryManager implements RecordsManager {
             throw new NullPointerException();
         }
         return history.find(record);
-    
     }
 }

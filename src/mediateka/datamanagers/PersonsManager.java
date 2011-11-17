@@ -1,13 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mediateka.datamanagers;
 
 import mediateka.db.*;
 
 /**
- *
+ * Менеджер персональных данных
  * @author DeKaN
  */
 public class PersonsManager implements RecordsManager {
