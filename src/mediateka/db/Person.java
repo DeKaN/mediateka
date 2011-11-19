@@ -139,6 +139,13 @@ public class Person implements Record {
     }
 
     /**
+     * Внутренний конструктор
+     * @param personID ID человека
+     */
+    public Person(int personID) {
+    }    
+
+    /**
      * Сериализует запись с персональными данными в XML
      * @return Строка с записью, сериализованной в XML element
      */
