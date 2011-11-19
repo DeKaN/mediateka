@@ -45,4 +45,8 @@ public class FilmsManager implements RecordsManager {
         }
         return films.find(record);
     }
+    
+    public Record[] getRecords() {
+        return films.ToArray();
+    }
 }

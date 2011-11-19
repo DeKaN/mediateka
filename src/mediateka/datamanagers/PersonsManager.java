@@ -45,4 +45,8 @@ public class PersonsManager implements RecordsManager {
         }
         return persons.find(record);
     }
+    
+    public Record[] getRecords() {
+        return persons.ToArray();
+    }
 }

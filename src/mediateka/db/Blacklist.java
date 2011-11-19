@@ -204,4 +204,8 @@ public class Blacklist implements Records {
         }
         return elem;
     }
+    
+    public Record[] ToArray() {
+        return (Record[])blackListRecs.toArray();
+    }
 }

@@ -277,4 +277,8 @@ public class Films implements Records {
     public int size() {
         return filmsList.size();
     }
+
+    public Record[] ToArray() {
+        return (Record[])filmsList.toArray();
+    }
 }

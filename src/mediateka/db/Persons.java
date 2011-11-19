@@ -226,4 +226,8 @@ public class Persons implements Records {
         }
         return elem;
     }
+    
+    public Record[] ToArray() {
+        return (Record[])personsList.toArray();
+    }
 }

@@ -45,4 +45,8 @@ public class DiscsManager implements RecordsManager {
         }
         return discs.find(record);
     }
+    
+    public Record[] getRecords() {
+        return discs.ToArray();
+    }
 }

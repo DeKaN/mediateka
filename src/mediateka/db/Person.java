@@ -159,4 +159,9 @@ public class Person implements Record {
         elem.addElement("comment").addText(this.comment);
         return elem;
     }
+    
+    @Override
+    public String toString() {
+        return lastName + " " + firstName + " " + secondName;
+    }
 }

@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * PersonView.java
- *
- * Created on 19.11.2011, 19:00:05
- */
 package mediateka;
 
 import mediateka.db.Person;
@@ -18,14 +8,31 @@ import org.jdesktop.application.Action;
  * @author DeKaN
  */
 public class PersonView extends javax.swing.JDialog {
-
-    Person pers;
+    
+    Person pers = null;
 
     /** Creates new form PersonView */
     public PersonView(java.awt.Frame parent, boolean modal, Person person) {
         super(parent, modal);
         pers = person;
         initComponents();
+        if (pers == null) {
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jFormattedTextField1.setText("");
+            jTextArea1.setText("");
+            setTitle("Добавить человека");
+            jButton1.setText("Добавить");
+        } else {
+            jTextField1.setText(pers.getLastName());
+            jTextField2.setText(pers.getFirstName());
+            jTextField3.setText(pers.getSecondName());
+            jFormattedTextField1.setText(pers.getPhone());
+            jTextArea1.setText(pers.getComment());
+            setTitle("Изменить человека");
+            jButton1.setText("Сохранить");
+        }
     }
 
     /** This method is called from within the constructor to
@@ -86,10 +93,11 @@ public class PersonView extends javax.swing.JDialog {
         jTextArea1.setName("jTextArea1"); // NOI18N
         jScrollPane1.setViewportView(jTextArea1);
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(PersonView.class, this);
+        jButton1.setAction(actionMap.get("save")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(PersonView.class, this);
         jButton2.setAction(actionMap.get("close")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
@@ -165,6 +173,7 @@ public class PersonView extends javax.swing.JDialog {
             pers.setSecondName(jTextField3.getText());
             pers.setPhone(jFormattedTextField1.getText());
             pers.setComment(jTextArea1.getText());
+            MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
         } else {
             pers = new Person(jTextField1.getText(), jTextField2.getText(),
                     jTextField3.getText(), jFormattedTextField1.getText(),
@@ -173,7 +182,7 @@ public class PersonView extends javax.swing.JDialog {
         }
         this.dispose();
     }
-
+    
     @Action
     public void close() {
         this.dispose();

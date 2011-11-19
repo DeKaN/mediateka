@@ -238,4 +238,8 @@ public class Discs implements Records {
     public int size() {
         return discsList.size();
     }
+    
+    public Record[] ToArray() {
+        return (Record[])discsList.toArray();
+    }
 }

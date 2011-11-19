@@ -45,4 +45,8 @@ public class HistoryManager implements RecordsManager {
         }
         return history.find(record);
     }
+
+    public Record[] getRecords() {
+        return history.ToArray();
+    }
 }

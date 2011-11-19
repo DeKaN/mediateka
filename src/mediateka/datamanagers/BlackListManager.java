@@ -45,4 +45,8 @@ public class BlackListManager implements RecordsManager {
         }
         return blackList.find(record);
     }
+    
+    public Record[] getRecords() {
+        return blackList.ToArray();
+    }
 }

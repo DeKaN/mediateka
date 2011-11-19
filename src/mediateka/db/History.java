@@ -234,4 +234,8 @@ public class History implements Records {
         }
         return elem;
     }
+    
+    public Record[] ToArray() {
+        return (Record[])historyList.toArray();
+    }
 }
