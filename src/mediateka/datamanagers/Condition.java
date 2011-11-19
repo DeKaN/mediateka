@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import mediateka.db.Record;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.dom.DOMElement;
 
 /**
@@ -31,7 +32,6 @@ public class Condition {
     }
 
     //TODO необходимо протестить и потом переделать 
-    //(contains надо заменить на что-то типа regex, чтобы избежать true при val=1, conds.get(key)=2,10)
     public boolean isEquals(Record rec) {
         DOMElement elem = (DOMElement) rec.ToXmlElement();
         Set<String> keys = conds.keySet();
@@ -39,9 +39,21 @@ public class Condition {
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
             String key = it.next();
             String val = elem.getAttribute(key);
-            if ((val.isEmpty()) || (!conds.get(key).contains(val))) {
-                retVal = false;
-                break;
+            if (val.isEmpty()) {
+                return false;
+            }
+            key = conds.get(key);
+            String[] ids = StringUtils.split(val, ',');
+            if (ids.length > 1) {
+                for (String str : ids) {
+                    if (key.equals(str)) break;
+                    retVal = false;
+                }                
+            } else {
+                if (!val.contains(key)) {
+                    retVal = false;
+                    break;
+                }
             }
         }
         return retVal;
