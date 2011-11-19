@@ -22,8 +22,8 @@ Persons.java			+ Семенов
 BlackListManager.java	        + Конопелькин
 Condition.java		       +- Конопелькин
 DiscsManager.java		+ Конопелькин
-FilmsManager.java		? 
-HistoryManager.java		? 
+FilmsManager.java		+ Юдин
+HistoryManager.java		+ Юдин
 Managers.java			+ Конопелькин
 PersonsManager.java		+ Конопелькин
 

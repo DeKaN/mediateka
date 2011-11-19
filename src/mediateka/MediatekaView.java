@@ -120,10 +120,19 @@ public class MediatekaView extends FrameView {
 
         mainPanel = new javax.swing.JPanel();
         standartToolBar = new javax.swing.JToolBar();
+        jButton1 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new RowTable();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         menuBar = new javax.swing.JMenuBar();
         javax.swing.JMenu fileMenuItem = new javax.swing.JMenu();
@@ -159,6 +168,14 @@ public class MediatekaView extends FrameView {
 
         standartToolBar.setRollover(true);
         standartToolBar.setName("standartToolBar"); // NOI18N
+
+        jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
+        jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setName("jButton1"); // NOI18N
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton1);
 
         jSplitPane1.setDividerLocation(200);
         jSplitPane1.setDividerSize(2);
@@ -223,7 +240,204 @@ public class MediatekaView extends FrameView {
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
+        jScrollPane2.setBackground(resourceMap.getColor("jScrollPane2.background")); // NOI18N
+        jScrollPane2.setName("jScrollPane2"); // NOI18N
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
+                {"От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
+                {"Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
+                {"Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
+                {"Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
+                {"Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
+                {"Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
+                {"Знамение", null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        jTable2.setMaximumSize(new java.awt.Dimension(2147483647, 85));
+        jTable2.setName("jTable2"); // NOI18N
+        jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable2MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable2);
+        jTable2.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
+        jTable2.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
+        jTable2.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
+        jTable2.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
+        jTable2.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
+        jTable2.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
+        jTable2.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
+        jTable2.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
+        jTable2.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
+        jTable2.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
+        jTable2.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane2.TabConstraints.tabTitle"), jScrollPane2); // NOI18N
+
+        jScrollPane3.setBackground(resourceMap.getColor("jScrollPane3.background")); // NOI18N
+        jScrollPane3.setName("jScrollPane3"); // NOI18N
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
+                {"От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
+                {"Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
+                {"Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
+                {"Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
+                {"Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
+                {"Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
+                {"Знамение", null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        jTable3.setMaximumSize(new java.awt.Dimension(2147483647, 85));
+        jTable3.setName("jTable3"); // NOI18N
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTable3);
+        jTable3.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
+        jTable3.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
+        jTable3.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
+        jTable3.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
+        jTable3.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
+        jTable3.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
+        jTable3.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
+        jTable3.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
+        jTable3.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
+        jTable3.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
+        jTable3.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane3.TabConstraints.tabTitle"), jScrollPane3); // NOI18N
+
+        jScrollPane4.setBackground(resourceMap.getColor("jScrollPane4.background")); // NOI18N
+        jScrollPane4.setName("jScrollPane4"); // NOI18N
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
+                {"От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
+                {"Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
+                {"Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
+                {"Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
+                {"Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
+                {"Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
+                {"Знамение", null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable4.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        jTable4.setMaximumSize(new java.awt.Dimension(2147483647, 85));
+        jTable4.setName("jTable4"); // NOI18N
+        jTable4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable4MouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTable4);
+        jTable4.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
+        jTable4.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
+        jTable4.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
+        jTable4.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
+        jTable4.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
+        jTable4.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
+        jTable4.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
+        jTable4.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
+        jTable4.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
+        jTable4.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
+        jTable4.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane4.TabConstraints.tabTitle"), jScrollPane4); // NOI18N
+
+        jScrollPane5.setBackground(resourceMap.getColor("jScrollPane5.background")); // NOI18N
+        jScrollPane5.setName("jScrollPane5"); // NOI18N
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
+                {"От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
+                {"Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
+                {"Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
+                {"Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
+                {"Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
+                {"Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
+                {"Знамение", null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable5.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
+        jTable5.setMaximumSize(new java.awt.Dimension(2147483647, 85));
+        jTable5.setName("jTable5"); // NOI18N
+        jTable5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable5MouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(jTable5);
+        jTable5.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
+        jTable5.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
+        jTable5.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
+        jTable5.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
+        jTable5.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
+        jTable5.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
+        jTable5.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
+        jTable5.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
+        jTable5.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
+        jTable5.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
+        jTable5.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
+
+        jTabbedPane1.addTab(resourceMap.getString("jScrollPane5.TabConstraints.tabTitle"), jScrollPane5); // NOI18N
+
         jSplitPane1.setTopComponent(jTabbedPane1);
+        jTabbedPane1.getAccessibleContext().setAccessibleName(resourceMap.getString("jTabbedPane1.AccessibleContext.accessibleName")); // NOI18N
 
         jPanel1.setMaximumSize(new java.awt.Dimension(32767, 150));
         jPanel1.setMinimumSize(new java.awt.Dimension(0, 150));
@@ -260,7 +474,7 @@ public class MediatekaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -408,22 +622,48 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 // TODO add your handling code here:
     int f = evt.getButton();
 }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable2MouseClicked
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable3MouseClicked
+
+    private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable4MouseClicked
+
+    private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable5MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem createMenuItem;
     private javax.swing.JMenu editMenuItem;
     private javax.swing.JMenuItem exportMenuItem;
     private javax.swing.JMenuItem findMenuItem;
     private javax.swing.JMenuItem importMenuItem;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private RowTable jTable1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable5;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
