@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import mediateka.datamanagers.Managers;
@@ -22,24 +23,23 @@ import mediateka.datamanagers.Managers;
  * The application's main frame.
  */
 public class MediatekaView extends FrameView {
-
+    
     private static final String blackListFile = "blacklist.xml",
             discsFile = "discs.xml",
             filmsFile = "films.xml",
             historyFile = "history.xml",
             personsFile = "persons.xml";
     public static Managers managers = null;
-
+    
     public MediatekaView(SingleFrameApplication app) {
         super(app);
-
+        
         initComponents();
-
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
-
+            
             public void actionPerformed(ActionEvent e) {
                 statusMessageLabel.setText("");
             }
@@ -50,7 +50,7 @@ public class MediatekaView extends FrameView {
             busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-
+            
             public void actionPerformed(ActionEvent e) {
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
                 statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
@@ -63,7 +63,7 @@ public class MediatekaView extends FrameView {
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
         taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-
+            
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
@@ -97,7 +97,7 @@ public class MediatekaView extends FrameView {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -121,6 +121,7 @@ public class MediatekaView extends FrameView {
         mainPanel = new javax.swing.JPanel();
         standartToolBar = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -148,6 +149,7 @@ public class MediatekaView extends FrameView {
         javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
         editMenuItem = new javax.swing.JMenu();
         undoMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         viewMenuItem = new javax.swing.JMenu();
         searchMenu = new javax.swing.JMenu();
         findMenuItem = new javax.swing.JMenuItem();
@@ -176,6 +178,14 @@ public class MediatekaView extends FrameView {
         jButton1.setName("jButton1"); // NOI18N
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton1);
+
+        jButton2.setIcon(resourceMap.getIcon("jButton2.icon")); // NOI18N
+        jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
+        jButton2.setFocusable(false);
+        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton2.setName("jButton2"); // NOI18N
+        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton2);
 
         jSplitPane1.setDividerLocation(200);
         jSplitPane1.setDividerSize(2);
@@ -452,7 +462,7 @@ public class MediatekaView extends FrameView {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 359, Short.MAX_VALUE)
+            .addGap(0, 331, Short.MAX_VALUE)
         );
 
         jSplitPane1.setBottomComponent(jPanel1);
@@ -484,6 +494,7 @@ public class MediatekaView extends FrameView {
         fileMenuItem.setName("fileMenuItem"); // NOI18N
 
         openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
+        openMenuItem.setIcon(resourceMap.getIcon("openMenuItem.icon")); // NOI18N
         openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
         openMenuItem.setName("openMenuItem"); // NOI18N
         fileMenuItem.add(openMenuItem);
@@ -492,6 +503,7 @@ public class MediatekaView extends FrameView {
         fileMenuItem.add(jSeparator1);
 
         createMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
+        createMenuItem.setIcon(resourceMap.getIcon("createMenuItem.icon")); // NOI18N
         createMenuItem.setText(resourceMap.getString("createMenuItem.text")); // NOI18N
         createMenuItem.setName("createMenuItem"); // NOI18N
         fileMenuItem.add(createMenuItem);
@@ -500,11 +512,13 @@ public class MediatekaView extends FrameView {
         fileMenuItem.add(jSeparator2);
 
         importMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        importMenuItem.setIcon(resourceMap.getIcon("importMenuItem.icon")); // NOI18N
         importMenuItem.setText(resourceMap.getString("importMenuItem.text")); // NOI18N
         importMenuItem.setName("importMenuItem"); // NOI18N
         fileMenuItem.add(importMenuItem);
 
         exportMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        exportMenuItem.setIcon(resourceMap.getIcon("exportMenuItem.icon")); // NOI18N
         exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
         exportMenuItem.setName("exportMenuItem"); // NOI18N
         fileMenuItem.add(exportMenuItem);
@@ -535,6 +549,21 @@ public class MediatekaView extends FrameView {
         undoMenuItem.setText(resourceMap.getString("undoMenuItem.text")); // NOI18N
         undoMenuItem.setName("undoMenuItem"); // NOI18N
         editMenuItem.add(undoMenuItem);
+
+        jMenuItem1.setAction(actionMap.get("showFilmView")); // NOI18N
+        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
+        jMenuItem1.setName("jMenuItem1"); // NOI18N
+        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem1MouseClicked(evt);
+            }
+        });
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        editMenuItem.add(jMenuItem1);
 
         menuBar.add(editMenuItem);
 
@@ -622,23 +651,39 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
 // TODO add your handling code here:
     int f = evt.getButton();
 }//GEN-LAST:event_jTable1MouseClicked
-
+    
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable2MouseClicked
-
+    
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable3MouseClicked
-
+    
     private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable4MouseClicked
-
+    
     private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable5MouseClicked
-
+    
+    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
+        
+    }//GEN-LAST:event_jMenuItem1MouseClicked
+    
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    
+    @Action
+    public void showFilmView() {
+        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+        filmView = new FilmView(mainFrame, true, null);
+        filmView.setLocationRelativeTo(mainFrame);
+        
+        MediatekaApp.getApplication().show(filmView);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem createMenuItem;
     private javax.swing.JMenu editMenuItem;
@@ -646,6 +691,8 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     private javax.swing.JMenuItem findMenuItem;
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -686,4 +733,5 @@ private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:eve
     private final Icon[] busyIcons = new Icon[15];
     private int busyIconIndex = 0;
     private JDialog aboutBox;
+    private JDialog filmView;
 }
