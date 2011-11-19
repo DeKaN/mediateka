@@ -36,7 +36,7 @@ public class PersonsManager implements RecordsManager {
     }
 
     public Record find(int id) {
-        return persons.find(new BlackListRecord(id)).getRecord(0);
+        return persons.find(new Person(id)).getRecord(0);
     }
 
     public Records find(Record record) {
