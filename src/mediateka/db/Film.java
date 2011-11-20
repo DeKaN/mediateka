@@ -360,4 +360,9 @@ public final class Film implements Record {
         return elem;
 
     }
+
+    @Override
+    public String toString() {
+        return russianTitle;
+    }
 }

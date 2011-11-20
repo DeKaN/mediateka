@@ -1,6 +1,7 @@
 package mediateka.db;
 
 import mediateka.db.Record;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
@@ -192,5 +193,16 @@ public class Disc implements Record {
         elem.addElement("isPresent").addText(Boolean.toString(isPresented));
         elem.addElement("films").addText(this.films.toXmlElement().asXML());
         return elem;
+    }
+
+    @Override
+    public String toString() {
+        Record[] fis = films.ToArray();
+        String[] str = new String[fis.length];
+        int i = 0;
+        for (Record record : fis) {
+            str[i] = ((Film) record).toString();
+        }
+        return format + " №" + discID + " (" + StringUtils.join(str, ", ") + ")";
     }
 }

@@ -23,7 +23,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
         record = blRecord;
         Record[] recs = MediatekaView.managers.getPersManager().getRecords();
         strs = new String[recs.length];
-        int i = 0, id = record.getPerson().getID();
+        int i = 0, id = record != null ? record.getPerson().getID() : 0;
         for (Record rec : recs) {
             try {
                 Person p = (Person) rec;
