@@ -1,5 +1,8 @@
 package mediateka;
 
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import mediateka.db.Person;
 import org.jdesktop.application.Action;
 
@@ -8,7 +11,7 @@ import org.jdesktop.application.Action;
  * @author DeKaN
  */
 public class PersonView extends javax.swing.JDialog {
-    
+
     Person pers = null;
 
     /** Creates new form PersonView */
@@ -33,6 +36,61 @@ public class PersonView extends javax.swing.JDialog {
             setTitle("Изменить человека");
             jButton1.setText("Сохранить");
         }
+        jTextField1.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void insertUpdate(DocumentEvent e) {
+                filter(jTextField1);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                filter(jTextField1);
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                filter(jTextField1);
+            }
+        });
+        jTextField2.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void insertUpdate(DocumentEvent e) {
+                filter(jTextField2);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                filter(jTextField2);
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                filter(jTextField2);
+            }
+        });
+        jTextField3.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void insertUpdate(DocumentEvent e) {
+                filter(jTextField3);
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                filter(jTextField3);
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                filter(jTextField3);
+            }
+        });
+    }
+
+    private void filter(JTextField field) {
+        String s = field.getText();
+        StringBuilder sb = new StringBuilder();
+        char ch = 0;
+        for (int i = 0; i < s.length(); i++) {
+            ch = s.charAt(i);
+            if (Character.isLetter(ch) || Character.isWhitespace(ch)) {
+                sb.append(ch);
+            }
+        }
+        field.setText(sb.toString());
     }
 
     /** This method is called from within the constructor to
@@ -52,7 +110,7 @@ public class PersonView extends javax.swing.JDialog {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        jFormattedTextField1 = new javax.swing.JFormattedTextField(java.text.NumberFormat.getNumberInstance());
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
@@ -182,7 +240,7 @@ public class PersonView extends javax.swing.JDialog {
         }
         this.dispose();
     }
-    
+
     @Action
     public void close() {
         this.dispose();
