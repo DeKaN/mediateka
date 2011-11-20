@@ -67,11 +67,15 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 jCheckBox1.setSelected(false);
                 jDateChooser3.setDate(d);
             } else {
+                jDateChooser3.setDate(new Date());
                 jCheckBox1.setSelected(true);
             }
             setTitle("Изменить запись");
             jButton1.setText("Сохранить");
         } else {
+            jDateChooser1.setDate(new Date());
+            jDateChooser2.setDate(new Date());
+            jDateChooser3.setDate(new Date());
             jCheckBox1.setSelected(true);
             setTitle("Добавить запись");
             jButton1.setText("Добавить");
@@ -141,6 +145,11 @@ public class HistoryRecordView extends javax.swing.JDialog {
         jCheckBox1.setSelected(true);
         jCheckBox1.setText(resourceMap.getString("jCheckBox1.text")); // NOI18N
         jCheckBox1.setName("jCheckBox1"); // NOI18N
+        jCheckBox1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jCheckBox1StateChanged(evt);
+            }
+        });
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
@@ -231,6 +240,10 @@ public class HistoryRecordView extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jCheckBox1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox1StateChanged
+        jDateChooser1.setEnabled(!jCheckBox1.isSelected());
+    }//GEN-LAST:event_jCheckBox1StateChanged
+
     @Action
     public void close() {
         this.dispose();
@@ -245,11 +258,12 @@ public class HistoryRecordView extends javax.swing.JDialog {
             history.setPerson(p);
             history.setGiveDate(jDateChooser1.getDate());
             history.setPromisedDate(jDateChooser2.getDate());
-            history.setReturnDate(jDateChooser3.getDate());
+            history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
             history.setComment(jTextArea1.getText());
             MediatekaView.managers.getHistManager().edit(history.getID(), history);
         } else {
-            history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(), jDateChooser3.getDate(), jTextArea1.getText());
+            history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
+                    jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
             MediatekaView.managers.getHistManager().add(history);
         }
     }

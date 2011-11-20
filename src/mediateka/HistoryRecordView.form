@@ -184,6 +184,9 @@
         <Property name="text" type="java.lang.String" resourceKey="jCheckBox1.text"/>
         <Property name="name" type="java.lang.String" value="jCheckBox1" noResource="true"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jCheckBox1StateChanged"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <Properties>
