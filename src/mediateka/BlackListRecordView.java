@@ -1,6 +1,8 @@
 package mediateka;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mediateka.db.BlackListRecord;
 import mediateka.db.Person;
 import mediateka.db.Record;
@@ -11,7 +13,7 @@ import org.jdesktop.application.Action;
  * @author DeKaN
  */
 public class BlackListRecordView extends javax.swing.JDialog {
-    
+
     BlackListRecord record = null;
     private HashMap<Integer, Integer> map = null;
     String[] strs = null;
@@ -20,32 +22,36 @@ public class BlackListRecordView extends javax.swing.JDialog {
     /** Creates new form BlackListRecordView */
     public BlackListRecordView(java.awt.Frame parent, boolean modal, BlackListRecord blRecord) {
         super(parent, modal);
-        record = blRecord;
-        Record[] recs = MediatekaView.managers.getPersManager().getRecords();
-        strs = new String[recs.length];
-        int i = 0, id = record != null ? record.getPerson().getID() : 0;
-        for (Record rec : recs) {
-            try {
-                Person p = (Person) rec;
-                map.put(i, p.getID());
-                strs[i] = p.toString();
-                if (p.getID() == id) {
-                    index = i;
+        try {
+            record = blRecord;
+            Record[] recs = MediatekaView.managers.getPersManager().getRecords();
+            strs = new String[recs.length];
+            int i = 0, id = record != null ? record.getPerson().getID() : 0;
+            for (Record rec : recs) {
+                try {
+                    Person p = (Person) rec;
+                    map.put(i, p.getID());
+                    strs[i] = p.toString();
+                    if (p.getID() == id) {
+                        index = i;
+                    }
+                    i++;
+                } catch (Exception e) {
                 }
-                i++;
-            } catch (Exception e) {
             }
-        }
-        initComponents();
-        jComboBox1.setSelectedIndex(index);
-        if (record == null) {
-            jTextArea1.setText("");
-            setTitle("Добавить запись");
-            jButton1.setText("Добавить");
-        } else {
-            jTextArea1.setText(record.getComment());
-            setTitle("Изменить запись");
-            jButton1.setText("Сохранить");
+            initComponents();
+            jComboBox1.setSelectedIndex(index);
+            if (record == null) {
+                jTextArea1.setText("");
+                setTitle("Добавить запись");
+                jButton1.setText("Добавить");
+            } else {
+                jTextArea1.setText(record.getComment());
+                setTitle("Изменить запись");
+                jButton1.setText("Сохранить");
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BlackListRecordView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -143,17 +149,21 @@ public class BlackListRecordView extends javax.swing.JDialog {
     public void close() {
         this.dispose();
     }
-    
+
     @Action
     public void save() {
-        Person p = (Person) MediatekaView.managers.getPersManager().find(map.get(jComboBox1.getSelectedIndex()));
-        if (record != null) {
-            record.setPerson(p);
-            record.setComment(jTextArea1.getText());
-            MediatekaView.managers.getBlListManager().edit(record.getID(), record);
-        } else {
-            record = new BlackListRecord(p, jTextArea1.getText());
-            MediatekaView.managers.getBlListManager().add(record);
+        try {
+            Person p = (Person) MediatekaView.managers.getPersManager().find(map.get(jComboBox1.getSelectedIndex()));
+            if (record != null) {
+                record.setPerson(p);
+                record.setComment(jTextArea1.getText());
+                MediatekaView.managers.getBlListManager().edit(record.getID(), record);
+            } else {
+                record = new BlackListRecord(p, jTextArea1.getText());
+                MediatekaView.managers.getBlListManager().add(record);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(BlackListRecordView.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }

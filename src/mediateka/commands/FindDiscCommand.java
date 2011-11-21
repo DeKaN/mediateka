@@ -11,15 +11,22 @@ import mediateka.db.Records;
 public class FindDiscCommand implements FindCommand {
 
     public Record Execute(int id) {
-        return MediatekaView.managers.getDiscsManager().find(id);
+        try {
+            return MediatekaView.managers.getDiscsManager().find(id);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Records Execute(Record record) {
-        return MediatekaView.managers.getDiscsManager().find(record);
+        try {
+            return MediatekaView.managers.getDiscsManager().find(record);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String ToString() {
         return "Найти диск";
     }
-
 }

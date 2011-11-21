@@ -10,7 +10,11 @@ import mediateka.db.Record;
 public class AddPersonCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        return MediatekaView.managers.getPersManager().add(record);
+        try {
+            return MediatekaView.managers.getPersManager().add(record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public String ToString() {

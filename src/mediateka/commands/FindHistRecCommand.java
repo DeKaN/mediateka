@@ -11,11 +11,19 @@ import mediateka.db.Records;
 public class FindHistRecCommand implements FindCommand {
 
     public Record Execute(int id) {
-        return MediatekaView.managers.getHistManager().find(id);
+        try {
+            return MediatekaView.managers.getHistManager().find(id);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Records Execute(Record record) {
-        return MediatekaView.managers.getHistManager().find(record);
+        try {
+            return MediatekaView.managers.getHistManager().find(record);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String ToString() {

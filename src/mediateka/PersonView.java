@@ -1,5 +1,7 @@
 package mediateka;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -220,18 +222,22 @@ public class PersonView extends javax.swing.JDialog {
 
     @Action
     public void save() {
-        if (pers != null) {
-            pers.setLastName(jTextField1.getText());
-            pers.setFirstName(jTextField2.getText());
-            pers.setSecondName(jTextField3.getText());
-            pers.setPhone(jFormattedTextField1.getText());
-            pers.setComment(jTextArea1.getText());
-            MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
-        } else {
-            pers = new Person(jTextField1.getText(), jTextField2.getText(),
-                    jTextField3.getText(), jFormattedTextField1.getText(),
-                    jTextArea1.getText());
-            MediatekaView.managers.getPersManager().add(pers);
+        try {
+            if (pers != null) {
+                pers.setLastName(jTextField1.getText());
+                pers.setFirstName(jTextField2.getText());
+                pers.setSecondName(jTextField3.getText());
+                pers.setPhone(jFormattedTextField1.getText());
+                pers.setComment(jTextArea1.getText());
+                MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
+            } else {
+                pers = new Person(jTextField1.getText(), jTextField2.getText(),
+                        jTextField3.getText(), jFormattedTextField1.getText(),
+                        jTextArea1.getText());
+                MediatekaView.managers.getPersManager().add(pers);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(PersonView.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.dispose();
     }

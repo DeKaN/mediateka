@@ -11,11 +11,19 @@ import mediateka.db.Records;
 public class FindPersonCommand implements FindCommand {
 
     public Record Execute(int id) {
-        return MediatekaView.managers.getPersManager().find(id);
+        try {
+            return MediatekaView.managers.getPersManager().find(id);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Records Execute(Record record) {
-        return MediatekaView.managers.getPersManager().find(record);
+        try {
+            return MediatekaView.managers.getPersManager().find(record);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String ToString() {

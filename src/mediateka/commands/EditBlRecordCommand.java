@@ -10,7 +10,11 @@ import mediateka.db.Record;
 public class EditBlRecordCommand implements EditCommand {
 
     public boolean Execute(int id, Record record) {
-        return MediatekaView.managers.getBlListManager().edit(id, record);
+        try {
+            return MediatekaView.managers.getBlListManager().edit(id, record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public String ToString() {

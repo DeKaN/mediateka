@@ -9,7 +9,11 @@ import mediateka.MediatekaView;
 public class DeleteBlRecordCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getBlListManager().delete(id);
+        try {
+            return MediatekaView.managers.getBlListManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public String ToString() {

@@ -11,11 +11,19 @@ import mediateka.db.Records;
 public class FindBlRecordCommand implements FindCommand {
 
     public Record Execute(int id) {
-        return MediatekaView.managers.getBlListManager().find(id);
+        try {
+            return MediatekaView.managers.getBlListManager().find(id);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Records Execute(Record record) {
-        return MediatekaView.managers.getBlListManager().find(record);
+        try {
+            return MediatekaView.managers.getBlListManager().find(record);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public String ToString() {

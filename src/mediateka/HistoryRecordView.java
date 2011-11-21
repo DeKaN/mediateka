@@ -2,6 +2,8 @@ package mediateka;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mediateka.db.Disc;
 import mediateka.db.HistoryRecord;
 import mediateka.db.Person;
@@ -22,63 +24,67 @@ public class HistoryRecordView extends javax.swing.JDialog {
     /** Creates new form HistoryRecordView */
     public HistoryRecordView(java.awt.Frame parent, boolean modal, HistoryRecord histRec) {
         super(parent, modal);
-        history = histRec;
-        Record[] recs = MediatekaView.managers.getPersManager().getRecords();
-        persons = new String[recs.length];
-        int i = 0, id = history != null ? history.getPerson().getID() : 0;
-        for (Record rec : recs) {
-            try {
-                Person p = (Person) rec;
-                personIds.put(i, p.getID());
-                persons[i] = p.toString();
-                if (p.getID() == id) {
-                    pIndex = i;
+        try {
+            history = histRec;
+            Record[] recs = MediatekaView.managers.getPersManager().getRecords();
+            persons = new String[recs.length];
+            int i = 0, id = history != null ? history.getPerson().getID() : 0;
+            for (Record rec : recs) {
+                try {
+                    Person p = (Person) rec;
+                    personIds.put(i, p.getID());
+                    persons[i] = p.toString();
+                    if (p.getID() == id) {
+                        pIndex = i;
+                    }
+                    i++;
+                } catch (Exception e) {
                 }
-                i++;
-            } catch (Exception e) {
             }
-        }
-        recs = MediatekaView.managers.getDiscsManager().getRecords();
-        discs = new String[recs.length];
-        i = 0;
-        id = history != null ? history.getDisc().getID() : 0;
-        for (Record rec : recs) {
-            try {
-                Disc d = (Disc) rec;
-                discIds.put(i, d.getID());
-                discs[i] = d.toString();
-                if (d.getID() == id) {
-                    dIndex = i;
+            recs = MediatekaView.managers.getDiscsManager().getRecords();
+            discs = new String[recs.length];
+            i = 0;
+            id = history != null ? history.getDisc().getID() : 0;
+            for (Record rec : recs) {
+                try {
+                    Disc d = (Disc) rec;
+                    discIds.put(i, d.getID());
+                    discs[i] = d.toString();
+                    if (d.getID() == id) {
+                        dIndex = i;
+                    }
+                    i++;
+                } catch (Exception e) {
                 }
-                i++;
-            } catch (Exception e) {
             }
-        }
-        initComponents();
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(discs));
-        jComboBox1.setSelectedIndex(dIndex);
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(persons));
-        jComboBox2.setSelectedIndex(pIndex);
-        if (history != null) {
-            jDateChooser1.setDate(history.getGiveDate());
-            jDateChooser2.setDate(history.getPromisedDate());
-            Date d = history.getReturnDate();
-            if (d != null) {
-                jCheckBox1.setSelected(false);
-                jDateChooser3.setDate(d);
+            initComponents();
+            jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(discs));
+            jComboBox1.setSelectedIndex(dIndex);
+            jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(persons));
+            jComboBox2.setSelectedIndex(pIndex);
+            if (history != null) {
+                jDateChooser1.setDate(history.getGiveDate());
+                jDateChooser2.setDate(history.getPromisedDate());
+                Date d = history.getReturnDate();
+                if (d != null) {
+                    jCheckBox1.setSelected(false);
+                    jDateChooser3.setDate(d);
+                } else {
+                    jDateChooser3.setDate(new Date());
+                    jCheckBox1.setSelected(true);
+                }
+                setTitle("Изменить запись");
+                jButton1.setText("Сохранить");
             } else {
+                jDateChooser1.setDate(new Date());
+                jDateChooser2.setDate(new Date());
                 jDateChooser3.setDate(new Date());
                 jCheckBox1.setSelected(true);
+                setTitle("Добавить запись");
+                jButton1.setText("Добавить");
             }
-            setTitle("Изменить запись");
-            jButton1.setText("Сохранить");
-        } else {
-            jDateChooser1.setDate(new Date());
-            jDateChooser2.setDate(new Date());
-            jDateChooser3.setDate(new Date());
-            jCheckBox1.setSelected(true);
-            setTitle("Добавить запись");
-            jButton1.setText("Добавить");
+        } catch (Exception ex) {
+            Logger.getLogger(HistoryRecordView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -251,21 +257,26 @@ public class HistoryRecordView extends javax.swing.JDialog {
 
     @Action
     public void save() {
-        Person p = (Person) MediatekaView.managers.getPersManager().find(personIds.get(jComboBox2.getSelectedIndex()));
-        Disc d = (Disc) MediatekaView.managers.getDiscsManager().find(personIds.get(jComboBox1.getSelectedIndex()));
-        if (history != null) {
-            history.setDisc(d);
-            history.setPerson(p);
-            history.setGiveDate(jDateChooser1.getDate());
-            history.setPromisedDate(jDateChooser2.getDate());
-            history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
-            history.setComment(jTextArea1.getText());
-            MediatekaView.managers.getHistManager().edit(history.getID(), history);
-        } else {
-            history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
-                    jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
-            MediatekaView.managers.getHistManager().add(history);
+        try {
+            Person p = (Person) MediatekaView.managers.getPersManager().find(personIds.get(jComboBox2.getSelectedIndex()));
+            Disc d = (Disc) MediatekaView.managers.getDiscsManager().find(personIds.get(jComboBox1.getSelectedIndex()));
+            if (history != null) {
+                history.setDisc(d);
+                history.setPerson(p);
+                history.setGiveDate(jDateChooser1.getDate());
+                history.setPromisedDate(jDateChooser2.getDate());
+                history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
+                history.setComment(jTextArea1.getText());
+                MediatekaView.managers.getHistManager().edit(history.getID(), history);
+            } else {
+                history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
+                        jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
+                MediatekaView.managers.getHistManager().add(history);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(HistoryRecordView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.dispose();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

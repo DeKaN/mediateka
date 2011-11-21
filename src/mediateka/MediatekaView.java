@@ -95,6 +95,7 @@ public class MediatekaView extends FrameView {
         });
         try {
             managers = Managers.getInstance(blackListFile, discsFile, filmsFile, historyFile, personsFile);
+            
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -9,7 +9,11 @@ import mediateka.MediatekaView;
 public class DeletePersonCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getPersManager().delete(id);
+        try {
+            return MediatekaView.managers.getPersManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public String ToString() {

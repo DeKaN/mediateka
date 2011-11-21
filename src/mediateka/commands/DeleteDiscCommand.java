@@ -9,7 +9,11 @@ import mediateka.MediatekaView;
 public class DeleteDiscCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getDiscsManager().delete(id);
+        try {
+            return MediatekaView.managers.getDiscsManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public String ToString() {
