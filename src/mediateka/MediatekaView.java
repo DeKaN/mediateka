@@ -20,28 +20,30 @@ import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import mediateka.datamanagers.Managers;
+import mediateka.db.Film;
+import mediateka.db.Record;
 
 /**
  * The application's main frame.
  */
 public class MediatekaView extends FrameView {
-
+    
     private static final String blackListFile = "blacklist.xml",
             discsFile = "discs.xml",
             filmsFile = "films.xml",
             historyFile = "history.xml",
             personsFile = "persons.xml";
     public static Managers managers = null;
-
+    
     public MediatekaView(SingleFrameApplication app) {
         super(app);
-
+        
         initComponents();
         // status bar initialization - message timeout, idle icon and busy animation, etc
         ResourceMap resourceMap = getResourceMap();
         int messageTimeout = resourceMap.getInteger("StatusBar.messageTimeout");
         messageTimer = new Timer(messageTimeout, new ActionListener() {
-
+            
             public void actionPerformed(ActionEvent e) {
                 statusMessageLabel.setText("");
             }
@@ -52,7 +54,7 @@ public class MediatekaView extends FrameView {
             busyIcons[i] = resourceMap.getIcon("StatusBar.busyIcons[" + i + "]");
         }
         busyIconTimer = new Timer(busyAnimationRate, new ActionListener() {
-
+            
             public void actionPerformed(ActionEvent e) {
                 busyIconIndex = (busyIconIndex + 1) % busyIcons.length;
                 statusAnimationLabel.setIcon(busyIcons[busyIconIndex]);
@@ -65,7 +67,7 @@ public class MediatekaView extends FrameView {
         // connecting action tasks to status bar via TaskMonitor
         TaskMonitor taskMonitor = new TaskMonitor(getApplication().getContext());
         taskMonitor.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-
+            
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 String propertyName = evt.getPropertyName();
                 if ("started".equals(propertyName)) {
@@ -99,7 +101,7 @@ public class MediatekaView extends FrameView {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     @Action
     public void showAboutBox() {
         if (aboutBox == null) {
@@ -184,6 +186,8 @@ public class MediatekaView extends FrameView {
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton1);
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
+        jButton2.setAction(actionMap.get("addFilm")); // NOI18N
         jButton2.setIcon(resourceMap.getIcon("jButton2.icon")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setFocusable(false);
@@ -207,25 +211,32 @@ public class MediatekaView extends FrameView {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
-                {"От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
-                {"Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
-                {"Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
-                {"Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
-                {"Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
-                {"Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
-                {"Знамение", null, null, null, null, null, null, null, null, null, null}
+                {"1", "2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
+                {"2", "От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
+                {"3", "Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
+                {"4", "Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
+                {"5", "Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
+                {"6", "Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
+                {"7", "Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
+                {"8", "Знамение", null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+                "ID", "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -236,18 +247,26 @@ public class MediatekaView extends FrameView {
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, jTable1, org.jdesktop.beansbinding.ELProperty.create("true"), jTable1, org.jdesktop.beansbinding.BeanProperty.create("autoCreateRowSorter"));
         bindingGroup.addBinding(binding);
 
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable1.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
-        jTable1.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable1.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
-        jTable1.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable1.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
-        jTable1.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
-        jTable1.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
-        jTable1.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
-        jTable1.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
-        jTable1.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
+        jTable1.getColumnModel().getColumn(0).setResizable(false);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(40);
+        jTable1.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
+        jTable1.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
+        jTable1.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
+        jTable1.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
+        jTable1.getColumnModel().getColumn(5).setResizable(false);
+        jTable1.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
+        jTable1.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
+        jTable1.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
+        jTable1.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
+        jTable1.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
+        jTable1.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
+        jTable1.getColumnModel().getColumn(11).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
 
         jTabbedPane1.addTab(resourceMap.getString("jScrollPane1.TabConstraints.tabTitle"), jScrollPane1); // NOI18N
 
@@ -445,7 +464,7 @@ public class MediatekaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+                .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -495,7 +514,6 @@ public class MediatekaView extends FrameView {
         jSeparator4.setName("jSeparator4"); // NOI18N
         fileMenuItem.add(jSeparator4);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
         exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
         exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
         exitMenuItem.setName("exitMenuItem"); // NOI18N
@@ -623,33 +641,68 @@ public class MediatekaView extends FrameView {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable2MouseClicked
-
+    
     private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable3MouseClicked
-
+    
     private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable4MouseClicked
-
+    
     private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable5MouseClicked
-
+    
     private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
     }//GEN-LAST:event_jMenuItem1MouseClicked
-
+    
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+            int row = jTable1.rowAtPoint(evt.getPoint());
+            int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
+            //FilmViewNew fv = new FilmViewNew(null, true, managers.getFilmsManager().find(filmID));
+            FilmViewNew fv = new FilmViewNew(
+                    null,
+                    true,
+                    new Film(
+                    8,
+                    "Титаник",
+                    "Titanik",
+                    1975,
+                    "Фильм о порабле который затонул",
+                    new String[]{"Комедия", "Документальный"},
+                    new String[]{"Россия"},
+                    "Кто-то подарил",
+                    185,
+                    3,
+                    new String[]{"русский"},
+                    new byte[]{1},
+                    new String[]{"русский"},
+                    true));
+            fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+            MediatekaApp.getApplication().show(fv);
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+    
     @Action
     public void showFilmView() {
         JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
         filmView = new FilmView(mainFrame, true, null);
         filmView.setLocationRelativeTo(mainFrame);
-
+        
         MediatekaApp.getApplication().show(filmView);
+    }
+    
+    @Action
+    public void addFilm() {
+        FilmViewNew fv = new FilmViewNew(null, true, null);
+        fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+        MediatekaApp.getApplication().show(fv);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem createMenuItem;
