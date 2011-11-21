@@ -29,7 +29,7 @@ import mediateka.db.Record;
  */
 public class MediatekaView extends FrameView {
     
-    private static final String blackListFile = "blacklist.xml",
+    private static final String blackListFile = "D:\\Users\\DeKaN\\Documents\\NetBeansProjects\\mediateka\\XML\\blacklist.xml",
             discsFile = "discs.xml",
             filmsFile = "films.xml",
             historyFile = "history.xml",

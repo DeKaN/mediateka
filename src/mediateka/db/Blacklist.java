@@ -5,6 +5,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import mediateka.MediatekaView;
@@ -17,6 +19,7 @@ import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий таблицу черного списка
@@ -140,18 +143,19 @@ public class Blacklist implements Records {
             parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
-            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
             blackListRecs = new ArrayList<BlackListRecord>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
-                DOMElement elem = (DOMElement) it.next();
+                DefaultElement elem = (DefaultElement) it.next();
                 blackListRecs.add(new BlackListRecord(
-                        Integer.parseInt(elem.getAttribute("recordID")),
-                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(elem.getFirstChild().getNodeValue())),
-                        elem.getLastChild().getNodeValue()));
+                        Integer.parseInt(elem.attribute("recordID").getValue()),
+                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(elem.node(0).getText())),
+                        elem.node(1).getText()));
             }
             return true;
         } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }

@@ -16,7 +16,7 @@ import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.w3c.dom.NodeList;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий таблицу с персональными данными
@@ -149,19 +149,18 @@ public class Persons implements Records {
             parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
-            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
             personsList = new ArrayList<Person>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
-                DOMElement elem = (DOMElement) it.next();
-                NodeList nodes = elem.getChildNodes();
+                DefaultElement elem = (DefaultElement) it.next();
                 personsList.add(new Person(
-                        Integer.parseInt(elem.getAttribute("personID")),
-                        nodes.item(0).getNodeValue(),
-                        nodes.item(1).getNodeValue(),
-                        nodes.item(2).getNodeValue(),
-                        nodes.item(3).getNodeValue(),
-                        nodes.item(4).getNodeValue()));
+                        Integer.parseInt(elem.attribute("personID").getValue()),
+                        elem.node(0).getText(),
+                        elem.node(1).getText(),
+                        elem.node(2).getText(),
+                        elem.node(3).getText(),
+                        elem.node(4).getText()));
             }
             return true;
         } catch (Exception ex) {

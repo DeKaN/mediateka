@@ -18,7 +18,7 @@ import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.w3c.dom.NodeList;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий таблицу истории
@@ -151,21 +151,20 @@ public class History implements Records {
             parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
+            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
             SimpleDateFormat format = new SimpleDateFormat("");
-            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
             historyList = new ArrayList<HistoryRecord>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
-                DOMElement elem = (DOMElement) it.next();
-                NodeList nodes = elem.getChildNodes();
+                DefaultElement elem = (DefaultElement) it.next();
                 historyList.add(new HistoryRecord(
-                        Integer.parseInt(elem.getAttribute("recordID")),
-                        (Disc) MediatekaView.managers.getDiscsManager().find(Integer.parseInt(nodes.item(0).getNodeValue())),
-                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(nodes.item(0).getNodeValue())),
-                        format.parse(nodes.item(2).getNodeValue()),
-                        format.parse(nodes.item(3).getNodeValue()),
-                        format.parse(nodes.item(4).getNodeValue()),
-                        nodes.item(5).getNodeValue()));
+                        Integer.parseInt(elem.attribute("recordID").getValue()),
+                        (Disc) MediatekaView.managers.getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
+                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(elem.node(1).getText())),
+                        format.parse(elem.node(2).getText()),
+                        format.parse(elem.node(3).getText()),
+                        format.parse(elem.node(4).getText()),
+                        elem.node(5).getText()));
             }
             return true;
         } catch (Exception ex) {
