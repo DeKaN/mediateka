@@ -10,10 +10,10 @@ import mediateka.db.Record;
 public class AddPersonCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        return MediatekaView.managers.getPersManager().add(record);
-    }
-
-    public String ToString() {
-        return "Добавить персональные данные";
+        try {
+            return MediatekaView.managers.getPersManager().add(record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

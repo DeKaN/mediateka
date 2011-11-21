@@ -10,10 +10,10 @@ import mediateka.db.Record;
 public class AddHistRecCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        return MediatekaView.managers.getHistManager().add(record);
-    }
-
-    public String ToString() {
-        return "Добавить запись в историю";
+        try {
+            return MediatekaView.managers.getHistManager().add(record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

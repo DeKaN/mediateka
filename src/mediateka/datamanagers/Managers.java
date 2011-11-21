@@ -11,7 +11,8 @@ public class Managers {
     FilmsManager filmsManager = null;
     HistoryManager histManager = null;
     PersonsManager persManager = null;
-    static Managers instance = null;
+    private static String blFile = "", dFile = "", fFile = "", hFile = "", pFile = "";
+    private static Managers instance = null;
 
     /**
      * Возвращает объект класса
@@ -25,62 +26,57 @@ public class Managers {
     public static Managers getInstance(String blListFile, String discFile,
             String filmFile, String histFile, String persFile) throws Exception {
         if (instance == null) {
-            instance = new Managers(blListFile, discFile, filmFile, histFile, persFile);
+            blFile = blListFile;
+            dFile = discFile;
+            fFile = filmFile;
+            hFile = histFile;
+            pFile = persFile;
+            instance = new Managers();
         }
         return instance;
     }
 
-    private Managers(String blListFile, String discFile, String filmFile,
-            String histFile, String persFile) throws Exception {
-        StringBuilder errors = new StringBuilder();
-        try {
-            blListManager = new BlackListManager(blListFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            discsManager = new DiscsManager(discFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            filmsManager = new FilmsManager(filmFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            histManager = new HistoryManager(histFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            persManager = new PersonsManager(persFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        if (errors.length() > 0) {
-            throw new Exception(errors.toString());
-        }
-
+    private Managers() throws Exception {
+        persManager = new PersonsManager(pFile);
+        filmsManager = new FilmsManager(fFile);
     }
 
-    public BlackListManager getBlListManager() {
+    public BlackListManager getBlListManager() throws Exception {
+        if (blListManager == null) {
+            getPersManager();
+            blListManager = new BlackListManager(blFile);
+        }
         return blListManager;
     }
 
-    public DiscsManager getDiscsManager() {
+    public DiscsManager getDiscsManager() throws Exception {
+        if (discsManager == null) {
+            getFilmsManager();
+            discsManager = new DiscsManager(dFile);
+        }
         return discsManager;
     }
 
-    public FilmsManager getFilmsManager() {
+    public FilmsManager getFilmsManager() throws Exception {
+        if (filmsManager == null) {
+            filmsManager = new FilmsManager(fFile);
+        }
         return filmsManager;
     }
 
-    public HistoryManager getHistManager() {
+    public HistoryManager getHistManager() throws Exception {
+        if (histManager == null) {
+            getDiscsManager();
+            getPersManager();
+            histManager = new HistoryManager(hFile);
+        }
         return histManager;
     }
 
-    public PersonsManager getPersManager() {
+    public PersonsManager getPersManager() throws Exception {
+        if (persManager == null) {
+            persManager = new PersonsManager(pFile);
+        }
         return persManager;
     }
 }

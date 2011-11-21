@@ -14,11 +14,12 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.w3c.dom.NodeList;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий коллекцию фильмов
@@ -139,48 +140,58 @@ public class Films implements Records {
             parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
-            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
             filmsList = new ArrayList<Film>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
 
-                    DOMElement elem = (DOMElement) it.next();
-                    NodeList nodes = elem.getChildNodes(),
-                            nodes2 = nodes.item(4).getChildNodes();
-                    String[] genres = new String[nodes2.getLength()];
-                    for (int i = 0; i < genres.length; i++) {
-                        genres[i] = nodes2.item(i).getNodeValue();
+                    DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("genres");
+                    String[] genres = new String[elem2.nodeCount()];
+                    int i = 0;
+                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+                        Node node = it1.next();
+                        genres[i] = node.getText();
+                        i++;
                     }
-                    nodes2 = nodes.item(5).getChildNodes();
-                    String[] countries = new String[nodes2.getLength()];
-                    for (int i = 0; i < countries.length; i++) {
-                        countries[i] = nodes2.item(i).getNodeValue();
+                    elem2 = (DefaultElement) elem.element("countries");
+                    String[] countries = new String[elem2.nodeCount()];
+                    i = 0;
+                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+                        Node node = it1.next();
+                        countries[i] = node.getText();
+                        i++;
                     }
-                    nodes2 = nodes.item(9).getChildNodes();
-                    String[] subtitles = new String[nodes2.getLength()];
-                    for (int i = 0; i < subtitles.length; i++) {
-                        subtitles[i] = nodes2.item(i).getNodeValue();
+                    elem2 = (DefaultElement) elem.element("subtitles");
+                    String[] subtitles = new String[elem2.nodeCount()];
+                    i = 0;
+                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+                        Node node = it1.next();
+                        subtitles[i] = node.getText();
+                        i++;
                     }
-                    nodes2 = nodes.item(11).getChildNodes();
-                    String[] soundLanguages = new String[nodes2.getLength()];
-                    for (int i = 0; i < soundLanguages.length; i++) {
-                        soundLanguages[i] = nodes2.item(i).getNodeValue();
+                    elem2 = (DefaultElement) elem.element("soundLanguages");
+                    String[] soundLanguages = new String[elem2.nodeCount()];
+                    i = 0;
+                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+                        Node node = it1.next();
+                        soundLanguages[i] = node.getText();
+                        i++;
                     }
-                    filmsList.add(new Film(Integer.parseInt(elem.getAttribute("discID")),
-                            nodes.item(0).getNodeValue(),
-                            nodes.item(1).getNodeValue(),
-                            Integer.parseInt(nodes.item(2).getNodeValue()),
-                            nodes.item(3).getNodeValue(),
+                    filmsList.add(new Film(Integer.parseInt(elem.attribute("filmID").getValue()),
+                            elem.node(0).getText(),
+                            elem.node(1).getText(),
+                            Integer.parseInt(elem.node(2).getText()),
+                            elem.node(3).getText(),
                             genres,
                             countries,
-                            nodes.item(6).getNodeValue(),
-                            Integer.parseInt(nodes.item(7).getNodeValue()),
-                            Integer.parseInt(nodes.item(8).getNodeValue()),
+                            elem.node(6).getText(),
+                            Integer.parseInt(elem.node(7).getText()),
+                            Integer.parseInt(elem.node(8).getText()),
                             subtitles,
-                            Base64Coder.decodeLines(nodes.item(10).getNodeValue()),
+                            Base64Coder.decodeLines(elem.node(10).getText()),
                             soundLanguages,
-                            nodes.item(12).getNodeValue().equals("true")));
+                            elem.node(12).getText().equals("true")));
                 } catch (Exception exc) {
                 }
             }
@@ -279,6 +290,6 @@ public class Films implements Records {
     }
 
     public Record[] ToArray() {
-        return (Record[])filmsList.toArray();
+        return (Record[]) filmsList.toArray();
     }
 }

@@ -9,10 +9,10 @@ import mediateka.MediatekaView;
 public class DeleteBlRecordCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getBlListManager().delete(id);
-    }
-
-    public String ToString() {
-        return "Удалить запись из черного списка";
+        try {
+            return MediatekaView.managers.getBlListManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

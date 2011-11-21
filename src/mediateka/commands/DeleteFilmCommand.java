@@ -9,10 +9,10 @@ import mediateka.MediatekaView;
 public class DeleteFilmCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getFilmsManager().delete(id);
-    }
-
-    public String ToString() {
-        return "Удалить фильм";
+        try {
+            return MediatekaView.managers.getFilmsManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

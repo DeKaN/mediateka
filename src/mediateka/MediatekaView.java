@@ -4,7 +4,6 @@
 package mediateka;
 
 import biz.source_code.base64Coder.Base64Coder;
-import java.awt.Button;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jdesktop.application.Action;
@@ -14,26 +13,24 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import javax.swing.Timer;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import mediateka.datamanagers.Managers;
 import mediateka.db.Film;
-import mediateka.db.Record;
 
 /**
  * The application's main frame.
  */
 public class MediatekaView extends FrameView {
 
-    private static final String blackListFile = "blacklist.xml",
-            discsFile = "discs.xml",
-            filmsFile = "films.xml",
-            historyFile = "history.xml",
-            personsFile = "persons.xml";
+    private static final String dir = "D:\\Users\\DeKaN\\Documents\\NetBeansProjects\\mediateka\\XML\\",
+            blackListFile = dir + "blacklist.xml",
+            discsFile = dir + "discs.xml",
+            filmsFile = dir + "films.xml",
+            historyFile = dir + "history.xml",
+            personsFile = dir + "persons.xml";
     public static Managers managers = null;
 
     public MediatekaView(SingleFrameApplication app) {
@@ -98,6 +95,7 @@ public class MediatekaView extends FrameView {
         });
         try {
             managers = Managers.getInstance(blackListFile, discsFile, filmsFile, historyFile, personsFile);
+            
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -10,10 +10,10 @@ import mediateka.db.Record;
 public class AddFilmCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        return MediatekaView.managers.getFilmsManager().add(record);
-    }
-
-    public String ToString() {
-        return "Добавить фильм в коллекцию";
+        try {
+            return MediatekaView.managers.getFilmsManager().add(record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

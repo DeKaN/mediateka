@@ -10,11 +10,10 @@ import mediateka.db.Record;
 public class AddDiscCommand implements AddCommand {
 
     public boolean Execute(Record record) {
-        return MediatekaView.managers.getDiscsManager().add(record);
+        try {
+            return MediatekaView.managers.getDiscsManager().add(record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
-
-    public String ToString() {
-        return "Добавить диск в коллекцию";
-    }
-
 }

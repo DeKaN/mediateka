@@ -9,10 +9,10 @@ import mediateka.MediatekaView;
 public class DeleteHistRecCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getHistManager().delete(id);
-    }
-
-    public String ToString() {
-        return "Удалить запись из истории";
+        try {
+            return MediatekaView.managers.getHistManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

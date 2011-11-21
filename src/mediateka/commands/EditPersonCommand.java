@@ -10,10 +10,10 @@ import mediateka.db.Record;
 public class EditPersonCommand implements EditCommand {
 
     public boolean Execute(int id, Record record) {
-        return MediatekaView.managers.getPersManager().edit(id, record);
-    }
-
-    public String ToString() {
-        return "Изменить персональные данные";
+        try {
+            return MediatekaView.managers.getPersManager().edit(id, record);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

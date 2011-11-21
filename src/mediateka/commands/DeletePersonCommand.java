@@ -9,10 +9,10 @@ import mediateka.MediatekaView;
 public class DeletePersonCommand implements DeleteCommand {
 
     public boolean Execute(int id) {
-        return MediatekaView.managers.getPersManager().delete(id);
-    }
-
-    public String ToString() {
-        return "Удалить персональные данные";
+        try {
+            return MediatekaView.managers.getPersManager().delete(id);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

@@ -11,14 +11,18 @@ import mediateka.db.Records;
 public class FindFilmCommand implements FindCommand {
 
     public Record Execute(int id) {
-        return MediatekaView.managers.getFilmsManager().find(id);
+        try {
+            return MediatekaView.managers.getFilmsManager().find(id);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Records Execute(Record record) {
-        return MediatekaView.managers.getFilmsManager().find(record);
-    }
-
-    public String ToString() {
-        return "Найти фильм";
+        try {
+            return MediatekaView.managers.getFilmsManager().find(record);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

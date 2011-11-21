@@ -14,11 +14,12 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
+import org.dom4j.Node;
 import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
-import org.w3c.dom.NodeList;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий коллекцию дисков
@@ -133,25 +134,24 @@ public class Discs implements Records {
             parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DOMElement root = (DOMElement) (reader.read(new File(fileName)).getRootElement());
-            autoIndex = Integer.parseInt(root.getAttribute("autoIndex"));
+            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
+            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
             discsList = new ArrayList<Disc>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
-                    DOMElement elem = (DOMElement) it.next();
-                    NodeList nodes = elem.getChildNodes(),
-                            nodes2 = nodes.item(4).getChildNodes();
+                    DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("films");
                     Films films = new Films();
-                    for (int i = 0; i < nodes2.getLength(); i++) {
-                        films.add(MediatekaView.managers.getFilmsManager().find(Integer.parseInt(nodes2.item(i).getNodeValue())));
+                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+                        Node node = it1.next();
+                        films.add(MediatekaView.managers.getFilmsManager().find(Integer.parseInt(node.getText())));
                     }
                     discsList.add(new Disc(
-                            Integer.parseInt(elem.getAttribute("discID")),
+                            Integer.parseInt(elem.attribute("discID").getValue()),
                             films,
-                            Integer.parseInt(nodes.item(0).getNodeValue()),
-                            Disc.Format.valueOf(nodes.item(1).getNodeValue()),
-                            Integer.parseInt(nodes.item(2).getNodeValue()),
-                            nodes.item(3).getNodeValue().equals("true")));
+                            Integer.parseInt(elem.node(0).getText()),
+                            Disc.Format.valueOf(elem.node(1).getText()),
+                            Integer.parseInt(elem.node(2).getText()),
+                            elem.node(3).getText().equals("true")));
                 } catch (Exception exc) {
                 }
             }
@@ -238,8 +238,8 @@ public class Discs implements Records {
     public int size() {
         return discsList.size();
     }
-    
+
     public Record[] ToArray() {
-        return (Record[])discsList.toArray();
+        return (Record[]) discsList.toArray();
     }
 }
