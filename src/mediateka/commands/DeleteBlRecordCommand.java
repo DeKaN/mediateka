@@ -15,8 +15,4 @@ public class DeleteBlRecordCommand implements DeleteCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Удалить запись из черного списка";
-    }
 }

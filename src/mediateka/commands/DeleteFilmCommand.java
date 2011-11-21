@@ -15,8 +15,4 @@ public class DeleteFilmCommand implements DeleteCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Удалить фильм";
-    }
 }

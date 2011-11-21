@@ -16,8 +16,4 @@ public class EditPersonCommand implements EditCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Изменить персональные данные";
-    }
 }

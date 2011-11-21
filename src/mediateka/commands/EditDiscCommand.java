@@ -16,8 +16,4 @@ public class EditDiscCommand implements EditCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Изменить диск";
-    }
 }

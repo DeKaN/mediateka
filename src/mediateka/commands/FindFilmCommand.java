@@ -25,8 +25,4 @@ public class FindFilmCommand implements FindCommand {
             return null;
         }
     }
-
-    public String ToString() {
-        return "Найти фильм";
-    }
 }

@@ -25,8 +25,4 @@ public class FindPersonCommand implements FindCommand {
             return null;
         }
     }
-
-    public String ToString() {
-        return "Найти персональные данные";
-    }
 }

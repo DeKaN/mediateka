@@ -15,8 +15,4 @@ public class DeletePersonCommand implements DeleteCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Удалить персональные данные";
-    }
 }

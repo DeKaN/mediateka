@@ -16,8 +16,4 @@ public class AddDiscCommand implements AddCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Добавить диск в коллекцию";
-    }
 }

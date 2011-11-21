@@ -16,8 +16,4 @@ public class AddPersonCommand implements AddCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Добавить персональные данные";
-    }
 }

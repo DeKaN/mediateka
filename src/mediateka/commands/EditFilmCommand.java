@@ -16,8 +16,4 @@ public class EditFilmCommand implements EditCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Изменить фильм";
-    }
 }

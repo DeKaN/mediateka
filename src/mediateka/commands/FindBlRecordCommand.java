@@ -25,8 +25,4 @@ public class FindBlRecordCommand implements FindCommand {
             return null;
         }
     }
-
-    public String ToString() {
-        return "Найти запись в черном списке";
-    }
 }

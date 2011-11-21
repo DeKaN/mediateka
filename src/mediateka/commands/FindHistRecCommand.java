@@ -25,8 +25,4 @@ public class FindHistRecCommand implements FindCommand {
             return null;
         }
     }
-
-    public String ToString() {
-        return "Найти запись в таблице истории";
-    }
 }

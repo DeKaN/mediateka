@@ -83,7 +83,6 @@ public class BlackListRecordView extends javax.swing.JDialog {
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(strs));
         jComboBox1.setName("jComboBox1"); // NOI18N
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N

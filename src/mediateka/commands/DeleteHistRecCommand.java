@@ -15,8 +15,4 @@ public class DeleteHistRecCommand implements DeleteCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Удалить запись из истории";
-    }
 }

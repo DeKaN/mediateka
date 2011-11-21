@@ -16,8 +16,4 @@ public class AddFilmCommand implements AddCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Добавить фильм в коллекцию";
-    }
 }

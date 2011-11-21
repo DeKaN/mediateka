@@ -16,8 +16,4 @@ public class EditBlRecordCommand implements EditCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Изменить запись черного списка";
-    }
 }

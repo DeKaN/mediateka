@@ -25,8 +25,4 @@ public class FindDiscCommand implements FindCommand {
             return null;
         }
     }
-
-    public String ToString() {
-        return "Найти диск";
-    }
 }

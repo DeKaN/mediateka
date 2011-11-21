@@ -15,8 +15,4 @@ public class DeleteDiscCommand implements DeleteCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Удалить диск";
-    }
 }

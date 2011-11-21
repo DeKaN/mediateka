@@ -16,8 +16,4 @@ public class EditHistRecCommand implements EditCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Изменить запись истории";
-    }
 }

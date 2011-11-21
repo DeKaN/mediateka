@@ -1,7 +1,5 @@
 package mediateka.commands;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mediateka.MediatekaView;
 import mediateka.db.Record;
 
@@ -18,9 +16,4 @@ public class AddBlRecordCommand implements AddCommand {
             return false;
         }
     }
-
-    public String ToString() {
-        return "Добавить запись в историю";
-    }
-
 }
