@@ -10,6 +10,7 @@
  */
 package mediateka;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -18,6 +19,8 @@ import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
@@ -27,6 +30,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
@@ -41,8 +45,9 @@ import org.jdesktop.application.Action;
 public class FilmViewNew extends javax.swing.JDialog {
 
     private Image image;
+    private Film film = null;
     private String[] genres = new String[]{
-        "-", "Анимационный", "Аниме", "Биография", "Боевик",
+        "", "Анимационный", "Аниме", "Биография", "Боевик",
         "Вестерн", "Военный", "Детектив", "Детский", "Для взрослых",
         "Документальный", "Драма", "Игра", "Исторический", "История",
         "Комедия", "Концерт", "Короткометражка", "Криминал", "Любовный роман",
@@ -52,7 +57,7 @@ public class FilmViewNew extends javax.swing.JDialog {
         "Фэнтези"
     };
     private String[] countries = new String[]{
-        "-", "Австралия", "Австрия", "Азербайджан", "Албания",
+        "", "Австралия", "Австрия", "Азербайджан", "Албания",
         "Алжир", "Американское Самоа", "Ангилья", "Ангола", "Андорра",
         "Антигуа и Барбуда", "Аргентина", "Армения", "Аруба", "Афганистан",
         "Багамы", "Бангладеш", "Барбадос", "Бахрейн", "Беларусь,Белиз",
@@ -101,7 +106,7 @@ public class FilmViewNew extends javax.swing.JDialog {
         "Эритрея", "Эстония", "Эфиопия", "Южная Корея",
         "Южно-Африканская Республика", "Ямайка", "Япония"};
     private String[] languages = new String[]{
-        "-", "английский (Великобритания)", "английский (США)",
+        "", "английский (Великобритания)", "английский (США)",
         "арабский", "болгарский", "венгерский", "вьетнамский", "голландский",
         "греческий", "датский", "иврит", "индонезийский", "испанский (Испания)",
         "испанский (Латинская Америка)", "итальянский", "каталанский",
@@ -115,9 +120,10 @@ public class FilmViewNew extends javax.swing.JDialog {
     };
 
     /** Creates new form FilmViewNew */
-    public FilmViewNew(java.awt.Frame parent, boolean modal, Record film) {
+    public FilmViewNew(java.awt.Frame parent, boolean modal, Film flm) {
         super(parent, modal);
         initComponents();
+        film = flm;
         jComboBox1.setModel(new DefaultComboBoxModel(genres));
         jComboBox2.setModel(new DefaultComboBoxModel(genres));
         jComboBox3.setModel(new DefaultComboBoxModel(genres));
@@ -134,20 +140,20 @@ public class FilmViewNew extends javax.swing.JDialog {
             this.setTitle("Добавление фильма...");
             jButton2.setText("Добавить");
         } else {
-            Film flm = (Film) film;
-            jTextField1.setText(flm.getRussianTitle());
-            jTextField2.setText(flm.getEnglishTitle());
-            jTextField3.setText(Integer.toString(flm.getYear()));
-            jTextField4.setText(Integer.toString(flm.getLength()));
-            jTextArea1.setText(flm.getDescription());
-            comboBoxPrepare(flm.getGenres(), jComboBox1, jComboBox2, jComboBox3);
-            comboBoxPrepare(flm.getCountries(), jComboBox4, jComboBox5, jComboBox6);
-            comboBoxPrepare(flm.getSubtitles(), jComboBox7, jComboBox8, jComboBox9);
-            comboBoxPrepare(flm.getSoundLanguages(), jComboBox10, jComboBox11, jComboBox12);
-            if (flm.getCover() != null) {
-                jPanel4 = new ImagePanel();
+            jTextField1.setText(film.getRussianTitle());
+            jTextField2.setText(film.getEnglishTitle());
+            jTextField3.setText(Integer.toString(film.getYear()));
+            jTextField4.setText(Integer.toString(film.getLength()));
+            jTextArea1.setText(film.getDescription());
+            comboBoxPrepare(film.getGenres(), jComboBox1, jComboBox2, jComboBox3);
+            comboBoxPrepare(film.getCountries(), jComboBox4, jComboBox5, jComboBox6);
+            comboBoxPrepare(film.getSubtitles(), jComboBox7, jComboBox8, jComboBox9);
+            comboBoxPrepare(film.getSoundLanguages(), jComboBox10, jComboBox11, jComboBox12);
+            if (film.getCover() != null) {
+                jPanel4 = new ImagePanel((new ImageIcon(film.getCover())).getImage());
+                //jPanel4.paintComponents(null);
                 //Graphics g = canvas1.getGraphics();
-                image = (new ImageIcon(flm.getCover())).getImage();
+
                 //g.drawImage(img, 0, 0, null);
             }
             //new ImageIcon(flm.getCover())).getImage()
@@ -172,7 +178,7 @@ public class FilmViewNew extends javax.swing.JDialog {
                     jRadioButton6.setSelected(true);
                     break;
             }
-            jRadioButton8.setSelected(((Film) film).isIsSeen());
+            jRadioButton8.setSelected((film).isIsSeen());
 
             //TODO paste code here
         }
@@ -297,9 +303,19 @@ public class FilmViewNew extends javax.swing.JDialog {
 
         jTextField3.setText(resourceMap.getString("jTextField3.text")); // NOI18N
         jTextField3.setName("jTextField3"); // NOI18N
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
 
         jTextField4.setText(resourceMap.getString("jTextField4.text")); // NOI18N
         jTextField4.setName("jTextField4"); // NOI18N
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField4KeyTyped(evt);
+            }
+        });
 
         jComboBox1.setName("jComboBox1"); // NOI18N
 
@@ -325,10 +341,11 @@ public class FilmViewNew extends javax.swing.JDialog {
 
         jComboBox12.setName("jComboBox12"); // NOI18N
 
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(FilmViewNew.class, this);
+        jButton2.setAction(actionMap.get("okButton")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(FilmViewNew.class, this);
         jButton3.setAction(actionMap.get("closeFilmView")); // NOI18N
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
         jButton3.setName("jButton3"); // NOI18N
@@ -459,6 +476,7 @@ public class FilmViewNew extends javax.swing.JDialog {
 
         jButton1.setAction(actionMap.get("choiseFile")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
+        jButton1.setEnabled(false);
         jButton1.setName("jButton1"); // NOI18N
 
         jPanel4.setBackground(resourceMap.getColor("jPanel4.background")); // NOI18N
@@ -632,49 +650,21 @@ public class FilmViewNew extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        if ((jTextField3.getText().length() > 3) || (!Character.isDigit(evt.getKeyChar()))) {
+            {
+                evt.consume();
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FilmViewNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FilmViewNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FilmViewNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FilmViewNew.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+    }//GEN-LAST:event_jTextField3KeyTyped
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                FilmViewNew dialog = new FilmViewNew(new javax.swing.JFrame(), true, null);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
+        if ((jTextField4.getText().length() > 2) || (!Character.isDigit(evt.getKeyChar()))) {
+            {
+                evt.consume();
             }
-        });
-    }
+        }
+    }//GEN-LAST:event_jTextField4KeyTyped
 
     @Action
     public void closeFilmView() {
@@ -693,20 +683,166 @@ public class FilmViewNew extends javax.swing.JDialog {
 //                Graphics g = img.createGraphics();
 //                g.drawLine(3, 5, 3, 10);
 //                canvas1.update(g);
-                int w = img.getWidth(), h = img.getHeight();
-                if ((h > 184) || (w > 184)) {
-                    Image newImg;
-                    if (h > w) {
-                        newImg = img.getScaledInstance(Math.round(w * 184f / h), 184, Image.SCALE_DEFAULT);
-                    } else {
-                        //newImg = img.getScaledInstance(184, Math.round(h * 184f / w), Image.SCALE_DEFAULT);
-                        newImg = img.getScaledInstance(w, h, Image.SCALE_DEFAULT);
-                    }
-                    ImageInputStream out = ImageIO.createImageInputStream((Object) newImg);
-                    jTextArea1.setText(jTextArea1.getText() + Byte.toString(out.readByte()));
-                }
+                jPanel4 = new ImagePanel(img);
+//                int w = img.getWidth(), h = img.getHeight();
+//                if ((h > 184) || (w > 184)) {
+//                    Image newImg;
+//                    if (h > w) {
+//                        newImg = img.getScaledInstance(Math.round(w * 184f / h), 184, Image.SCALE_DEFAULT);
+//                    } else {
+//                        //newImg = img.getScaledInstance(184, Math.round(h * 184f / w), Image.SCALE_DEFAULT);
+//                        newImg = img.getScaledInstance(w, h, Image.SCALE_DEFAULT);
+//                    }
+//                    ImageInputStream out = ImageIO.createImageInputStream((Object) newImg);
+//                    jTextArea1.setText(jTextArea1.getText() + Byte.toString(out.readByte()));
+//                }
             } catch (IOException e) {
             }
+        }
+    }
+
+    @Action
+    public void okButton() {
+        String _russianTitle = jTextField1.getText().trim();
+
+        if (_russianTitle.equals(
+                "")) {
+            JOptionPane.showMessageDialog(this, "Не заполнено обязательное поле (Русское зазвание)", "Ошибка!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            String _englishTitle = jTextField2.getText().trim();
+            int _year = 0;
+            String tmpStr = jTextField3.getText();
+            try {
+                if (jTextField3.getText().length() != 0) {
+                    _year = Integer.parseInt(tmpStr);
+                }
+            } catch (Exception e) {
+            }
+            int _length = 0;
+            tmpStr = jTextField4.getText();
+            try {
+                if (jTextField4.getText().length() != 0) {
+                    _length = Integer.parseInt(tmpStr);
+                }
+            } catch (Exception e) {
+            }
+            byte[] _cover = null;
+            boolean _isSeen = (jRadioButton8.isSelected());
+            String _comment = jTextField5.getText().trim();
+            String _description = jTextArea1.getText().trim();
+            ArrayList<String> gnrs = new ArrayList<String>();
+
+            if ((jComboBox1.getSelectedIndex() != 0) && (!gnrs.contains((String) (jComboBox1.getSelectedItem())))) {
+                gnrs.add((String) (jComboBox1.getSelectedItem()));
+            }
+            if ((jComboBox2.getSelectedIndex() != 0) && (!gnrs.contains((String) (jComboBox2.getSelectedItem())))) {
+                gnrs.add((String) (jComboBox2.getSelectedItem()));
+            }
+            if ((jComboBox3.getSelectedIndex() != 0) && (!gnrs.contains((String) (jComboBox3.getSelectedItem())))) {
+                gnrs.add((String) (jComboBox3.getSelectedItem()));
+            }
+            String[] _genres = null;
+
+            if (gnrs.size() != 0) {
+                _genres = gnrs.toArray(new String[1]);
+            }
+            ArrayList<String> cnts = new ArrayList<String>();
+
+
+            if ((jComboBox4.getSelectedIndex() != 0) && (!cnts.contains((String) (jComboBox4.getSelectedItem())))) {
+                cnts.add((String) (jComboBox4.getSelectedItem()));
+            }
+
+
+            if ((jComboBox5.getSelectedIndex() != 0) && (!cnts.contains((String) (jComboBox5.getSelectedItem())))) {
+                cnts.add((String) (jComboBox5.getSelectedItem()));
+            }
+
+
+            if ((jComboBox6.getSelectedIndex() != 0) && (!cnts.contains((String) (jComboBox6.getSelectedItem())))) {
+                cnts.add((String) (jComboBox6.getSelectedItem()));
+            }
+            String[] _countries = null;
+
+
+            if ((cnts.size() == 1) && (cnts.get(0) == "")) {
+                _countries = (String[]) cnts.toArray();
+            }
+            ArrayList<String> sbttls = new ArrayList<String>();
+
+            if ((jComboBox7.getSelectedIndex() != 0) && (!sbttls.contains((String) (jComboBox7.getSelectedItem())))) {
+                sbttls.add((String) (jComboBox7.getSelectedItem()));
+            }
+
+            if ((jComboBox8.getSelectedIndex() != 0) && (!sbttls.contains((String) (jComboBox8.getSelectedItem())))) {
+                sbttls.add((String) (jComboBox8.getSelectedItem()));
+            }
+
+            if ((jComboBox9.getSelectedIndex() != 0) && (!sbttls.contains((String) (jComboBox9.getSelectedItem())))) {
+                sbttls.add((String) (jComboBox9.getSelectedItem()));
+            }
+            String[] _subtitles = null;
+
+            if ((sbttls.size() == 1) && (sbttls.get(0) == "")) {
+                _subtitles = (String[]) sbttls.toArray();
+            }
+            ArrayList<String> sl = new ArrayList<String>();
+
+            if ((jComboBox10.getSelectedIndex() != 0) && (!sl.contains((String) (jComboBox10.getSelectedItem())))) {
+                sl.add((String) (jComboBox10.getSelectedItem()));
+            }
+
+            if ((jComboBox11.getSelectedIndex() != 0) && (!sl.contains((String) (jComboBox11.getSelectedItem())))) {
+                sl.add((String) (jComboBox11.getSelectedItem()));
+            }
+
+            if ((jComboBox12.getSelectedIndex() != 0) && (!sl.contains((String) (jComboBox12.getSelectedItem())))) {
+                sl.add((String) (jComboBox12.getSelectedItem()));
+            }
+            String[] _soundLanguages = null;
+
+
+            if ((sl.size() == 1) && (sl.get(0) == "")) {
+                _soundLanguages = (String[]) sl.toArray();
+            }
+            int _rating = 0;
+
+
+            if (jRadioButton1.isSelected()) {
+                _rating = 0;
+            } else if (jRadioButton2.isSelected()) {
+                _rating = 1;
+            } else if (jRadioButton3.isSelected()) {
+                _rating = 2;
+            } else if (jRadioButton4.isSelected()) {
+                _rating = 3;
+            } else if (jRadioButton5.isSelected()) {
+                _rating = 4;
+            } else if (jRadioButton6.isSelected()) {
+                _rating = 5;
+            }
+
+            if (film == null) {
+                Film retFilm = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
+                        _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
+                //MediatekaView.managers.getFilmsManager().add(retFilm);
+            } else if (film.getID() != 0) {
+                film.setRussianTitle(_russianTitle);
+                film.setEnglishTitle(_englishTitle);
+                film.setYear(_year);
+                film.setDescription(_description);
+                film.setGenres(_genres);
+                film.setCountries(_countries);
+                film.setComment(_comment);
+                film.setLength(_length);
+                film.setRating(_rating);
+                film.setSubtitles(_subtitles);
+                film.setCover(_cover);
+                film.setSoundLanguages(_soundLanguages);
+                film.setIsSeen(_isSeen);
+                //MediatekaView.managers.getFilmsManager().edit(film.getID(), film);
+            }
+            this.dispose();
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
