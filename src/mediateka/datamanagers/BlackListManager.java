@@ -13,7 +13,7 @@ public class BlackListManager implements RecordsManager {
     BlackListManager(String fileName) throws Exception {
         blackList = new Blacklist();
         if (!blackList.load(fileName)) {
-            throw new Exception("Черный список не загружен");
+            throw new Exception("Черный список не загружен!");
         }
     }
 
