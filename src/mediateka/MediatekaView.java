@@ -14,13 +14,17 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.Date;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import mediateka.datamanagers.Managers;
+import mediateka.db.Disc;
 import mediateka.db.Film;
+import mediateka.db.HistoryRecord;
+import mediateka.db.Person;
 import mediateka.db.Record;
 
 /**
@@ -666,24 +670,10 @@ public class MediatekaView extends FrameView {
             int row = jTable1.rowAtPoint(evt.getPoint());
             int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
             //FilmViewNew fv = new FilmViewNew(null, true, managers.getFilmsManager().find(filmID));
-            FilmViewNew fv = new FilmViewNew(
+            HistoryRecordView fv = new HistoryRecordView(
                     null,
                     true,
-                    new Film(
-                    8,
-                    "Титаник",
-                    "Titanik",
-                    1975,
-                    "Фильм о порабле который затонул",
-                    new String[]{"Комедия", "Документальный"},
-                    new String[]{"Россия"},
-                    "Кто-то подарил",
-                    185,
-                    3,
-                    new String[]{"русский"},
-                    new byte[]{1},
-                    new String[]{"русский"},
-                    true));
+                    new HistoryRecord(new Disc(null, 0, Disc.Format.DVD, 1, true), new Person("1", "2", "3", "44", "546"), new Date(2011, 11, 11), new Date(2011, 11, 16), new Date(2011, 11, 21), "qrwf"));
             fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
             MediatekaApp.getApplication().show(fv);
         }
