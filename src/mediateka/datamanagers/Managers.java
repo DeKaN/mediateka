@@ -32,36 +32,11 @@ public class Managers {
 
     private Managers(String blListFile, String discFile, String filmFile,
             String histFile, String persFile) throws Exception {
-        StringBuilder errors = new StringBuilder();
-        try {
-            blListManager = new BlackListManager(blListFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            discsManager = new DiscsManager(discFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            filmsManager = new FilmsManager(filmFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            histManager = new HistoryManager(histFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        try {
-            persManager = new PersonsManager(persFile);
-        } catch (Exception exc) {
-            errors.append(exc.getMessage()).append("\n");
-        }
-        if (errors.length() > 0) {
-            throw new Exception(errors.toString());
-        }
-
+        persManager = new PersonsManager(persFile);
+        filmsManager = new FilmsManager(filmFile);
+        blListManager = new BlackListManager(blListFile);
+        discsManager = new DiscsManager(discFile);
+        histManager = new HistoryManager(histFile);
     }
 
     public BlackListManager getBlListManager() {

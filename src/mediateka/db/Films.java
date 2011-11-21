@@ -146,7 +146,7 @@ public class Films implements Records {
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
 
-                    DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement)elem.element("genres");
+                    DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("genres");
                     String[] genres = new String[elem2.nodeCount()];
                     int i = 0;
                     for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
@@ -154,7 +154,7 @@ public class Films implements Records {
                         genres[i] = node.getText();
                         i++;
                     }
-                    elem2 = (DefaultElement)elem.element("countries");
+                    elem2 = (DefaultElement) elem.element("countries");
                     String[] countries = new String[elem2.nodeCount()];
                     i = 0;
                     for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
@@ -162,7 +162,7 @@ public class Films implements Records {
                         countries[i] = node.getText();
                         i++;
                     }
-                    elem2 = (DefaultElement)elem.element("subtitles");
+                    elem2 = (DefaultElement) elem.element("subtitles");
                     String[] subtitles = new String[elem2.nodeCount()];
                     i = 0;
                     for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
@@ -170,7 +170,7 @@ public class Films implements Records {
                         subtitles[i] = node.getText();
                         i++;
                     }
-                    elem2 = (DefaultElement)elem.element("soundLanguages");
+                    elem2 = (DefaultElement) elem.element("soundLanguages");
                     String[] soundLanguages = new String[elem2.nodeCount()];
                     i = 0;
                     for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
@@ -290,6 +290,6 @@ public class Films implements Records {
     }
 
     public Record[] ToArray() {
-        return (Record[])filmsList.toArray();
+        return (Record[]) filmsList.toArray();
     }
 }
