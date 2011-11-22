@@ -66,6 +66,20 @@
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JButton" name="jButton3">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="mediateka.MediatekaView" id="update" methodName="update"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="0" name="null"/>
+                </Property>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton3" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
@@ -87,7 +101,6 @@
                 <Property name="dividerSize" type="int" value="3"/>
                 <Property name="orientation" type="int" value="0"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="filmPane" noResource="true"/>
               </Properties>
               <Constraints>
@@ -119,87 +132,17 @@
                     <Component class="javax.swing.JTable" name="jTable1">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="8" rowCount="8">
+                          <Table columnCount="8" rowCount="1">
                             <Column editable="false" title="ID" type="java.lang.String">
                               <Data value="1"/>
-                              <Data value="2"/>
-                              <Data value="3"/>
-                              <Data value="4"/>
-                              <Data value="5"/>
-                              <Data value="6"/>
-                              <Data value="7"/>
-                              <Data value="8"/>
                             </Column>
-                            <Column editable="false" title="&#x420;&#x443;&#x441;&#x441;&#x43a;&#x43e;&#x435; &#x43d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.String">
-                              <Data value="2012"/>
-                              <Data value="&#x41e;&#x442; &#x437;&#x430;&#x43a;&#x430;&#x442;&#x430; &#x434;&#x43e; &#x440;&#x430;&#x441;&#x441;&#x432;&#x435;&#x442;&#x430;"/>
-                              <Data value="&#x41f;&#x43e;&#x441;&#x43b;&#x435;&#x437;&#x430;&#x432;&#x442;&#x440;&#x430;"/>
-                              <Data value="&#x412;&#x43e;&#x439;&#x43d;&#x430; &#x43c;&#x438;&#x440;&#x43e;&#x432;"/>
-                              <Data value="&#x41f;&#x440;&#x438;&#x43a;&#x43b;&#x44e;&#x447;&#x435;&#x43d;&#x438;&#x44f; &#x448;&#x443;&#x440;&#x438;&#x43a;&#x430;"/>
-                              <Data value="&#x41a;&#x430;&#x440;&#x442;&#x44b;, &#x434;&#x435;&#x43d;&#x44c;&#x433;&#x438;, &#x434;&#x432;&#x430; &#x441;&#x442;&#x432;&#x43e;&#x43b;&#x430;"/>
-                              <Data value="&#x41c;&#x430;&#x442;&#x440;&#x438;&#x446;&#x430; (1 &#x447;&#x430;&#x441;&#x442;&#x44c;)"/>
-                              <Data value="&#x417;&#x43d;&#x430;&#x43c;&#x435;&#x43d;&#x438;&#x435;"/>
-                            </Column>
-                            <Column editable="false" title="&#x416;&#x430;&#x43d;&#x440;" type="java.lang.String">
-                              <Data value="&#x444;&#x430;&#x43d;&#x442;&#x430;&#x441;&#x442;&#x438;&#x43a;&#x430;, &#x431;&#x43e;&#x435;&#x432;&#x438;&#x43a;, &#x442;&#x440;&#x438;&#x43b;&#x43b;&#x435;&#x440;, &#x434;&#x440;&#x430;&#x43c;&#x430;, &#x43f;&#x440;&#x438;&#x43a;&#x43b;&#x44e;&#x447;&#x435;&#x43d;&#x438;&#x44f;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x434;&#x43e;&#x43b;&#x436;&#x438;&#x442;&#x435;&#x43b;&#x44c;&#x43d;&#x43e;&#x441;&#x442;&#x44c;" type="java.lang.String">
-                              <Data value="158 &#x43c;&#x438;&#x43d;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x413;&#x43e;&#x434;" type="java.lang.String">
-                              <Data value="2009"/>
-                              <Data value="f"/>
-                              <Data value="f"/>
-                              <Data value="hjgjh"/>
-                              <Data value="jhg"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x421;&#x443;&#x431;&#x442;&#x438;&#x442;&#x440;&#x44b;" type="java.lang.String">
-                              <Data value="&#x43d;&#x435;&#x442;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41e;&#x446;&#x435;&#x43d;&#x43a;&#x430;" type="java.lang.String">
-                              <Data value="9/10"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x43d;" type="java.lang.Boolean">
-                              <Data value="true"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
+                            <Column editable="false" title="&#x420;&#x443;&#x441;&#x441;&#x43a;&#x43e;&#x435; &#x43d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x416;&#x430;&#x43d;&#x440;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x434;&#x43e;&#x43b;&#x436;&#x438;&#x442;&#x435;&#x43b;&#x44c;&#x43d;&#x43e;&#x441;&#x442;&#x44c;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x413;&#x43e;&#x434;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x421;&#x443;&#x431;&#x442;&#x438;&#x442;&#x440;&#x44b;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x41e;&#x446;&#x435;&#x43d;&#x43a;&#x430;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x43d;" type="java.lang.Boolean"/>
                           </Table>
                         </Property>
                         <Property name="autoResizeMode" type="int" value="3"/>
@@ -620,7 +563,6 @@
                 <Property name="dividerSize" type="int" value="3"/>
                 <Property name="orientation" type="int" value="0"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="diskPane" noResource="true"/>
               </Properties>
               <Constraints>
@@ -789,7 +731,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title1"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -799,7 +741,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title3"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -809,12 +751,12 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title5"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title6"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1204,7 +1146,6 @@
                 <Property name="dividerSize" type="int" value="3"/>
                 <Property name="orientation" type="int" value="0"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="personPane" noResource="true"/>
               </Properties>
               <Constraints>
@@ -1373,7 +1314,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title1"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1383,7 +1324,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title3"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1393,12 +1334,12 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title5"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title6"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1788,7 +1729,6 @@
                 <Property name="dividerSize" type="int" value="3"/>
                 <Property name="orientation" type="int" value="0"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="blackListPane" noResource="true"/>
               </Properties>
               <Constraints>
@@ -1957,7 +1897,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title1"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1967,7 +1907,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title3"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1977,12 +1917,12 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title5"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title6"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -2369,7 +2309,6 @@
                 <Property name="dividerSize" type="int" value="3"/>
                 <Property name="orientation" type="int" value="0"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
-                <Property name="enabled" type="boolean" value="false"/>
                 <Property name="name" type="java.lang.String" value="historyPane" noResource="true"/>
               </Properties>
               <Constraints>
@@ -2538,7 +2477,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title1"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -2548,7 +2487,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title3"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -2558,12 +2497,12 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title5"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title6"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>

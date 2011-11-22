@@ -41,10 +41,12 @@ public class Films implements Records {
      * @return true, если добавление успешно, иначе false
      */
     public boolean add(Record record) {
+        //TODO make isUnique
         if (find(record) == null) {
             try {
                 Film rec = (Film) record;
                 if (rec.getID() == 0) {
+                    //TODO default visible for setId
                     rec = new Film(autoIndex, rec.getRussianTitle(),
                             rec.getEnglishTitle(), rec.getYear(), rec.getDescription(),
                             rec.getGenres(), rec.getCountries(), rec.getComment(),
@@ -70,8 +72,8 @@ public class Films implements Records {
      * @return true, если удаление успешно, иначе false
      */
     public boolean delete(Record record) {
-        Films f = null;
-        if ((f = (Films) find(record)) != null) {
+        Records f = null;
+        if ((f =  find(record)) != null) {
             filmsList.remove(f.getRecord(0));
             return true;
         }
@@ -85,8 +87,8 @@ public class Films implements Records {
      * @return true, если обновление успешно, иначе false
      */
     public boolean update(Record oldRecord, Record newRecord) {
-        Films f = null;
-        if ((f = (Films) find(oldRecord)) != null) {
+        Records f = null;
+        if ((f = find(oldRecord)) != null) {
             Film f2 = filmsList.get(filmsList.indexOf(f.getRecord(0))),
                     newRec = (Film) newRecord;
             f2.setRussianTitle(newRec.getRussianTitle());
@@ -276,7 +278,7 @@ public class Films implements Records {
         elem.addAttribute("autoIndex", Integer.toString(autoIndex));
         for (Iterator<Film> it = filmsList.iterator(); it.hasNext();) {
             Film film = it.next();
-            elem.addText(film.ToXmlElement().asXML());
+            elem.addText(film.ToXmlElement().asXML());//todo
         }
         return elem;
     }
@@ -290,6 +292,6 @@ public class Films implements Records {
     }
 
     public Record[] ToArray() {
-        return (Record[]) filmsList.toArray();
+        return filmsList.toArray(new Film[1]);        
     }
 }

@@ -56,7 +56,7 @@ public class Discs implements Records {
                     autoIndex++;
                     discsList.add(rec);
                     return true;
-                } else if (find(new Disc(rec.getOwnerID(), null, null)) == null) {
+                } else if (find(new Disc(rec.getOwnerID(), null, null)) == null) {//todo
                     discsList.add(rec);
                     return true;
                 }
@@ -216,7 +216,7 @@ public class Discs implements Records {
         elem.addAttribute("autoIndex", Integer.toString(autoIndex));
         for (Iterator<Disc> it = discsList.iterator(); it.hasNext();) {
             Disc disc = it.next();
-            elem.addText(disc.ToXmlElement().asXML());
+            elem.addText(disc.ToXmlElement().asXML());//todo
         }
         return elem;
     }

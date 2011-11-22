@@ -4,6 +4,7 @@
 package mediateka;
 
 import biz.source_code.base64Coder.Base64Coder;
+import com.sun.org.apache.bcel.internal.util.ClassPath;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -14,20 +15,29 @@ import org.jdesktop.application.FrameView;
 import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Vector;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import mediateka.commands.Command;
+import mediateka.commands.FindDiscCommand;
+import mediateka.commands.FindFilmCommand;
 import mediateka.datamanagers.Managers;
 import mediateka.db.Film;
+import mediateka.db.Record;
 
 /**
  * The application's main frame.
  */
 public class MediatekaView extends FrameView {
 
-    private static final String dir = "D:\\Users\\DeKaN\\Documents\\NetBeansProjects\\mediateka\\XML\\",
+    private static final String appPath = (new File("")).getAbsolutePath();
+    private static final String dir = appPath + "\\XML\\",
             blackListFile = dir + "blacklist.xml",
             discsFile = dir + "discs.xml",
             filmsFile = dir + "films.xml",
@@ -36,39 +46,56 @@ public class MediatekaView extends FrameView {
     public static Managers managers = null;
 
     private void updateInfo(Film film) {
-        String result = "";
-        result = film.getRussianTitle();
-        jTextField1.setText((result.length() == 0) ? "-" : result);
-        jTextField1.setCaretPosition(0);
-        result = film.getEnglishTitle();
-        jTextField2.setText((result.length() == 0) ? "-" : result);
-        jTextField2.setCaretPosition(0);
-        result = Integer.toString(film.getLength());
-        jTextField3.setText((result.length() == 0) ? "-" : result);
-        jTextField3.setCaretPosition(0);
-        result = Integer.toString(film.getYear());
-        jTextField4.setText((result.length() == 0) ? "-" : result);
-        jTextField4.setCaretPosition(0);
-        result = film.getComment();
-        jTextField5.setText((result.length() == 0) ? "-" : result);
-        jTextField5.setCaretPosition(0);
-        result = StringArrayToString(film.getGenres());
-        jTextField6.setText(result);
-        jTextField6.setCaretPosition(0);
-        result = StringArrayToString(film.getCountries());
-        jTextField7.setText(result);
-        jTextField7.setCaretPosition(0);
-        result = StringArrayToString(film.getSubtitles());
-        jTextField8.setText(result);
-        jTextField8.setCaretPosition(0);
-        result = StringArrayToString(film.getSoundLanguages());
-        jTextField9.setText(result);
-        jTextField9.setCaretPosition(0);
-        jLabel12.setText(Integer.toString(film.getRating()));
-        jLabel14.setText((film.isIsSeen()) ? "да" : "нет");
-        result = film.getDescription();
-        jTextArea1.setText((result.length() == 0) ? "-" : result);
-        jTextArea1.setCaretPosition(0);
+        if (film != null) {
+            String result = "";
+            result = film.getRussianTitle();
+            jTextField1.setText((result.length() == 0) ? "-" : result);
+            jTextField1.setCaretPosition(0);
+            result = film.getEnglishTitle();
+            jTextField2.setText((result.length() == 0) ? "-" : result);
+            jTextField2.setCaretPosition(0);
+            result = Integer.toString(film.getLength());
+            jTextField3.setText((result.length() == 0) ? "-" : result);
+            jTextField3.setCaretPosition(0);
+            result = Integer.toString(film.getYear());
+            jTextField4.setText((result.length() == 0) ? "-" : result);
+            jTextField4.setCaretPosition(0);
+            result = film.getComment();
+            jTextField5.setText((result.length() == 0) ? "-" : result);
+            jTextField5.setCaretPosition(0);
+            result = StringArrayToString(film.getGenres());
+            jTextField6.setText(result);
+            jTextField6.setCaretPosition(0);
+            result = StringArrayToString(film.getCountries());
+            jTextField7.setText(result);
+            jTextField7.setCaretPosition(0);
+            result = StringArrayToString(film.getSubtitles());
+            jTextField8.setText(result);
+            jTextField8.setCaretPosition(0);
+            result = StringArrayToString(film.getSoundLanguages());
+            jTextField9.setText(result);
+            jTextField9.setCaretPosition(0);
+            jLabel12.setText(Integer.toString(film.getRating()));
+            jLabel14.setText((film.isIsSeen()) ? "да" : "нет");
+            result = film.getDescription();
+            jTextArea1.setText((result.length() == 0) ? "-" : result);
+            jTextArea1.setCaretPosition(0);
+        } else {
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jTextField5.setText("");
+            jTextField6.setText("");
+            jTextField7.setText("");
+            jTextField8.setText("");
+            jTextField9.setText("");
+            jTextArea1.setText("");
+            jLabel12.setText("");
+            jLabel14.setText("");
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, new Exception("В команду поиска был передан некорректный ID фильма."));
+            //this, "Не заполнено обязательное поле (Русское зазвание)");
+        }
     }
 
     private String StringArrayToString(String[] arr) {
@@ -93,25 +120,9 @@ public class MediatekaView extends FrameView {
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
-                int filmID = Integer.parseInt((String) (jTable1.getValueAt(e.getFirstIndex(), 0)));
-                //FilmViewNew fv = new FilmViewNew(null, true, managers.getFilmsManager().find(filmID));
-
-
-                Film f = new Film(
-                        8,
-                        "24Пираты к2222222арибского моря: сундук мертвеца!!!!!!!!!",
-                        "243Ti222222222tanik",
-                        0,
-                        "243Фильм о по22222222рабле который затонул",
-                        new String[]{"Комед22ия", "Докуме2нтальный", "Докум222ентальный"},
-                        new String[]{"Рос2сия"},
-                        "Кто-то подари0000000000000002л",
-                        0,
-                        0,
-                        new String[]{"рус3ский"},
-                        Base64Coder.decode("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"),
-                        new String[]{"русский"},
-                        true);
+                int filmID = Integer.parseInt((String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
+                Film f = (Film) (new FindFilmCommand().Execute(filmID));
+                //FilmViewNew fv = new FilmViewNew(null, true, f);
                 updateInfo(f);
             }
         });
@@ -175,9 +186,32 @@ public class MediatekaView extends FrameView {
         });
         try {
             managers = Managers.getInstance(blackListFile, discsFile, filmsFile, historyFile, personsFile);
-
+            updateTableFilms();
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void updateTableFilms() {
+        Record[] recs = null;
+        try {
+            recs = managers.getFilmsManager().getRecords();
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (recs != null) {
+            
+//            jTable1.setModel(new javax.swing.table.DefaultTableModel(
+//            new Object [][] { {"1", null, null, null, null, null, null, null} },
+//            new String [] {
+//                "ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"
+//            }
+//        )
+//            DefaultTableModel dtm = (DefaultTableModel) (jTable1.getModel());
+//            for (Record rec : recs) {
+//                dtm.addRow(new String[]{"2", "3", "4", "5", "6"});
+//            }
+//            jTable1.setModel(dtm);
         }
     }
 
@@ -205,6 +239,7 @@ public class MediatekaView extends FrameView {
         standartToolBar = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         filmPane = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -410,6 +445,14 @@ public class MediatekaView extends FrameView {
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton2);
 
+        jButton3.setAction(actionMap.get("update")); // NOI18N
+        jButton3.setIcon(null);
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setName("jButton3"); // NOI18N
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton3);
+
         jTabbedPane1.setMaximumSize(new java.awt.Dimension(32767, 100));
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
 
@@ -417,7 +460,6 @@ public class MediatekaView extends FrameView {
         filmPane.setDividerSize(3);
         filmPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         filmPane.setResizeWeight(1.0);
-        filmPane.setEnabled(false);
         filmPane.setName("filmPane"); // NOI18N
 
         jScrollPane1.setBackground(resourceMap.getColor("jScrollPane1.background")); // NOI18N
@@ -425,14 +467,7 @@ public class MediatekaView extends FrameView {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "2012", "фантастика, боевик, триллер, драма, приключения", "158 мин", "2009", "нет", "9/10", new Boolean(true)},
-                {"2", "От заката до рассвета", null, null, "f", null, null, null},
-                {"3", "Послезавтра", null, null, "f", null, null, null},
-                {"4", "Война миров", null, null, "hjgjh", null, null, null},
-                {"5", "Приключения шурика", null, null, "jhg", null, null, null},
-                {"6", "Карты, деньги, два ствола", null, null, null, null, null, null},
-                {"7", "Матрица (1 часть)", null, null, null, null, null, null},
-                {"8", "Знамение", null, null, null, null, null, null}
+                {"1", null, null, null, null, null, null, null}
             },
             new String [] {
                 "ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"
@@ -720,7 +755,6 @@ public class MediatekaView extends FrameView {
         diskPane.setDividerSize(3);
         diskPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         diskPane.setResizeWeight(1.0);
-        diskPane.setEnabled(false);
         diskPane.setName("diskPane"); // NOI18N
 
         jScrollPane2.setBackground(resourceMap.getColor("jScrollPane2.background")); // NOI18N
@@ -773,17 +807,13 @@ public class MediatekaView extends FrameView {
         jTable2.getColumnModel().getColumn(0).setMaxWidth(40);
         jTable2.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTable2.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable2.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
         jTable2.getColumnModel().getColumn(3).setMinWidth(50);
         jTable2.getColumnModel().getColumn(3).setPreferredWidth(50);
         jTable2.getColumnModel().getColumn(3).setMaxWidth(50);
         jTable2.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable2.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
         jTable2.getColumnModel().getColumn(5).setMinWidth(150);
         jTable2.getColumnModel().getColumn(5).setPreferredWidth(220);
         jTable2.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable2.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
-        jTable2.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
         jTable2.getColumnModel().getColumn(8).setMinWidth(115);
         jTable2.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable2.getColumnModel().getColumn(8).setMaxWidth(115);
@@ -1015,7 +1045,6 @@ public class MediatekaView extends FrameView {
         personPane.setDividerSize(3);
         personPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         personPane.setResizeWeight(1.0);
-        personPane.setEnabled(false);
         personPane.setName("personPane"); // NOI18N
 
         jScrollPane5.setBackground(resourceMap.getColor("jScrollPane5.background")); // NOI18N
@@ -1068,17 +1097,13 @@ public class MediatekaView extends FrameView {
         jTable5.getColumnModel().getColumn(0).setMaxWidth(40);
         jTable5.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTable5.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable5.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
         jTable5.getColumnModel().getColumn(3).setMinWidth(50);
         jTable5.getColumnModel().getColumn(3).setPreferredWidth(50);
         jTable5.getColumnModel().getColumn(3).setMaxWidth(50);
         jTable5.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable5.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
         jTable5.getColumnModel().getColumn(5).setMinWidth(150);
         jTable5.getColumnModel().getColumn(5).setPreferredWidth(220);
         jTable5.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable5.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
-        jTable5.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
         jTable5.getColumnModel().getColumn(8).setMinWidth(115);
         jTable5.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable5.getColumnModel().getColumn(8).setMaxWidth(115);
@@ -1310,7 +1335,6 @@ public class MediatekaView extends FrameView {
         blackListPane.setDividerSize(3);
         blackListPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         blackListPane.setResizeWeight(1.0);
-        blackListPane.setEnabled(false);
         blackListPane.setName("blackListPane"); // NOI18N
 
         jScrollPane3.setBackground(resourceMap.getColor("jScrollPane3.background")); // NOI18N
@@ -1363,17 +1387,13 @@ public class MediatekaView extends FrameView {
         jTable3.getColumnModel().getColumn(0).setMaxWidth(40);
         jTable3.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTable3.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable3.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
         jTable3.getColumnModel().getColumn(3).setMinWidth(50);
         jTable3.getColumnModel().getColumn(3).setPreferredWidth(50);
         jTable3.getColumnModel().getColumn(3).setMaxWidth(50);
         jTable3.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable3.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
         jTable3.getColumnModel().getColumn(5).setMinWidth(150);
         jTable3.getColumnModel().getColumn(5).setPreferredWidth(220);
         jTable3.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable3.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
-        jTable3.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
         jTable3.getColumnModel().getColumn(8).setMinWidth(115);
         jTable3.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable3.getColumnModel().getColumn(8).setMaxWidth(115);
@@ -1604,7 +1624,6 @@ public class MediatekaView extends FrameView {
         historyPane.setDividerSize(3);
         historyPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         historyPane.setResizeWeight(1.0);
-        historyPane.setEnabled(false);
         historyPane.setName("historyPane"); // NOI18N
 
         jScrollPane4.setBackground(resourceMap.getColor("jScrollPane4.background")); // NOI18N
@@ -1657,17 +1676,13 @@ public class MediatekaView extends FrameView {
         jTable4.getColumnModel().getColumn(0).setMaxWidth(40);
         jTable4.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTable4.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable4.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
         jTable4.getColumnModel().getColumn(3).setMinWidth(50);
         jTable4.getColumnModel().getColumn(3).setPreferredWidth(50);
         jTable4.getColumnModel().getColumn(3).setMaxWidth(50);
         jTable4.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable4.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title3")); // NOI18N
         jTable4.getColumnModel().getColumn(5).setMinWidth(150);
         jTable4.getColumnModel().getColumn(5).setPreferredWidth(220);
         jTable4.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable4.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title5")); // NOI18N
-        jTable4.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title6")); // NOI18N
         jTable4.getColumnModel().getColumn(8).setMinWidth(115);
         jTable4.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable4.getColumnModel().getColumn(8).setMaxWidth(115);
@@ -2106,6 +2121,14 @@ public class MediatekaView extends FrameView {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+            int row = jTable1.rowAtPoint(evt.getPoint());
+            int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
+            Film film = (Film) ((new FindFilmCommand()).Execute(filmID));
+            FilmViewNew fv = new FilmViewNew(null, true, film);
+            fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+            MediatekaApp.getApplication().show(fv);
+        }
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
@@ -2144,6 +2167,11 @@ public class MediatekaView extends FrameView {
     public void showRussianName() {
         jTable1.getColumnModel().removeColumn(jTable1.getColumnModel().getColumns().nextElement());
     }
+
+    @Action
+    public void update() {
+        updateTableFilms();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane blackListPane;
     private javax.swing.JMenuItem createMenuItem;
@@ -2156,6 +2184,7 @@ public class MediatekaView extends FrameView {
     private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
