@@ -3,6 +3,8 @@ package mediateka;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mediateka.commands.AddBlRecordCommand;
+import mediateka.commands.EditBlRecordCommand;
 import mediateka.db.BlackListRecord;
 import mediateka.db.Person;
 import mediateka.db.Record;
@@ -156,10 +158,15 @@ public class BlackListRecordView extends javax.swing.JDialog {
             if (record != null) {
                 record.setPerson(p);
                 record.setComment(jTextArea1.getText());
-                MediatekaView.managers.getBlListManager().edit(record.getID(), record);
+                if (!((new EditBlRecordCommand()).Execute(record.getID(), record))) {
+                    throw new Exception("Ошибка при сохранении");
+                }
+                //MediatekaView.managers.getBlListManager().edit(record.getID(), record);
             } else {
                 record = new BlackListRecord(p, jTextArea1.getText());
-                MediatekaView.managers.getBlListManager().add(record);
+                if (!((new AddBlRecordCommand()).Execute(record)))
+                    throw new Exception("Ошибка при добавлении");
+                //MediatekaView.managers.getBlListManager().add(record);
             }
         } catch (Exception ex) {
             Logger.getLogger(BlackListRecordView.class.getName()).log(Level.SEVERE, null, ex);

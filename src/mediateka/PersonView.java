@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import mediateka.commands.AddPersonCommand;
+import mediateka.commands.EditPersonCommand;
 import mediateka.db.Person;
 import org.jdesktop.application.Action;
 
@@ -229,12 +231,17 @@ public class PersonView extends javax.swing.JDialog {
                 pers.setSecondName(jTextField3.getText());
                 pers.setPhone(jFormattedTextField1.getText());
                 pers.setComment(jTextArea1.getText());
-                MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
+                if (!((new EditPersonCommand()).Execute(pers.getID(), pers))) {
+                    throw new Exception("Ошибка при сохранении");
+                }
+                //MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
             } else {
                 pers = new Person(jTextField1.getText(), jTextField2.getText(),
                         jTextField3.getText(), jFormattedTextField1.getText(),
                         jTextArea1.getText());
-                MediatekaView.managers.getPersManager().add(pers);
+                if (!((new AddPersonCommand()).Execute(pers)))
+                    throw new Exception("Ошибка при добавлении");
+                //MediatekaView.managers.getPersManager().add(pers);
             }
         } catch (Exception ex) {
             Logger.getLogger(PersonView.class.getName()).log(Level.SEVERE, null, ex);
