@@ -144,8 +144,10 @@ public class HistoryRecordView extends javax.swing.JDialog {
         jComboBox2.setName("jComboBox2"); // NOI18N
 
         jDateChooser1.setName("jDateChooser1"); // NOI18N
+        jDateChooser1.getDateEditor().setEnabled(false);
 
         jDateChooser2.setName("jDateChooser2"); // NOI18N
+        jDateChooser2.getDateEditor().setEnabled(false);
 
         jDateChooser3.setEnabled(false);
         jDateChooser3.setName("jDateChooser3"); // NOI18N

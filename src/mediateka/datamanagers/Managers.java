@@ -24,7 +24,7 @@ public class Managers {
      * @throws Exception Если хотя бы одна из таблиц не загрузилась
      */
     public static Managers getInstance(String blListFile, String discFile,
-            String filmFile, String histFile, String persFile) throws Exception {
+            String filmFile, String histFile, String persFile) {
         if (instance == null) {
             blFile = blListFile;
             dFile = discFile;
@@ -36,9 +36,7 @@ public class Managers {
         return instance;
     }
 
-    private Managers() throws Exception {
-        persManager = new PersonsManager(pFile);
-        filmsManager = new FilmsManager(fFile);
+    private Managers() {
     }
 
     public BlackListManager getBlListManager() throws Exception {
