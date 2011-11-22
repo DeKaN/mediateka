@@ -5,6 +5,8 @@ import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import mediateka.commands.AddPersonCommand;
+import mediateka.commands.EditPersonCommand;
 import mediateka.db.Person;
 import org.jdesktop.application.Action;
 
@@ -15,6 +17,7 @@ import org.jdesktop.application.Action;
 public class PersonView extends javax.swing.JDialog {
 
     Person pers = null;
+    boolean flag = true;
 
     /** Creates new form PersonView */
     public PersonView(java.awt.Frame parent, boolean modal, Person person) {
@@ -80,10 +83,28 @@ public class PersonView extends javax.swing.JDialog {
                 filter(jTextField3);
             }
         });
+        jFormattedTextField1.getDocument().addDocumentListener(new DocumentListener() {
+
+            public void insertUpdate(DocumentEvent e) {
+                chechNeedFields();
+            }
+
+            public void removeUpdate(DocumentEvent e) {
+                chechNeedFields();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                chechNeedFields();
+            }
+        });
     }
 
     private void filter(JTextField field) {
-        String s = field.getText();
+        flag = !flag;
+        if (flag) {
+            return;
+        }
+        String s = field.getText().trim();
         StringBuilder sb = new StringBuilder();
         char ch = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -93,6 +114,7 @@ public class PersonView extends javax.swing.JDialog {
             }
         }
         field.setText(sb.toString());
+        chechNeedFields();
     }
 
     /** This method is called from within the constructor to
@@ -229,12 +251,18 @@ public class PersonView extends javax.swing.JDialog {
                 pers.setSecondName(jTextField3.getText());
                 pers.setPhone(jFormattedTextField1.getText());
                 pers.setComment(jTextArea1.getText());
-                MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
+                if (!((new EditPersonCommand()).Execute(pers.getID(), pers))) {
+                    throw new Exception("Ошибка при сохранении");
+                }
+                //MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
             } else {
                 pers = new Person(jTextField1.getText(), jTextField2.getText(),
                         jTextField3.getText(), jFormattedTextField1.getText(),
                         jTextArea1.getText());
-                MediatekaView.managers.getPersManager().add(pers);
+                if (!((new AddPersonCommand()).Execute(pers))) {
+                    throw new Exception("Ошибка при добавлении");
+                }
+                //MediatekaView.managers.getPersManager().add(pers);
             }
         } catch (Exception ex) {
             Logger.getLogger(PersonView.class.getName()).log(Level.SEVERE, null, ex);
@@ -261,4 +289,12 @@ public class PersonView extends javax.swing.JDialog {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+    private void chechNeedFields() {
+        jButton1.setEnabled((jTextField1.getText().length() > 0)
+                && (jTextField2.getText().length() > 0)
+                && (jTextField3.getText().length() > 0)
+                && (jFormattedTextField1.getText().length() > 5)
+                && (jFormattedTextField1.getText().length() < 14));
+    }
 }

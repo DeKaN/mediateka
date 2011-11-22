@@ -1,5 +1,11 @@
 package mediateka.datamanagers;
 
+import java.io.FileInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Класс, хранящий и предоставляющий доступ к менеджерам
  * @author DeKaN
@@ -24,7 +30,7 @@ public class Managers {
      * @throws Exception Если хотя бы одна из таблиц не загрузилась
      */
     public static Managers getInstance(String blListFile, String discFile,
-            String filmFile, String histFile, String persFile) throws Exception {
+            String filmFile, String histFile, String persFile) {
         if (instance == null) {
             blFile = blListFile;
             dFile = discFile;
@@ -36,14 +42,15 @@ public class Managers {
         return instance;
     }
 
-    private Managers() throws Exception {
-        persManager = new PersonsManager(pFile);
-        filmsManager = new FilmsManager(fFile);
+    private Managers() {
     }
 
     public BlackListManager getBlListManager() throws Exception {
         if (blListManager == null) {
             getPersManager();
+            if (!ValidateSchema(blFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
+                throw new Exception("Схема черного списка повреждена!");
+            }
             blListManager = new BlackListManager(blFile);
         }
         return blListManager;
@@ -52,6 +59,9 @@ public class Managers {
     public DiscsManager getDiscsManager() throws Exception {
         if (discsManager == null) {
             getFilmsManager();
+            if (!ValidateSchema(dFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
+                throw new Exception("Схема дисков повреждена!");
+            }
             discsManager = new DiscsManager(dFile);
         }
         return discsManager;
@@ -59,6 +69,9 @@ public class Managers {
 
     public FilmsManager getFilmsManager() throws Exception {
         if (filmsManager == null) {
+            if (!ValidateSchema(fFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
+                throw new Exception("Схема фильмов повреждена!");
+            }
             filmsManager = new FilmsManager(fFile);
         }
         return filmsManager;
@@ -68,6 +81,9 @@ public class Managers {
         if (histManager == null) {
             getDiscsManager();
             getPersManager();
+            if (!ValidateSchema(hFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
+                throw new Exception("Схема истории повреждена!");
+            }
             histManager = new HistoryManager(hFile);
         }
         return histManager;
@@ -75,8 +91,33 @@ public class Managers {
 
     public PersonsManager getPersManager() throws Exception {
         if (persManager == null) {
+            if (!ValidateSchema(pFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
+                throw new Exception("Схема персональных данных повреждена!");
+            }
             persManager = new PersonsManager(pFile);
         }
         return persManager;
+    }
+
+    private boolean ValidateSchema(String fileName, String md5) {
+        try {
+            MessageDigest dig = MessageDigest.getInstance("MD5");
+            FileInputStream fs = new FileInputStream(fileName);
+
+            byte[] data = new byte[1024];
+            int readed = 0;
+            while ((readed = fs.read(data)) != -1) {
+                dig.update(data, 0, readed);
+            }
+            byte[] digBytes = dig.digest();
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < digBytes.length; i++) {
+                sb.append(Integer.toString((digBytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            return sb.toString().equals(md5);
+        } catch (Exception ex) {
+            return false;
+        }
     }
 }

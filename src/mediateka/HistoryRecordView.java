@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import mediateka.commands.AddHistRecCommand;
+import mediateka.commands.EditHistRecCommand;
 import mediateka.db.Disc;
 import mediateka.db.HistoryRecord;
 import mediateka.db.Person;
@@ -142,8 +144,10 @@ public class HistoryRecordView extends javax.swing.JDialog {
         jComboBox2.setName("jComboBox2"); // NOI18N
 
         jDateChooser1.setName("jDateChooser1"); // NOI18N
+        jDateChooser1.getDateEditor().setEnabled(false);
 
         jDateChooser2.setName("jDateChooser2"); // NOI18N
+        jDateChooser2.getDateEditor().setEnabled(false);
 
         jDateChooser3.setEnabled(false);
         jDateChooser3.setName("jDateChooser3"); // NOI18N
@@ -267,11 +271,16 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 history.setPromisedDate(jDateChooser2.getDate());
                 history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
                 history.setComment(jTextArea1.getText());
-                MediatekaView.managers.getHistManager().edit(history.getID(), history);
+                if (!((new EditHistRecCommand()).Execute(history.getID(), history))) {
+                    throw new Exception("Ошибка при сохранении");
+                }
+                //MediatekaView.managers.getHistManager().edit(history.getID(), history);
             } else {
                 history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
                         jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
-                MediatekaView.managers.getHistManager().add(history);
+                if (!((new AddHistRecCommand()).Execute(history)))
+                    throw new Exception("Ошибка при добавлении");
+                //MediatekaView.managers.getHistManager().add(history);
             }
         } catch (Exception ex) {
             Logger.getLogger(HistoryRecordView.class.getName()).log(Level.SEVERE, null, ex);
