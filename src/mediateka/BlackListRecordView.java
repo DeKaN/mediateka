@@ -158,7 +158,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
             if (record != null) {
                 record.setPerson(p);
                 record.setComment(jTextArea1.getText());
-                if (!((new EditBlRecordCommand()).Execute(record.getID(), record))) {
+                if (!((new EditBlRecordCommand()).Execute(record))) {
                     throw new Exception("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getBlListManager().edit(record.getID(), record);

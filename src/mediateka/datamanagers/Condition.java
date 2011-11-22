@@ -31,9 +31,9 @@ public class Condition {
         this.conds = conds;
     }
 
-    //TODO необходимо протестить и потом переделать 
+    //TODO необходимо протестить работу
     public boolean isEquals(Record rec) {
-        DOMElement elem = (DOMElement) rec.ToXmlElement();
+        DOMElement elem = (DOMElement) rec.toXmlElement();
         Set<String> keys = conds.keySet();
         boolean retVal = true;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {

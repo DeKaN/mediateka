@@ -26,6 +26,14 @@ public class HistoryRecord implements Record {
     public int getID() {
         return this.recordID;
     }
+    
+    /**
+     * Записать ID записи
+     * @param value 
+     */
+    public void setID(int value) {
+        this.recordID = value;
+    }
 
     /**
      * Получить диск
@@ -40,9 +48,6 @@ public class HistoryRecord implements Record {
      * @param disc Диск, который будет установлен
      */
     public void setDisc(Disc disc) {
-        if (disc == null) {
-            throw new NullPointerException();
-        }
         this.disc = disc;
     }
 
@@ -59,9 +64,6 @@ public class HistoryRecord implements Record {
      * @param person Персональные данные, который будет установлены
      */
     public void setPerson(Person person) {
-        if (person == null) {
-            throw new NullPointerException();
-        }
         this.person = person;
     }
 
@@ -78,9 +80,6 @@ public class HistoryRecord implements Record {
      * @param giveDate Новая дата, когда диск отдан
      */
     public void setGiveDate(Date giveDate) {
-        if (giveDate == null) {
-            throw new NullPointerException();
-        }
         this.giveDate = giveDate;
     }
 
@@ -97,9 +96,6 @@ public class HistoryRecord implements Record {
      * @param promisedDate Новая дата, когда диск обещали вернуть
      */
     public void setPromisedDate(Date promisedDate) {
-        if (promisedDate == null) {
-            throw new NullPointerException();
-        }
         this.promisedDate = promisedDate;
     }
 
@@ -191,7 +187,7 @@ public class HistoryRecord implements Record {
      * Сериализует запись в XML
      * @return Строка с записью, сериализованной в XML element
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("record");
         elem.addAttribute("recordID", Integer.toString(this.recordID));
         elem.addElement("discID").addText(Integer.toString(this.disc.getID()));

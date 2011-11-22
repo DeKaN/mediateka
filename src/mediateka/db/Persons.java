@@ -25,11 +25,11 @@ import org.dom4j.tree.DefaultElement;
 public class Persons implements Records {
 
     private int autoIndex;
-    private ArrayList<Person> personsList;
+    private ArrayList<Record> personsList;
 
     public Persons() {
         autoIndex = 1;
-        personsList = new ArrayList<Person>();
+        personsList = new ArrayList<Record>();
     }
 
     /**
@@ -95,22 +95,10 @@ public class Persons implements Records {
         return false;
     }
 
-    /**
-     * Обновляет запись в таблице с персональными данными
-     * @param oldRecord Старая запись в таблице
-     * @param newRecord Новая запись в таблице
-     * @return true, если обновление прошло успешно, иначе - false
-     */
-    public boolean update(Record oldRecord, Record newRecord) {
+    public boolean update(Record record) {
         Persons pers = null;
-        if ((pers = (Persons) find(oldRecord)) != null) {
-            Person persRec = personsList.get(personsList.indexOf(pers.getRecord(0))),
-                    newRec = (Person) newRecord;
-            persRec.setFirstName(newRec.getFirstName());
-            persRec.setSecondName(newRec.getSecondName());
-            persRec.setLastName(newRec.getFirstName());
-            persRec.setPhone(newRec.getPhone());
-            persRec.setComment(newRec.getComment());
+        if ((pers = (Persons) find(record)) != null) {
+            personsList.set(personsList.indexOf(pers.getRecord(0)), record);
             return true;
         }
         return false;
@@ -151,7 +139,7 @@ public class Persons implements Records {
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
             DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
             autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
-            personsList = new ArrayList<Person>();
+            personsList = new ArrayList<Record>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DefaultElement elem = (DefaultElement) it.next();
                 personsList.add(new Person(
@@ -202,7 +190,7 @@ public class Persons implements Records {
             }
         }
         Condition cond = new Condition(map);
-        for (Person person : personsList) {
+        for (Record person : personsList) {
             if (cond.isEquals(person)) {
                 retVal.add(person);
             }
@@ -219,14 +207,18 @@ public class Persons implements Records {
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         elem.addAttribute("xsi:schemaLocation", "mediateka persons.xsd");
         elem.addAttribute("autoIndex", Integer.toString(autoIndex));
-        for (Iterator<Person> it = personsList.iterator(); it.hasNext();) {
-            Person person = it.next();
-            elem.addText(person.ToXmlElement().asXML());
+        for (Iterator<Record> it = personsList.iterator(); it.hasNext();) {
+            Record person = it.next();
+            elem.add(person.toXmlElement());
         }
         return elem;
     }
 
-    public Record[] ToArray() {
+    public Record[] toArray() {
         return (Record[]) personsList.toArray();
+    }
+
+    public boolean IsUnique(Record record) {
+        return (find(record) == null);
     }
 }

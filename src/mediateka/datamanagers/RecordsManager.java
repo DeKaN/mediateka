@@ -25,11 +25,10 @@ public interface RecordsManager {
 
     /**
      * Обновить запись
-     * @param id ID старой записи
      * @param newData Новая запись
      * @return true, если обновление успешно, иначе false 
      */
-    boolean edit(int id, Record newData);
+    boolean edit(Record newData);
 
     /**
      * Найти записи по ID

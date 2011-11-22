@@ -25,6 +25,14 @@ public class Person implements Record {
     }
 
     /**
+     * Записать ID записи
+     * @param value 
+     */
+    public void setID(int value) {
+        this.personID = value;
+    }
+
+    /**
      * Получить фамилию человека
      * @return Фамилия человека
      */
@@ -143,13 +151,14 @@ public class Person implements Record {
      * @param personID ID человека
      */
     public Person(int personID) {
-    }    
+        this.personID = personID;
+    }
 
     /**
      * Сериализует запись с персональными данными в XML
      * @return Строка с записью, сериализованной в XML element
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("person");
         elem.addAttribute("personID", Integer.toString(this.personID));
         elem.addElement("firstfirstName").addText(this.firstName);
@@ -159,7 +168,7 @@ public class Person implements Record {
         elem.addElement("comment").addText(this.comment);
         return elem;
     }
-    
+
     @Override
     public String toString() {
         return lastName + " " + firstName + " " + secondName;

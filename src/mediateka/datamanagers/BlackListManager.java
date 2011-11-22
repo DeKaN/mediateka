@@ -28,11 +28,11 @@ public class BlackListManager implements RecordsManager {
         return blackList.delete(find(id));
     }
 
-    public boolean edit(int id, Record newData) {
+    public boolean edit(Record newData) {
         if (newData == null) {
             throw new NullPointerException();
         }
-        return blackList.update(find(id), newData);
+        return blackList.update(newData);
     }
 
     public Record find(int id) {
@@ -47,6 +47,6 @@ public class BlackListManager implements RecordsManager {
     }
     
     public Record[] getRecords() {
-        return blackList.ToArray();
+        return blackList.toArray();
     }
 }

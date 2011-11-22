@@ -28,11 +28,11 @@ public class FilmsManager implements RecordsManager {
         return films.delete(find(id));
     }
 
-    public boolean edit(int id, Record newData) {
+    public boolean edit(Record newData) {
         if (newData == null) {
             throw new NullPointerException();
         }
-        return films.update(find(id), newData);
+        return films.update(newData);
     }
 
     public Record find(int id) {
@@ -47,6 +47,6 @@ public class FilmsManager implements RecordsManager {
     }
     
     public Record[] getRecords() {
-        return films.ToArray();
+        return films.toArray();
     }
 }

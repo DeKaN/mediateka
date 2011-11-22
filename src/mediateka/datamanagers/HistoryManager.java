@@ -28,11 +28,11 @@ public class HistoryManager implements RecordsManager {
         return history.delete(find(id));
     }
 
-    public boolean edit(int id, Record newData) {
+    public boolean edit(Record newData) {
         if (newData == null) {
             throw new NullPointerException();
         }
-        return history.update(find(id), newData);
+        return history.update(newData);
     }
 
     public Record find(int id) {
@@ -47,6 +47,6 @@ public class HistoryManager implements RecordsManager {
     }
 
     public Record[] getRecords() {
-        return history.ToArray();
+        return history.toArray();
     }
 }

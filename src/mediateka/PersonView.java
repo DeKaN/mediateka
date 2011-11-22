@@ -251,7 +251,7 @@ public class PersonView extends javax.swing.JDialog {
                 pers.setSecondName(jTextField3.getText());
                 pers.setPhone(jFormattedTextField1.getText());
                 pers.setComment(jTextArea1.getText());
-                if (!((new EditPersonCommand()).Execute(pers.getID(), pers))) {
+                if (!((new EditPersonCommand()).Execute(pers))) {
                     throw new Exception("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getPersManager().edit(pers.getID(), pers);

@@ -23,7 +23,7 @@ public final class Film implements Record {
     private String[] subtitles = null;
     private byte[] cover = null;
     private String[] soundLanguages = null;
-    private boolean isSeen = false;
+    private boolean seen = false;
 
     /**
      * Получить русское название фильма
@@ -39,6 +39,14 @@ public final class Film implements Record {
      */
     public int getID() {
         return this.filmID;
+    }
+    
+    /**
+     * Записать ID записи
+     * @param value 
+     */
+    public void setID(int value) {
+        this.filmID = value;
     }
 
     /**
@@ -229,16 +237,16 @@ public final class Film implements Record {
      * Просмотрен ли фильм
      * @return true если фильм просмотрен
      */
-    public boolean isIsSeen() {
-        return this.isSeen;
+    public boolean isSeen() {
+        return this.seen;
     }
 
     /**
      * Установить факт просмотра
      * @param isSeen Если фильм просмотрен true, иначе - false
      */
-    public void setIsSeen(boolean isSeen) {
-        this.isSeen = isSeen;
+    public void setSeen(boolean isSeen) {
+        this.seen = isSeen;
     }
 
     /**
@@ -280,7 +288,7 @@ public final class Film implements Record {
         this.subtitles = subtitles;
         this.cover = cover;
         this.soundLanguages = soundLanguages;
-        this.isSeen = isSeen;
+        this.seen = isSeen;
     }
 
     /**
@@ -324,7 +332,7 @@ public final class Film implements Record {
      * Сериализует фильм в XML
      * @return Строка с фильмом, сериализованным в XML element
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("film");
         Element tempElem;
         elem.addAttribute("filmID", Integer.toString(filmID));
@@ -356,7 +364,7 @@ public final class Film implements Record {
             tempElem.addElement("soundLanguage").addText(soundLanguages[i]);
         }
         elem.add(tempElem);
-        elem.addElement("isSeen").addText(Boolean.toString(isSeen));
+        elem.addElement("isSeen").addText(Boolean.toString(seen));
         return elem;
 
     }

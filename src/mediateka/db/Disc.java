@@ -1,9 +1,7 @@
 package mediateka.db;
 
-import mediateka.db.Record;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.dom.DOMElement;
 
 /**
@@ -35,7 +33,7 @@ public class Disc implements Record {
     private int ownerID = 0;
     private Format format = null;
     private int regionCode = 0;
-    private boolean isPresented = true;
+    private boolean presented = true;
 
     /**
      * Получить ID диска
@@ -45,6 +43,14 @@ public class Disc implements Record {
         return this.discID;
     }
 
+    /**
+     * Записать ID записи
+     * @param value 
+     */
+    public void setID(int value) {
+        this.discID = value;
+    }
+    
     /**
      * Получить все фильмы на диске
      * @return Фильмы
@@ -58,9 +64,6 @@ public class Disc implements Record {
      * @param films Фильмы которые будут установлены
      */
     public void setFilms(Films films) {
-        if (films == null) {
-            throw new NullPointerException();
-        }
         this.films = films;
     }
 
@@ -85,9 +88,6 @@ public class Disc implements Record {
      * @param format Новый формат диска
      */
     public void setFormat(Format format) {
-        if (format == null) {
-            throw new NullPointerException();
-        }
         this.format = format;
     }
 
@@ -111,16 +111,16 @@ public class Disc implements Record {
      * В наличии ли диск
      * @return Возвращает true если диск в наличии
      */
-    public boolean isIsPresented() {
-        return this.isPresented;
+    public boolean isPresented() {
+        return this.presented;
     }
 
     /**
      * Устанавливает наличие диска в коллекции
      * @param isPresented Если диск в наличии - true, иначе false
      */
-    public void setIsPresented(boolean isPresented) {
-        this.isPresented = isPresented;
+    public void setPresented(boolean isPresented) {
+        this.presented = isPresented;
     }
 
     /**
@@ -177,27 +177,27 @@ public class Disc implements Record {
         this.ownerID = ownerID;
         this.format = format;
         this.regionCode = discRegion;
-        this.isPresented = presented;
+        this.presented = presented;
     }
 
     /**
      * Сериализует диск в XML
      * @return Строка с диском, сериализованным в XML element
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("disc");
         elem.addAttribute("discID", Integer.toString(this.discID));
         elem.addElement("ownerID").addText(Integer.toString(this.ownerID));
         elem.addElement("format").addText(this.format.toString());
         elem.addElement("regionCode").addText(Integer.toString(regionCode));
-        elem.addElement("isPresent").addText(Boolean.toString(isPresented));
+        elem.addElement("isPresent").addText(Boolean.toString(presented));
         elem.addElement("films").addText(this.films.toXmlElement().asXML());
         return elem;
     }
 
     @Override
     public String toString() {
-        Record[] fis = films.ToArray();
+        Record[] fis = films.toArray();
         String[] str = new String[fis.length];
         int i = 0;
         for (Record record : fis) {

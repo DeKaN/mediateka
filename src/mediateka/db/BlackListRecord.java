@@ -22,6 +22,14 @@ public class BlackListRecord implements Record {
     }
 
     /**
+     * Записать ID записи
+     * @param value 
+     */
+    public void setID(int value) {
+        this.recordID = value;
+    }
+
+    /**
      * Получить персональные данные
      * @return Персональные данные
      */
@@ -34,9 +42,6 @@ public class BlackListRecord implements Record {
      * @param person Персональные данные, которые будет установлены
      */
     public void setPerson(Person person) {
-        if (person == null) {
-            throw new NullPointerException();
-        }
         this.person = person;
     }
 
@@ -97,7 +102,7 @@ public class BlackListRecord implements Record {
      * Сериализует запись в XML
      * @return Строка с записью, сериализованной в XML element
      */
-    public Element ToXmlElement() {
+    public Element toXmlElement() {
         Element elem = new DOMElement("record");
         elem.addAttribute("recordID", Integer.toString(this.recordID));
         elem.addElement("personID").addText(Integer.toString(this.person.getID()));

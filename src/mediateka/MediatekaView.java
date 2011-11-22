@@ -3,8 +3,6 @@
  */
 package mediateka;
 
-import biz.source_code.base64Coder.Base64Coder;
-import com.sun.org.apache.bcel.internal.util.ClassPath;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -16,16 +14,11 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Vector;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
-import mediateka.commands.Command;
-import mediateka.commands.FindDiscCommand;
 import mediateka.commands.FindFilmCommand;
 import mediateka.datamanagers.Managers;
 import mediateka.db.Film;
@@ -76,7 +69,7 @@ public class MediatekaView extends FrameView {
             jTextField9.setText(result);
             jTextField9.setCaretPosition(0);
             jLabel12.setText(Integer.toString(film.getRating()));
-            jLabel14.setText((film.isIsSeen()) ? "да" : "нет");
+            jLabel14.setText((film.isSeen()) ? "да" : "нет");
             result = film.getDescription();
             jTextArea1.setText((result.length() == 0) ? "-" : result);
             jTextArea1.setCaretPosition(0);

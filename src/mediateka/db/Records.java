@@ -21,6 +21,13 @@ public interface Records {
      * @return Количество записей
      */
     int size();
+    
+    /**
+     * Проверяет уникальность записи
+     * @param record Запись для проверки
+     * @return true, если запись отсутствует в базе, иначе false
+     */
+    boolean IsUnique(Record record);
 
     /**
      * Добавить запись в таблицу
@@ -38,11 +45,10 @@ public interface Records {
 
     /**
      * Заменить запись в таблице новой записью
-     * @param oldRecord Старая запись (уже имеется в таблице)
-     * @param newRecord Новая запись (будет записана поверх старой)
+     * @param record Запись, которой будет заменена имеющаяся
      * @return true, если обновление успешно, иначе false
      */
-    boolean update(Record oldRecord, Record newRecord);
+    boolean update(Record record);
 
     /**
      * Сохранение в XML
@@ -54,9 +60,10 @@ public interface Records {
     /**
      * Загрузка из XML с валидацией
      * @param fileName Имя файла, из которого будет загружен XML
-     * @return true, если загрузка завершилась успешно, иначе false 
+     * @return true, если загрузка завершилась успешно, иначе false
+     * @throws LoadException Если не удалось загрузить файл 
      */
-    boolean load(String fileName);
+    boolean load(String fileName) throws LoadException;
 
     /**
      * Найти записи в таблице, подходящие под шаблон
@@ -70,10 +77,11 @@ public interface Records {
      * @return Строка с таблицей, сериализованной в XML element
      */
     Element toXmlElement();
-    
+
     /**
      * Преобразует в массив
      * @return Массив из записей
      */
-    Record[] ToArray();
+    @Deprecated
+    Record[] toArray();
 }

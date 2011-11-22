@@ -28,11 +28,11 @@ public class DiscsManager implements RecordsManager {
         return discs.delete(find(id));
     }
 
-    public boolean edit(int id, Record newData) {
+    public boolean edit(Record newData) {
         if (newData == null) {
             throw new NullPointerException();
         }
-        return discs.update(find(id), newData);
+        return discs.update(newData);
     }
 
     public Record find(int id) {
@@ -47,6 +47,6 @@ public class DiscsManager implements RecordsManager {
     }
     
     public Record[] getRecords() {
-        return discs.ToArray();
+        return discs.toArray();
     }
 }

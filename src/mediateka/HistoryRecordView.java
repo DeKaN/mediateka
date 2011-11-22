@@ -271,7 +271,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 history.setPromisedDate(jDateChooser2.getDate());
                 history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
                 history.setComment(jTextArea1.getText());
-                if (!((new EditHistRecCommand()).Execute(history.getID(), history))) {
+                if (!((new EditHistRecCommand()).Execute(history))) {
                     throw new Exception("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getHistManager().edit(history.getID(), history);

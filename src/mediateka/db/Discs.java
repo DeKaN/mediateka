@@ -28,11 +28,11 @@ import org.dom4j.tree.DefaultElement;
 public class Discs implements Records {
 
     private int autoIndex = 1;
-    private ArrayList<Disc> discsList = null;
+    private ArrayList<Record> discsList = null;
 
     public Discs() {
         autoIndex = 1;
-        discsList = new ArrayList<Disc>();
+        discsList = new ArrayList<Record>();
     }
 
     /**
@@ -51,7 +51,7 @@ public class Discs implements Records {
                             rec.getOwnerID(),
                             rec.getFormat(),
                             rec.getRegionCode(),
-                            rec.isIsPresented());
+                            rec.isPresented());
 
                     autoIndex++;
                     discsList.add(rec);
@@ -81,21 +81,10 @@ public class Discs implements Records {
         return false;
     }
 
-    /**
-     * Обновляет диск в коллекции
-     * @param oldDisc Старое описание диска
-     * @param newDisc Новое описание диска
-     * @return true, если обновление успешно, иначе false
-     */
-    public boolean update(Record oldDisc, Record newDisc) {
+    public boolean update(Record disc) {
         Discs discs = null;
-        if ((discs = (Discs) find(oldDisc)) != null) {
-            Disc disc = discsList.get(discsList.indexOf(discs.getRecord(0))),
-                    newDsk = (Disc) newDisc;
-            disc.setFilms(newDsk.getFilms());
-            disc.setFormat(newDsk.getFormat());
-            disc.setIsPresented(newDsk.isIsPresented());
-            disc.setRegionCode(newDsk.getRegionCode());
+        if ((discs = (Discs) find(disc)) != null) {
+            discsList.set(discsList.indexOf(discs.getRecord(0)), disc);
             return true;
         }
         return false;
@@ -136,7 +125,7 @@ public class Discs implements Records {
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
             DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
             autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
-            discsList = new ArrayList<Disc>();
+            discsList = new ArrayList<Record>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
                     DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("films");
@@ -194,10 +183,10 @@ public class Discs implements Records {
             if (region != 0) {
                 map.put("regionCode", Integer.toString(region));
             }
-            map.put("isPresent", Boolean.toString(disc.isIsPresented()));
+            map.put("isPresent", Boolean.toString(disc.isPresented()));
         }
         Condition cond = new Condition(map);
-        for (Disc d : discsList) {
+        for (Record d : discsList) {
             if (cond.isEquals(d)) {
                 retVal.add(d);
             }
@@ -214,9 +203,9 @@ public class Discs implements Records {
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         elem.addAttribute("xsi:schemaLocation", "mediateka films.xsd");
         elem.addAttribute("autoIndex", Integer.toString(autoIndex));
-        for (Iterator<Disc> it = discsList.iterator(); it.hasNext();) {
-            Disc disc = it.next();
-            elem.addText(disc.ToXmlElement().asXML());//todo
+        for (Iterator<Record> it = discsList.iterator(); it.hasNext();) {
+            Record disc = it.next();
+            elem.add(disc.toXmlElement());//todo
         }
         return elem;
     }
@@ -239,7 +228,11 @@ public class Discs implements Records {
         return discsList.size();
     }
 
-    public Record[] ToArray() {
+    public Record[] toArray() {
         return (Record[]) discsList.toArray();
+    }
+
+    public boolean IsUnique(Record record) {
+        return (find(record) == null);
     }
 }

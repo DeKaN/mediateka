@@ -28,11 +28,11 @@ import org.dom4j.tree.DefaultElement;
 public class Films implements Records {
 
     private int autoIndex;
-    private ArrayList<Film> filmsList;
+    private ArrayList<Record> filmsList;
 
     public Films() {
         autoIndex = 1;
-        filmsList = new ArrayList<Film>();
+        filmsList = new ArrayList<Record>();
     }
 
     /**
@@ -51,7 +51,7 @@ public class Films implements Records {
                             rec.getEnglishTitle(), rec.getYear(), rec.getDescription(),
                             rec.getGenres(), rec.getCountries(), rec.getComment(),
                             rec.getLength(), rec.getRating(), rec.getSubtitles(),
-                            rec.getCover(), rec.getSoundLanguages(), rec.isIsSeen());
+                            rec.getCover(), rec.getSoundLanguages(), rec.isSeen());
                     autoIndex++;
                     filmsList.add(rec);
                     return true;
@@ -73,37 +73,17 @@ public class Films implements Records {
      */
     public boolean delete(Record record) {
         Records f = null;
-        if ((f =  find(record)) != null) {
+        if ((f = find(record)) != null) {
             filmsList.remove(f.getRecord(0));
             return true;
         }
         return false;
     }
 
-    /**
-     * Обновляет запись фильма в таблице
-     * @param oldRecord Текущая запись
-     * @param newRecord Новая запись
-     * @return true, если обновление успешно, иначе false
-     */
-    public boolean update(Record oldRecord, Record newRecord) {
+    public boolean update(Record record) {
         Records f = null;
-        if ((f = find(oldRecord)) != null) {
-            Film f2 = filmsList.get(filmsList.indexOf(f.getRecord(0))),
-                    newRec = (Film) newRecord;
-            f2.setRussianTitle(newRec.getRussianTitle());
-            f2.setEnglishTitle(newRec.getEnglishTitle());
-            f2.setYear(newRec.getYear());
-            f2.setDescription(newRec.getDescription());
-            f2.setGenres(newRec.getGenres());
-            f2.setCountries(newRec.getCountries());
-            f2.setComment(newRec.getComment());
-            f2.setLength(newRec.getLength());
-            f2.setRating(newRec.getRating());
-            f2.setSubtitles(newRec.getSubtitles());
-            f2.setCover(newRec.getCover());
-            f2.setSoundLanguages(newRec.getSoundLanguages());
-            f2.setIsSeen(newRec.isIsSeen());
+        if ((f = find(record)) != null) {
+            filmsList.set(filmsList.indexOf(f.getRecord(0)), record);
             return true;
         }
         return false;
@@ -144,7 +124,7 @@ public class Films implements Records {
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
             DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
             autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
-            filmsList = new ArrayList<Film>();
+            filmsList = new ArrayList<Record>();
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
 
@@ -256,10 +236,10 @@ public class Films implements Records {
             if (rec.getSoundLanguages() != null) {
                 map.put("soundLanguage", StringUtils.join(rec.getSoundLanguages(), ','));
             }
-            map.put("isSeen", Boolean.toString(rec.isIsSeen()));
+            map.put("isSeen", Boolean.toString(rec.isSeen()));
         }
         Condition cond = new Condition(map);
-        for (Film film : filmsList) {
+        for (Record film : filmsList) {
             if (cond.isEquals(film)) {
                 retVal.add(film);
             }
@@ -276,9 +256,9 @@ public class Films implements Records {
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         elem.addAttribute("xsi:schemaLocation", "mediateka films.xsd");
         elem.addAttribute("autoIndex", Integer.toString(autoIndex));
-        for (Iterator<Film> it = filmsList.iterator(); it.hasNext();) {
-            Film film = it.next();
-            elem.addText(film.ToXmlElement().asXML());//todo
+        for (Iterator<Record> it = filmsList.iterator(); it.hasNext();) {
+            Record film = it.next();
+            elem.add(film.toXmlElement());
         }
         return elem;
     }
@@ -291,7 +271,11 @@ public class Films implements Records {
         return filmsList.size();
     }
 
-    public Record[] ToArray() {
-        return filmsList.toArray(new Film[1]);        
+    public Record[] toArray() {
+        return filmsList.toArray(new Film[1]);
+    }
+    
+    public boolean IsUnique(Record record) {
+        return (find(record) == null);
     }
 }

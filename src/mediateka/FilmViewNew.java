@@ -10,32 +10,19 @@
  */
 package mediateka;
 
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
-import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageFilter;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-import javax.imageio.stream.ImageOutputStream;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.filechooser.FileSystemView;
 import mediateka.db.Film;
-import mediateka.db.Record;
 import org.jdesktop.application.Action;
 
 /**
@@ -178,7 +165,7 @@ public class FilmViewNew extends javax.swing.JDialog {
                     jRadioButton6.setSelected(true);
                     break;
             }
-            jRadioButton8.setSelected((film).isIsSeen());
+            jRadioButton8.setSelected((film).isSeen());
 
             //TODO paste code here
         }
@@ -839,7 +826,7 @@ public class FilmViewNew extends javax.swing.JDialog {
                 film.setSubtitles(_subtitles);
                 film.setCover(_cover);
                 film.setSoundLanguages(_soundLanguages);
-                film.setIsSeen(_isSeen);
+                film.setSeen(_isSeen);
                 //MediatekaView.managers.getFilmsManager().edit(film.getID(), film);
             }
             this.dispose();

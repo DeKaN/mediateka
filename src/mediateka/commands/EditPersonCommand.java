@@ -9,9 +9,9 @@ import mediateka.db.Record;
  */
 public class EditPersonCommand implements EditCommand {
 
-    public boolean Execute(int id, Record record) {
+    public boolean Execute(Record record) {
         try {
-            return MediatekaView.managers.getPersManager().edit(id, record);
+            return MediatekaView.managers.getPersManager().edit(record);
         } catch (Exception ex) {
             return false;
         }

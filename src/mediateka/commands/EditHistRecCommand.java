@@ -9,9 +9,9 @@ import mediateka.db.Record;
  */
 public class EditHistRecCommand implements EditCommand {
 
-    public boolean Execute(int id, Record record) {
+    public boolean Execute(Record record) {
         try {
-            return MediatekaView.managers.getHistManager().edit(id, record);
+            return MediatekaView.managers.getHistManager().edit(record);
         } catch (Exception ex) {
             return false;
         }

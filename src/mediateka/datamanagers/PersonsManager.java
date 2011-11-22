@@ -28,11 +28,11 @@ public class PersonsManager implements RecordsManager {
         return persons.delete(find(id));
     }
 
-    public boolean edit(int id, Record newData) {
+    public boolean edit(Record newData) {
         if (newData == null) {
             throw new NullPointerException();
         }
-        return persons.update(find(id), newData);
+        return persons.update(newData);
     }
 
     public Record find(int id) {
@@ -47,6 +47,6 @@ public class PersonsManager implements RecordsManager {
     }
     
     public Record[] getRecords() {
-        return persons.ToArray();
+        return persons.toArray();
     }
 }
