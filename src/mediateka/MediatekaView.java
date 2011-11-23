@@ -30,12 +30,6 @@ import mediateka.db.Record;
 public class MediatekaView extends FrameView {
 
     private static final String appPath = (new File("")).getAbsolutePath();
-    private static final String dir = appPath + "\\XML\\",
-            blackListFile = dir + "blacklist.xml",
-            discsFile = dir + "discs.xml",
-            filmsFile = dir + "films.xml",
-            historyFile = dir + "history.xml",
-            personsFile = dir + "persons.xml";
     public static Managers managers = null;
 
     private void updateInfo(Film film) {
@@ -86,8 +80,6 @@ public class MediatekaView extends FrameView {
             jTextArea1.setText("");
             jLabel12.setText("");
             jLabel14.setText("");
-            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, new Exception("В команду поиска был передан некорректный ID фильма."));
-            //this, "Не заполнено обязательное поле (Русское зазвание)");
         }
     }
 
@@ -177,12 +169,8 @@ public class MediatekaView extends FrameView {
                 }
             }
         });
-        try {
-            managers = Managers.getInstance(blackListFile, discsFile, filmsFile, historyFile, personsFile);
-            updateTableFilms();
-        } catch (Exception ex) {
-            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        managers = Managers.getInstance();
+        updateTableFilms();
     }
 
     private void updateTableFilms() {
@@ -193,7 +181,6 @@ public class MediatekaView extends FrameView {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
         if (recs != null) {
-            
 //            jTable1.setModel(new javax.swing.table.DefaultTableModel(
 //            new Object [][] { {"1", null, null, null, null, null, null, null} },
 //            new String [] {

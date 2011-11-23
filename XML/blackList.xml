@@ -2,12 +2,12 @@
 <blackList xmlns="mediateka"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="mediateka blackList.xsd" autoIndex="3">
-   <record recordID="1">
-		<personID>1</personID>
-		<comment>qwer</comment>
-	</record>
-	<record recordID="2">
-		<personID>4</personID>
-		<comment>qwer</comment>
-	</record>
+    <record recordID="1">
+        <personID>1</personID>
+        <comment>qwer</comment>
+    </record>
+    <record recordID="2">
+        <personID>4</personID>
+        <comment>qwer</comment>
+    </record>
 </blackList>

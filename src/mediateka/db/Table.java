@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.dom4j.Document;
@@ -126,8 +127,7 @@ public abstract class Table implements Records {
         return elem;
     }
 
-    @Deprecated
-    public Record[] toArray() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Record> toArray() {
+        return (List<Record>)recordsList.clone();
     }
 }

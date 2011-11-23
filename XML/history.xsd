@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns="mediateka" targetNamespace="mediateka" xmlns:xs="http://www.w3.org/2001/XMLSchema"
  elementFormDefault="qualified" attributeFormDefault="unqualified">
-  <xs:element name="history">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="record" maxOccurs="unbounded"/>
-      </xs:sequence>
-      <xs:attribute name="autoIndex" type="xs:positiveInteger" use="required"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="record">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="discID"/>
-        <xs:element ref="personID"/>
-        <xs:element ref="comment"/>
-        <xs:element ref="dateOfIssue"/>
-        <xs:element ref="dateOfReturn"/>
-        <xs:element ref="promisingDate"/>
-      </xs:sequence>
-      <xs:attribute name="recordID" type="xs:positiveInteger" use="required"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="discID" type="xs:positiveInteger"/>
-  <xs:element name="personID" type="xs:positiveInteger"/>
-  <xs:element name="comment" type="xs:string"/>
-  <xs:element name="dateOfIssue" type="xs:date"/>
-  <xs:element name="dateOfReturn" type="xs:date"/>
-  <xs:element name="promisingDate" type="xs:date"/>
+    <xs:element name="history">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="record" maxOccurs="unbounded"/>
+            </xs:sequence>
+            <xs:attribute name="autoIndex" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="record">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="discID"/>
+                <xs:element ref="personID"/>
+                <xs:element ref="comment"/>
+                <xs:element ref="dateOfIssue"/>
+                <xs:element ref="dateOfReturn"/>
+                <xs:element ref="promisingDate"/>
+            </xs:sequence>
+            <xs:attribute name="recordID" type="xs:positiveInteger" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="discID" type="xs:positiveInteger"/>
+    <xs:element name="personID" type="xs:positiveInteger"/>
+    <xs:element name="comment" type="xs:string"/>
+    <xs:element name="dateOfIssue" type="xs:date"/>
+    <xs:element name="dateOfReturn" type="xs:date"/>
+    <xs:element name="promisingDate" type="xs:date"/>
 </xs:schema>
 

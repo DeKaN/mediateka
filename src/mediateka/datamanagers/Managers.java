@@ -2,9 +2,7 @@ package mediateka.datamanagers;
 
 import java.io.FileInputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import mediateka.db.LoadException;
 
 /**
  * Класс, хранящий и предоставляющий доступ к менеджерам
@@ -12,31 +10,41 @@ import java.util.logging.Logger;
  */
 public class Managers {
 
+    private class ManagerInfo {
+
+        String xmlFile = "",
+                xsdFile = "",
+                xsdHash = "";
+
+        ManagerInfo(String fileXML, String hashXSD) {
+            xmlFile = fileXML;
+            xsdFile = fileXML.replace(".xml", ".xsd");
+            xsdHash = hashXSD;
+        }
+    }
     BlackListManager blListManager = null;
     DiscsManager discsManager = null;
     FilmsManager filmsManager = null;
     HistoryManager histManager = null;
     PersonsManager persManager = null;
-    private static String blFile = "", dFile = "", fFile = "", hFile = "", pFile = "";
+    private static final String dir = ".\\XML\\",//TODO after debug change to %APPDATA%\mediateka
+            blFile = dir + "blacklist.xml",
+            dFile = dir + "discs.xml",
+            fFile = dir + "films.xml",
+            hFile = dir + "history.xml",
+            pFile = dir + "persons.xml";
+    ManagerInfo blInfo = new ManagerInfo(blFile, "1af05a1e6032f60e51dcb81661de3ddb"),
+            dInfo = new ManagerInfo(dFile, "b22bccb075b5a73231007d3c6adbe20b"),
+            fInfo = new ManagerInfo(fFile, "b831cbb576a79477f1ac358ff93f9dca"),
+            hInfo = new ManagerInfo(hFile, "e0723e6d32d83f3b293d03c262432e48"),
+            pInfo = new ManagerInfo(pFile, "1aa533d2d9c64cb0c8458a956e647316");
     private static Managers instance = null;
 
     /**
      * Возвращает объект класса
-     * @param blListFile XML файл, с таблицей BlackList
-     * @param discFile XML файл, с таблицей Discs
-     * @param filmFile XML файл, с таблицей Films
-     * @param histFile XML файл, с таблицей History
-     * @param persFile XML файл, с таблицей Persons
-     * @throws Exception Если хотя бы одна из таблиц не загрузилась
      */
-    public static Managers getInstance(String blListFile, String discFile,
-            String filmFile, String histFile, String persFile) {
+    public static Managers getInstance() {
         if (instance == null) {
-            blFile = blListFile;
-            dFile = discFile;
-            fFile = filmFile;
-            hFile = histFile;
-            pFile = persFile;
             instance = new Managers();
         }
         return instance;
@@ -48,8 +56,8 @@ public class Managers {
     public BlackListManager getBlListManager() throws Exception {
         if (blListManager == null) {
             getPersManager();
-            if (!ValidateSchema(blFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
-                throw new Exception("Схема черного списка повреждена!");
+            if (!ValidateSchema(blInfo)) {
+                throw new LoadException("Схема черного списка повреждена!");
             }
             blListManager = new BlackListManager(blFile);
         }
@@ -59,8 +67,8 @@ public class Managers {
     public DiscsManager getDiscsManager() throws Exception {
         if (discsManager == null) {
             getFilmsManager();
-            if (!ValidateSchema(dFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
-                throw new Exception("Схема дисков повреждена!");
+            if (!ValidateSchema(dInfo)) {
+                throw new LoadException("Схема дисков повреждена!");
             }
             discsManager = new DiscsManager(dFile);
         }
@@ -69,8 +77,8 @@ public class Managers {
 
     public FilmsManager getFilmsManager() throws Exception {
         if (filmsManager == null) {
-            if (!ValidateSchema(fFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
-                throw new Exception("Схема фильмов повреждена!");
+            if (!ValidateSchema(fInfo)) {
+                throw new LoadException("Схема фильмов повреждена!");
             }
             filmsManager = new FilmsManager(fFile);
         }
@@ -81,8 +89,8 @@ public class Managers {
         if (histManager == null) {
             getDiscsManager();
             getPersManager();
-            if (!ValidateSchema(hFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
-                throw new Exception("Схема истории повреждена!");
+            if (!ValidateSchema(hInfo)) {
+                throw new LoadException("Схема истории повреждена!");
             }
             histManager = new HistoryManager(hFile);
         }
@@ -91,18 +99,18 @@ public class Managers {
 
     public PersonsManager getPersManager() throws Exception {
         if (persManager == null) {
-            if (!ValidateSchema(pFile.replace(".xml", ".xsd"), "0123456789abcdef0123456789abcdef")) {
-                throw new Exception("Схема персональных данных повреждена!");
+            if (!ValidateSchema(pInfo)) {
+                throw new LoadException("Схема персональных данных повреждена!");
             }
             persManager = new PersonsManager(pFile);
         }
         return persManager;
     }
 
-    private boolean ValidateSchema(String fileName, String md5) {
+    private boolean ValidateSchema(ManagerInfo info) {
         try {
             MessageDigest dig = MessageDigest.getInstance("MD5");
-            FileInputStream fs = new FileInputStream(fileName);
+            FileInputStream fs = new FileInputStream(info.xsdFile);
 
             byte[] data = new byte[1024];
             int readed = 0;
@@ -115,7 +123,7 @@ public class Managers {
             for (int i = 0; i < digBytes.length; i++) {
                 sb.append(Integer.toString((digBytes[i] & 0xff) + 0x100, 16).substring(1));
             }
-            return sb.toString().equals(md5);
+            return sb.toString().equals(info.xsdHash);
         } catch (Exception ex) {
             return false;
         }

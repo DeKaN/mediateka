@@ -1,5 +1,6 @@
 package mediateka.db;
 
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.dom4j.dom.DOMElement;
@@ -197,8 +198,8 @@ public class Disc implements Record {
 
     @Override
     public String toString() {
-        Record[] fis = films.toArray();
-        String[] str = new String[fis.length];
+        List<Record> fis = films.toArray();
+        String[] str = new String[fis.size()];
         int i = 0;
         for (Record record : fis) {
             str[i] = ((Film) record).toString();

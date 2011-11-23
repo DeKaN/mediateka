@@ -2,19 +2,19 @@
 <persons xmlns="mediateka"
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="mediateka persons.xsd" autoIndex="3">
-   <person personID="1">
-		<firstName>Alex</firstName>
-		<lastName>John</lastName>
-		<secondName>Smith</secondName>
-		<phoneNumber>12345678</phoneNumber>
-                <comment>SomeComment1</comment>
-	</person>
-	<person personID="2">
-		<firstName>Mitrich</firstName>
-		<lastName>Alex</lastName>
-		<secondName>Smith</secondName>
-		<phoneNumber>12345678</phoneNumber>
-                <comment>SomeComment2</comment>
-	</person>
+    <person personID="1">
+        <firstName>Alex</firstName>
+        <lastName>John</lastName>
+        <secondName>Smith</secondName>
+        <phoneNumber>12345678</phoneNumber>
+        <comment>SomeComment1</comment>
+    </person>
+    <person personID="2">
+        <firstName>Mitrich</firstName>
+        <lastName>Alex</lastName>
+        <secondName>Smith</secondName>
+        <phoneNumber>12345678</phoneNumber>
+        <comment>SomeComment2</comment>
+    </person>
 </persons>
 

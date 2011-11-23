@@ -1,5 +1,6 @@
 package mediateka.db;
 
+import java.util.List;
 import org.dom4j.Element;
 
 /**
@@ -86,9 +87,8 @@ public interface Records {
     Element toXmlElement();
 
     /**
-     * Преобразует в массив
-     * @return Массив из записей
+     * Преобразует в список
+     * @return Список из записей
      */
-    @Deprecated
-    Record[] toArray();
+    List<Record> toArray();
 }
