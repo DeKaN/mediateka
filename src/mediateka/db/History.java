@@ -1,7 +1,6 @@
 package mediateka.db;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.MediatekaView;
@@ -17,9 +16,9 @@ public class History extends Table {
 
     public History() {
         tableName = "history";
+        factory = new HistoryRecordFactory();
     }
 
-    @Override
     public boolean load(String fileName) throws LoadException {
         try {
             DefaultElement root = super.getRootElement(fileName);
@@ -41,7 +40,6 @@ public class History extends Table {
         }
     }
 
-    @Override
     public Records find(Record record) {
         History retVal = new History();
         HashMap<String, String> map = new HashMap<String, String>();

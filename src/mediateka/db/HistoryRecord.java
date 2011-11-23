@@ -179,7 +179,7 @@ public class HistoryRecord implements Record {
      * Внутренний конструктор
      * @param recordID ID записи
      */
-    public HistoryRecord(int recordID) {
+    HistoryRecord(int recordID) {
         this.recordID = recordID;
     }
 

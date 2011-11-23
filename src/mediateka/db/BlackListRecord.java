@@ -94,7 +94,7 @@ public class BlackListRecord implements Record {
      * Внутренний конструктор
      * @param recordID ID записи
      */
-    public BlackListRecord(int recordID) {
+    BlackListRecord(int recordID) {
         this.recordID = recordID;
     }
 

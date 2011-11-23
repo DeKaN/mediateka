@@ -71,6 +71,13 @@ public interface Records {
      * @return Виртуальная таблица с записями, подходящими под шаблон
      */
     Records find(Record record);
+    
+    /**
+     * Найти запись в таблице с заданным ID
+     * @param id ID записи
+     * @return Запись с нужным ID
+     */
+    Record find(int id);
 
     /**
      * Записывает таблицу в XML Element

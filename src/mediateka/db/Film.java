@@ -253,7 +253,7 @@ public final class Film implements Record {
      * Внутренний конструктор
      * @param filmID ID фильма
      */
-    public Film(int filmID) {
+    Film(int filmID) {
         this.filmID = filmID;
     }
 

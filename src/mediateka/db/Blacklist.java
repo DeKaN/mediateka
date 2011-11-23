@@ -15,6 +15,7 @@ public class Blacklist extends Table {
 
     public Blacklist() {
         tableName = "blackList";
+        factory = new BlackListRecordFactory();
     }
 
     /**
@@ -70,5 +71,4 @@ public class Blacklist extends Table {
         }
         return retVal.size() > 0 ? retVal : null;
     }
-
 }

@@ -8,9 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.dom4j.Document;
@@ -22,7 +19,6 @@ import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.DefaultElement;
-import org.xml.sax.SAXException;
 
 /**
  *
@@ -33,6 +29,7 @@ public abstract class Table implements Records {
     protected int autoIndex;
     protected ArrayList<Record> recordsList;
     protected String tableName = "table";
+    protected RecordFactory factory;
 
     public Table() {
         autoIndex = 1;
@@ -112,6 +109,10 @@ public abstract class Table implements Records {
     public abstract boolean load(String fileName) throws LoadException;
 
     public abstract Records find(Record record);
+    
+    public Record find(int id){
+        return find(factory.createInstance(id)).getRecord(0);
+    }
 
     public Element toXmlElement() {
         Element elem = new DOMElement(tableName, Namespace.get("mediateka"));

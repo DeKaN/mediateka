@@ -1,113 +1,23 @@
 package mediateka.db;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
 import org.apache.commons.lang3.StringUtils;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
 import org.dom4j.Node;
-import org.dom4j.dom.DOMElement;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий коллекцию дисков
  * @author Alexandr
  */
-public class Discs implements Records {
-
-    private int autoIndex = 1;
-    private ArrayList<Record> discsList = null;
+public class Discs extends Table {
 
     public Discs() {
-        autoIndex = 1;
-        discsList = new ArrayList<Record>();
-    }
-
-    /**
-     * Добавить диск в коллекцию
-     * @param record Диск, который будет добавлен
-     * @return true, если добавление успешно, иначе false
-     */
-    public boolean add(Record record) {
-        if (find(record) == null) {
-            try {
-                Disc rec = (Disc) record;
-                if (rec.getID() == 0) {
-                    rec = new Disc(
-                            autoIndex,
-                            rec.getFilms(),
-                            rec.getOwnerID(),
-                            rec.getFormat(),
-                            rec.getRegionCode(),
-                            rec.isPresented());
-
-                    autoIndex++;
-                    discsList.add(rec);
-                    return true;
-                } else if (find(new Disc(rec.getOwnerID(), null, null)) == null) {//todo
-                    discsList.add(rec);
-                    return true;
-                }
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Удалить диск из коллекции
-     * @param record Диск, который будет удален
-     * @return true, если удаление успешно, иначе false
-     */
-    public boolean delete(Record record) {
-        Discs discs = null;
-        if ((discs = (Discs) find(record)) != null) {
-            discsList.remove(discs.getRecord(0));
-            return true;
-        }
-        return false;
-    }
-
-    public boolean update(Record disc) {
-        Discs discs = null;
-        if ((discs = (Discs) find(disc)) != null) {
-            discsList.set(discsList.indexOf(discs.getRecord(0)), disc);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Сохранение в XML
-     * @param fileName Имя файла, в который будет сохранен XML
-     * @return true, если сохранение успешно, иначе false
-     */
-    public boolean save(String fileName) {
-        try {
-            Document doc = DocumentHelper.createDocument(this.toXmlElement());
-            FileOutputStream fos = new FileOutputStream(fileName);
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter(fos, format);
-            writer.write(doc);
-            writer.flush();
-            fos.close();
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+        tableName = "discs";
+        factory = new DiscFactory();
     }
 
     /**
@@ -115,17 +25,9 @@ public class Discs implements Records {
      * @param fileName Имя файла, из которого будет загружен XML
      * @return true, если загрузка завершилась успешно, иначе false
      */
-    public boolean load(String fileName) {
+    public boolean load(String fileName) throws LoadException {
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            factory.setValidating(true);
-            SAXParser parser = factory.newSAXParser();
-            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-                    "http://www.w3.org/2001/XMLSchema");
-            SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
-            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
-            discsList = new ArrayList<Record>();
+            DefaultElement root = super.getRootElement(fileName);
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
                     DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("films");
@@ -134,7 +36,7 @@ public class Discs implements Records {
                         Node node = it1.next();
                         films.add(MediatekaView.managers.getFilmsManager().find(Integer.parseInt(node.getText())));
                     }
-                    discsList.add(new Disc(
+                    recordsList.add(new Disc(
                             Integer.parseInt(elem.attribute("discID").getValue()),
                             films,
                             Integer.parseInt(elem.node(0).getText()),
@@ -146,7 +48,7 @@ public class Discs implements Records {
             }
             return true;
         } catch (Exception ex) {
-            return false;
+            throw new LoadException("Диски не загружены!");
         }
     }
 
@@ -186,53 +88,11 @@ public class Discs implements Records {
             map.put("isPresent", Boolean.toString(disc.isPresented()));
         }
         Condition cond = new Condition(map);
-        for (Record d : discsList) {
+        for (Record d : recordsList) {
             if (cond.isEquals(d)) {
                 retVal.add(d);
             }
         }
         return retVal.size() > 0 ? retVal : null;
-    }
-
-    /**
-     * Записывает коллекцию дисков в XML Element
-     * @return Коллекция, сериализованная в XML element
-     */
-    public Element toXmlElement() {
-        Element elem = new DOMElement("films", Namespace.get("mediateka"));
-        elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        elem.addAttribute("xsi:schemaLocation", "mediateka films.xsd");
-        elem.addAttribute("autoIndex", Integer.toString(autoIndex));
-        for (Iterator<Record> it = discsList.iterator(); it.hasNext();) {
-            Record disc = it.next();
-            elem.add(disc.toXmlElement());//todo
-        }
-        return elem;
-    }
-
-    /**
-     * Получает диск по индексу в коллекции
-     * @param index Индекс диска
-     * @return Диск хранившийся по данному индексу
-     * @throws IndexOutOfBoundsException Индекс вышел за границы массива (index < 0 || index >= size()) 
-     */
-    public Record getRecord(int index) throws IndexOutOfBoundsException {
-        return discsList.get(index);
-    }
-
-    /**
-     * Получить количество дисков в коллекции
-     * @return Количество дисков в коллекции
-     */
-    public int size() {
-        return discsList.size();
-    }
-
-    public Record[] toArray() {
-        return (Record[]) discsList.toArray();
-    }
-
-    public boolean IsUnique(Record record) {
-        return (find(record) == null);
     }
 }

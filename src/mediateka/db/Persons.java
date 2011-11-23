@@ -1,127 +1,20 @@
 package mediateka.db;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import mediateka.datamanagers.Condition;
-import org.dom4j.Document;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
-import org.dom4j.Namespace;
-import org.dom4j.dom.DOMElement;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
 import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий таблицу с персональными данными
  * @author Alexandr
  */
-public class Persons implements Records {
-
-    private int autoIndex;
-    private ArrayList<Record> personsList;
+public class Persons extends Table {
 
     public Persons() {
-        autoIndex = 1;
-        personsList = new ArrayList<Record>();
-    }
-
-    /**
-     * Возвращает запись таблицы с персональными данными, которая хранится на указанной позиции
-     * @param index Индекс записи
-     * @return Запись таблицы с персональными данными, которая хранится на указанной позиции
-     * @throws IndexOutOfBoundsException Если индекс вышел за пределы (index < 0 || index >= size()) 
-     */
-    public Record getRecord(int index) throws IndexOutOfBoundsException {
-        return personsList.get(index);
-    }
-
-    /**
-     * Возвращает количество записей таблицы с персональными данными
-     * @return Количество записей в таблице с персональными данными
-     */
-    public int size() {
-        return personsList.size();
-    }
-
-    /**
-     * Добавляет запись в таблицу с персональными данными, если запись еще не существует
-     * @param record Запись для добавления
-     * @return true, если добавление прошло успешно, иначе - false
-     */
-    public boolean add(Record record) {
-        if (find(record) == null) {
-            try {
-                Person rec = (Person) record;
-                if (rec.getID() == 0) {
-                    rec = new Person(
-                            autoIndex,
-                            rec.getLastName(),
-                            rec.getFirstName(),
-                            rec.getSecondName(),
-                            rec.getPhone(),
-                            rec.getComment());
-                    autoIndex++;
-                    personsList.add(rec);
-                    return true;
-                } else if (find(new HistoryRecord(rec.getID(), null, null, null, null, null, "")) == null) {
-                    personsList.add(rec);
-                    return true;
-                }
-            } catch (Exception e) {
-                return false;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Удалить запись из таблицы с персональными данными
-     * @param record Запись для удаления из таблицы истории
-     * @return true, если удаление прошло успешно, иначе - false
-     */
-    public boolean delete(Record record) {
-        Persons pers = null;
-        if ((pers = (Persons) find(record)) != null) {
-            personsList.remove(pers.getRecord(0));
-            return true;
-        }
-        return false;
-    }
-
-    public boolean update(Record record) {
-        Persons pers = null;
-        if ((pers = (Persons) find(record)) != null) {
-            personsList.set(personsList.indexOf(pers.getRecord(0)), record);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Сохранение в XML
-     * @param fileName Имя файла
-     * @return true, если сохранение прошло успешно, иначе false
-     */
-    public boolean save(String fileName) {
-        try {
-            Document doc = DocumentHelper.createDocument(this.toXmlElement());
-            FileOutputStream fos = new FileOutputStream(fileName);
-            OutputFormat format = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter(fos, format);
-            writer.write(doc);
-            writer.flush();
-            fos.close();
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+        tableName = "persons";
+        factory = new PersonFactory();
     }
 
     /**
@@ -129,20 +22,12 @@ public class Persons implements Records {
      * @param fileName Имя файла
      * @return true, если загрузка завершилась успешно, иначе false
      */
-    public boolean load(String fileName) {
+    public boolean load(String fileName) throws LoadException {
         try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            factory.setValidating(true);
-            SAXParser parser = factory.newSAXParser();
-            parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
-                    "http://www.w3.org/2001/XMLSchema");
-            SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
-            autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
-            personsList = new ArrayList<Record>();
+            DefaultElement root = super.getRootElement(fileName);
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DefaultElement elem = (DefaultElement) it.next();
-                personsList.add(new Person(
+                recordsList.add(new Person(
                         Integer.parseInt(elem.attribute("personID").getValue()),
                         elem.node(0).getText(),
                         elem.node(1).getText(),
@@ -152,7 +37,7 @@ public class Persons implements Records {
             }
             return true;
         } catch (Exception ex) {
-            return false;
+            throw new LoadException("Персональные данные не загружены!");
         }
     }
 
@@ -190,35 +75,11 @@ public class Persons implements Records {
             }
         }
         Condition cond = new Condition(map);
-        for (Record person : personsList) {
+        for (Record person : recordsList) {
             if (cond.isEquals(person)) {
                 retVal.add(person);
             }
         }
         return retVal.size() > 0 ? retVal : null;
-    }
-
-    /**
-     * Записывает таблицу в XML Element
-     * @return Строка с таблицей, сериализованной в XML element
-     */
-    public Element toXmlElement() {
-        Element elem = new DOMElement("persons", Namespace.get("mediateka"));
-        elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        elem.addAttribute("xsi:schemaLocation", "mediateka persons.xsd");
-        elem.addAttribute("autoIndex", Integer.toString(autoIndex));
-        for (Iterator<Record> it = personsList.iterator(); it.hasNext();) {
-            Record person = it.next();
-            elem.add(person.toXmlElement());
-        }
-        return elem;
-    }
-
-    public Record[] toArray() {
-        return (Record[]) personsList.toArray();
-    }
-
-    public boolean IsUnique(Record record) {
-        return (find(record) == null);
     }
 }

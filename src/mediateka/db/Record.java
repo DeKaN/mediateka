@@ -9,8 +9,8 @@ import org.dom4j.Element;
 public interface Record {
 
     /**
-     * Получить ID диска
-     * @return ID диска
+     * Получить ID записи
+     * @return ID записи
      */
     public int getID();
 
