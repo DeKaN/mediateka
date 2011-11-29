@@ -1,12 +1,14 @@
-package mediateka;
+package mediateka.view;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mediateka.commands.AddBlRecordCommand;
 import mediateka.commands.EditBlRecordCommand;
 import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
+import mediateka.db.ChangeDataException;
 import mediateka.db.Person;
 import mediateka.db.Record;
 import org.jdesktop.application.Action;
@@ -27,8 +29,8 @@ public class BlackListRecordView extends javax.swing.JDialog {
         super(parent, modal);
         try {
             record = blRecord;
-            Record[] recs = Managers.getInstance().getPersManager().getRecords();
-            strs = new String[recs.length];
+            List<Record> recs = Managers.getInstance().getPersManager().getRecords();
+            strs = new String[recs.size()];
             int i = 0, id = record != null ? record.getPerson().getID() : 0;
             for (Record rec : recs) {
                 try {
@@ -160,13 +162,13 @@ public class BlackListRecordView extends javax.swing.JDialog {
                 record.setPerson(p);
                 record.setComment(jTextArea1.getText());
                 if (!((new EditBlRecordCommand()).execute(record))) {
-                    throw new Exception("Ошибка при сохранении");
+                    throw new ChangeDataException("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getBlListManager().edit(record.getID(), record);
             } else {
                 record = new BlackListRecord(p, jTextArea1.getText());
-                if (!((new AddBlRecordCommand()).execute(record)))
-                    throw new Exception("Ошибка при добавлении");
+                if (!((new AddBlRecordCommand()).execute(record))) //todo DMME: why instantiation every time??
+                    throw new ChangeDataException("Ошибка при добавлении");
                 //MediatekaView.managers.getBlListManager().add(record);
             }
         } catch (Exception ex) {

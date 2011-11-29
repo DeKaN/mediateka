@@ -1,8 +1,9 @@
 /*
  * MediatekaView.java
  */
-package mediateka;
+package mediateka.view;
 
+import mediateka.view.MediatekaAboutBox;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -14,11 +15,13 @@ import org.jdesktop.application.TaskMonitor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import javax.swing.Timer;
 import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionListener;
+import mediateka.MediatekaApp;
 import mediateka.commands.FindFilmCommand;
 import mediateka.datamanagers.Managers;
 import mediateka.db.Film;
@@ -172,7 +175,7 @@ public class MediatekaView extends FrameView {
     }
 
     private void updateTableFilms() {
-        Record[] recs = null;
+        List<Record> recs = null;
         try {
             recs = Managers.getInstance().getFilmsManager().getRecords();
         } catch (Exception ex) {
@@ -424,7 +427,6 @@ public class MediatekaView extends FrameView {
         standartToolBar.add(jButton2);
 
         jButton3.setAction(actionMap.get("update")); // NOI18N
-        jButton3.setIcon(null);
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setName("jButton3"); // NOI18N
@@ -1904,7 +1906,7 @@ public class MediatekaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 544, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
                 .addContainerGap())
         );
 

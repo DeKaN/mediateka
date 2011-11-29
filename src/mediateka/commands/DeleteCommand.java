@@ -4,7 +4,7 @@ package mediateka.commands;
  * Интерфейс для команды удаления
  * @author DeKaN
  */
-public interface DeleteCommand extends Command {
+public interface DeleteCommand {
     
     /**
      * Выполнить команду

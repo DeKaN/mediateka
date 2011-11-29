@@ -1,4 +1,4 @@
-package mediateka;
+package mediateka.view;
 
 import mediateka.db.Disc;
 

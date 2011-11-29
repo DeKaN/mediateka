@@ -4,6 +4,7 @@
 
 package mediateka;
 
+import mediateka.view.MediatekaView;
 import org.jdesktop.application.Application;
 import org.jdesktop.application.SingleFrameApplication;
 

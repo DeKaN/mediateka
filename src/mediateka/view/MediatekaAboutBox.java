@@ -2,7 +2,7 @@
  * MediatekaAboutBox.java
  */
 
-package mediateka;
+package mediateka.view;
 
 import org.jdesktop.application.Action;
 

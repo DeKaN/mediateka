@@ -4,6 +4,7 @@
  */
 package mediateka.datamanagers;
 
+import java.util.List;
 import mediateka.db.Record;
 import mediateka.db.Records;
 import mediateka.db.Table;
@@ -36,8 +37,8 @@ public abstract class Manager implements RecordsManager {
         return table.find(record);
     }
 
-    public Record[] getRecords() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Record> getRecords() {
+        return table.toList();
     }
     
 }

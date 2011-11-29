@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Set;
 import mediateka.db.Record;
 import org.apache.commons.lang3.StringUtils;
-import org.dom4j.dom.DOMElement;
+import org.dom4j.Element;
 
 /**
  * Класс условий для поиска
@@ -33,12 +33,12 @@ public class Condition {
 
     //TODO необходимо протестить работу
     public boolean isEquals(Record rec) {
-        DOMElement elem = (DOMElement) rec.toXmlElement();
+        Element elem = rec.toXmlElement();
         Set<String> keys = conds.keySet();
         boolean retVal = true;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
             String key = it.next();
-            String val = elem.getAttribute(key);
+            String val = elem.elementText(key);
             if (val.isEmpty()) {
                 return false;
             }

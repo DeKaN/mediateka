@@ -8,7 +8,7 @@
  *
  * Created on Nov 20, 2011, 9:29:27 PM
  */
-package mediateka;
+package mediateka.view;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -463,7 +463,6 @@ public class FilmViewNew extends javax.swing.JDialog {
 
         jButton1.setAction(actionMap.get("choiseFile")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
-        jButton1.setEnabled(false);
         jButton1.setName("jButton1"); // NOI18N
 
         jPanel4.setBackground(resourceMap.getColor("jPanel4.background")); // NOI18N

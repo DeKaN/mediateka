@@ -1,12 +1,14 @@
-package mediateka;
+package mediateka.view;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mediateka.commands.AddHistRecCommand;
 import mediateka.commands.EditHistRecCommand;
 import mediateka.datamanagers.Managers;
+import mediateka.db.ChangeDataException;
 import mediateka.db.Disc;
 import mediateka.db.HistoryRecord;
 import mediateka.db.Person;
@@ -29,8 +31,8 @@ public class HistoryRecordView extends javax.swing.JDialog {
         super(parent, modal);
         try {
             history = histRec;
-            Record[] recs = Managers.getInstance().getPersManager().getRecords();
-            persons = new String[recs.length];
+            List<Record> recs = Managers.getInstance().getPersManager().getRecords();
+            persons = new String[recs.size()];
             int i = 0, id = history != null ? history.getPerson().getID() : 0;
             for (Record rec : recs) {
                 try {
@@ -45,7 +47,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 }
             }
             recs = Managers.getInstance().getDiscsManager().getRecords();
-            discs = new String[recs.length];
+            discs = new String[recs.size()];
             i = 0;
             id = history != null ? history.getDisc().getID() : 0;
             for (Record rec : recs) {
@@ -273,14 +275,14 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
                 history.setComment(jTextArea1.getText());
                 if (!((new EditHistRecCommand()).execute(history))) {
-                    throw new Exception("Ошибка при сохранении");
+                    throw new ChangeDataException("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getHistManager().edit(history.getID(), history);
             } else {
                 history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
                         jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
                 if (!((new AddHistRecCommand()).execute(history)))
-                    throw new Exception("Ошибка при добавлении");
+                    throw new ChangeDataException("Ошибка при добавлении");
                 //MediatekaView.managers.getHistManager().add(history);
             }
         } catch (Exception ex) {

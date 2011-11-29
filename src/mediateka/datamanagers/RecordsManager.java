@@ -1,5 +1,6 @@
 package mediateka.datamanagers;
 
+import java.util.List;
 import mediateka.db.Record;
 import mediateka.db.Records;
 
@@ -45,8 +46,8 @@ public interface RecordsManager {
     Records find(Record record);
     
     /**
-     * Получить массив имеющихся записей
-     * @return Массив имеющихся записей
+     * Получить имеющиеся записей
+     * @return Список имеющихся записей
      */
-    Record[] getRecords();
+    List<Record> getRecords();
 }

@@ -6,7 +6,7 @@ import mediateka.db.Record;
  * Интерфейс для команды добавления
  * @author DeKaN
  */
-public interface AddCommand extends Command {
+public interface AddCommand {
     
     /**
      * Выполнить команду добавления

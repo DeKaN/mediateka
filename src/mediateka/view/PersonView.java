@@ -1,4 +1,4 @@
-package mediateka;
+package mediateka.view;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -7,6 +7,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import mediateka.commands.AddPersonCommand;
 import mediateka.commands.EditPersonCommand;
+import mediateka.db.ChangeDataException;
 import mediateka.db.Person;
 import org.jdesktop.application.Action;
 
@@ -252,7 +253,7 @@ public class PersonView extends javax.swing.JDialog {
                 pers.setPhone(jFormattedTextField1.getText());
                 pers.setComment(jTextArea1.getText());
                 if (!((new EditPersonCommand()).execute(pers))) {
-                    throw new Exception("Ошибка при сохранении");
+                    throw new ChangeDataException("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
             } else {
@@ -260,7 +261,7 @@ public class PersonView extends javax.swing.JDialog {
                         jTextField3.getText(), jFormattedTextField1.getText(),
                         jTextArea1.getText());
                 if (!((new AddPersonCommand()).execute(pers))) {
-                    throw new Exception("Ошибка при добавлении");
+                    throw new ChangeDataException("Ошибка при добавлении");
                 }
                 //MediatekaView.managers.getPersManager().add(pers);
             }

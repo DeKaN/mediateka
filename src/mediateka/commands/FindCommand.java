@@ -7,7 +7,7 @@ import mediateka.db.Records;
  * Интерфейс для команды поиска
  * @author DeKaN
  */
-public interface FindCommand extends Command {
+public interface FindCommand {
     
     /**
      * Выполнить команду поиска

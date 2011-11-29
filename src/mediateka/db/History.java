@@ -3,7 +3,6 @@ package mediateka.db;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
-import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
 import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
