@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 import mediateka.db.Record;
 
 /**
@@ -9,9 +9,9 @@ import mediateka.db.Record;
  */
 public class AddDiscCommand implements AddCommand {
 
-    public boolean Execute(Record record) {
+    public boolean execute(Record record) {
         try {
-            return MediatekaView.managers.getDiscsManager().add(record);
+            return Managers.getInstance().getDiscsManager().add(record);
         } catch (Exception ex) {
             return false;
         }

@@ -56,7 +56,7 @@ public class Managers {
     public BlackListManager getBlListManager() throws Exception {
         if (blListManager == null) {
             getPersManager();
-            if (!ValidateSchema(blInfo)) {
+            if (!validateSchema(blInfo)) {
                 throw new LoadException("Схема черного списка повреждена!");
             }
             blListManager = new BlackListManager(blFile);
@@ -67,7 +67,7 @@ public class Managers {
     public DiscsManager getDiscsManager() throws Exception {
         if (discsManager == null) {
             getFilmsManager();
-            if (!ValidateSchema(dInfo)) {
+            if (!validateSchema(dInfo)) {
                 throw new LoadException("Схема дисков повреждена!");
             }
             discsManager = new DiscsManager(dFile);
@@ -77,7 +77,7 @@ public class Managers {
 
     public FilmsManager getFilmsManager() throws Exception {
         if (filmsManager == null) {
-            if (!ValidateSchema(fInfo)) {
+            if (!validateSchema(fInfo)) {
                 throw new LoadException("Схема фильмов повреждена!");
             }
             filmsManager = new FilmsManager(fFile);
@@ -89,7 +89,7 @@ public class Managers {
         if (histManager == null) {
             getDiscsManager();
             getPersManager();
-            if (!ValidateSchema(hInfo)) {
+            if (!validateSchema(hInfo)) {
                 throw new LoadException("Схема истории повреждена!");
             }
             histManager = new HistoryManager(hFile);
@@ -99,7 +99,7 @@ public class Managers {
 
     public PersonsManager getPersManager() throws Exception {
         if (persManager == null) {
-            if (!ValidateSchema(pInfo)) {
+            if (!validateSchema(pInfo)) {
                 throw new LoadException("Схема персональных данных повреждена!");
             }
             persManager = new PersonsManager(pFile);
@@ -107,7 +107,7 @@ public class Managers {
         return persManager;
     }
 
-    private boolean ValidateSchema(ManagerInfo info) {
+    private boolean validateSchema(ManagerInfo info) {
         try {
             MessageDigest dig = MessageDigest.getInstance("MD5");
             FileInputStream fs = new FileInputStream(info.xsdFile);

@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mediateka.commands.AddHistRecCommand;
 import mediateka.commands.EditHistRecCommand;
+import mediateka.datamanagers.Managers;
 import mediateka.db.Disc;
 import mediateka.db.HistoryRecord;
 import mediateka.db.Person;
@@ -28,7 +29,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
         super(parent, modal);
         try {
             history = histRec;
-            Record[] recs = MediatekaView.managers.getPersManager().getRecords();
+            Record[] recs = Managers.getInstance().getPersManager().getRecords();
             persons = new String[recs.length];
             int i = 0, id = history != null ? history.getPerson().getID() : 0;
             for (Record rec : recs) {
@@ -43,7 +44,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 } catch (Exception e) {
                 }
             }
-            recs = MediatekaView.managers.getDiscsManager().getRecords();
+            recs = Managers.getInstance().getDiscsManager().getRecords();
             discs = new String[recs.length];
             i = 0;
             id = history != null ? history.getDisc().getID() : 0;
@@ -262,8 +263,8 @@ public class HistoryRecordView extends javax.swing.JDialog {
     @Action
     public void save() {
         try {
-            Person p = (Person) MediatekaView.managers.getPersManager().find(personIds.get(jComboBox2.getSelectedIndex()));
-            Disc d = (Disc) MediatekaView.managers.getDiscsManager().find(personIds.get(jComboBox1.getSelectedIndex()));
+            Person p = (Person) Managers.getInstance().getPersManager().find(personIds.get(jComboBox2.getSelectedIndex()));
+            Disc d = (Disc) Managers.getInstance().getDiscsManager().find(personIds.get(jComboBox1.getSelectedIndex()));
             if (history != null) {
                 history.setDisc(d);
                 history.setPerson(p);
@@ -271,14 +272,14 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 history.setPromisedDate(jDateChooser2.getDate());
                 history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
                 history.setComment(jTextArea1.getText());
-                if (!((new EditHistRecCommand()).Execute(history))) {
+                if (!((new EditHistRecCommand()).execute(history))) {
                     throw new Exception("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getHistManager().edit(history.getID(), history);
             } else {
                 history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
                         jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
-                if (!((new AddHistRecCommand()).Execute(history)))
+                if (!((new AddHistRecCommand()).execute(history)))
                     throw new Exception("Ошибка при добавлении");
                 //MediatekaView.managers.getHistManager().add(history);
             }

@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 
 /**
  * Класс, представляющий команду удаления записи из таблицы персональных данных
@@ -8,9 +8,9 @@ import mediateka.MediatekaView;
  */
 public class DeletePersonCommand implements DeleteCommand {
 
-    public boolean Execute(int id) {
+    public boolean execute(int id) {
         try {
-            return MediatekaView.managers.getPersManager().delete(id);
+            return Managers.getInstance().getPersManager().delete(id);
         } catch (Exception ex) {
             return false;
         }

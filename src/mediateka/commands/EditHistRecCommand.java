@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 import mediateka.db.Record;
 
 /**
@@ -9,9 +9,9 @@ import mediateka.db.Record;
  */
 public class EditHistRecCommand implements EditCommand {
 
-    public boolean Execute(Record record) {
+    public boolean execute(Record record) {
         try {
-            return MediatekaView.managers.getHistManager().edit(record);
+            return Managers.getInstance().getHistManager().edit(record);
         } catch (Exception ex) {
             return false;
         }

@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 import mediateka.db.Record;
 import mediateka.db.Records;
 
@@ -10,17 +10,17 @@ import mediateka.db.Records;
  */
 public class FindDiscCommand implements FindCommand {
 
-    public Record Execute(int id) {
+    public Record execute(int id) {
         try {
-            return MediatekaView.managers.getDiscsManager().find(id);
+            return Managers.getInstance().getDiscsManager().find(id);
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public Records Execute(Record record) {
+    public Records execute(Record record) {
         try {
-            return MediatekaView.managers.getDiscsManager().find(record);
+            return Managers.getInstance().getDiscsManager().find(record);
         } catch (Exception ex) {
             return null;
         }

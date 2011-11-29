@@ -13,6 +13,6 @@ public interface AddCommand extends Command {
      * @param record Запись, передаваемая команде
      * @return true, если выполнение завершилось успешно, иначе false
      */
-    public boolean Execute(Record record);
+    public boolean execute(Record record);
     
 }

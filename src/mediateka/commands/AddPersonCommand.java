@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 import mediateka.db.Record;
 
 /**
@@ -9,9 +9,9 @@ import mediateka.db.Record;
  */
 public class AddPersonCommand implements AddCommand {
 
-    public boolean Execute(Record record) {
+    public boolean execute(Record record) {
         try {
-            return MediatekaView.managers.getPersManager().add(record);
+            return Managers.getInstance().getPersManager().add(record);
         } catch (Exception ex) {
             return false;
         }

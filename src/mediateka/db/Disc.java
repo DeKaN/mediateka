@@ -1,5 +1,6 @@
 package mediateka.db;
 
+import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
@@ -192,13 +193,18 @@ public class Disc implements Record {
         elem.addElement("format").addText(this.format.toString());
         elem.addElement("regionCode").addText(Integer.toString(regionCode));
         elem.addElement("isPresent").addText(Boolean.toString(presented));
-        elem.addElement("films").addText(this.films.toXmlElement().asXML());
+        Element temp = new DOMElement("films");
+        for (Iterator<Record> it = films.toList().iterator(); it.hasNext();) {
+            Record record = it.next();
+            temp.add(record.toXmlElement());
+        }
+        elem.add(temp);
         return elem;
     }
 
     @Override
     public String toString() {
-        List<Record> fis = films.toArray();
+        List<Record> fis = films.toList();
         String[] str = new String[fis.size()];
         int i = 0;
         for (Record record : fis) {

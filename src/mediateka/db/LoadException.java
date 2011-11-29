@@ -8,7 +8,7 @@ package mediateka.db;
  *
  * @author DeKaN
  */
-public class LoadException extends Exception {
+public class LoadException extends IllegalStateException {
 
     public LoadException(String message) {
         super(message);

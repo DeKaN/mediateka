@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -16,7 +17,6 @@ public class History extends Table {
 
     public History() {
         tableName = "history";
-        factory = new HistoryRecordFactory();
     }
 
     public boolean load(String fileName) throws LoadException {
@@ -27,8 +27,8 @@ public class History extends Table {
                 DefaultElement elem = (DefaultElement) it.next();
                 recordsList.add(new HistoryRecord(
                         Integer.parseInt(elem.attribute("recordID").getValue()),
-                        (Disc) MediatekaView.managers.getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
-                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(elem.node(1).getText())),
+                        (Disc) Managers.getInstance().getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
+                        (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(1).getText())),
                         format.parse(elem.node(2).getText()),
                         format.parse(elem.node(3).getText()),
                         format.parse(elem.node(4).getText()),
@@ -79,5 +79,10 @@ public class History extends Table {
             }
         }
         return retVal;
+    }
+    
+    @Override
+    protected Record createRecord(int id) {
+        return new HistoryRecord(id);
     }
 }

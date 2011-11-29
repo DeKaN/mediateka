@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mediateka.commands.AddBlRecordCommand;
 import mediateka.commands.EditBlRecordCommand;
+import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
 import mediateka.db.Person;
 import mediateka.db.Record;
@@ -26,7 +27,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
         super(parent, modal);
         try {
             record = blRecord;
-            Record[] recs = MediatekaView.managers.getPersManager().getRecords();
+            Record[] recs = Managers.getInstance().getPersManager().getRecords();
             strs = new String[recs.length];
             int i = 0, id = record != null ? record.getPerson().getID() : 0;
             for (Record rec : recs) {
@@ -154,17 +155,17 @@ public class BlackListRecordView extends javax.swing.JDialog {
     @Action
     public void save() {
         try {
-            Person p = (Person) MediatekaView.managers.getPersManager().find(map.get(jComboBox1.getSelectedIndex()));
+            Person p = (Person) Managers.getInstance().getPersManager().find(map.get(jComboBox1.getSelectedIndex()));
             if (record != null) {
                 record.setPerson(p);
                 record.setComment(jTextArea1.getText());
-                if (!((new EditBlRecordCommand()).Execute(record))) {
+                if (!((new EditBlRecordCommand()).execute(record))) {
                     throw new Exception("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getBlListManager().edit(record.getID(), record);
             } else {
                 record = new BlackListRecord(p, jTextArea1.getText());
-                if (!((new AddBlRecordCommand()).Execute(record)))
+                if (!((new AddBlRecordCommand()).execute(record)))
                     throw new Exception("Ошибка при добавлении");
                 //MediatekaView.managers.getBlListManager().add(record);
             }

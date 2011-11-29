@@ -28,7 +28,7 @@ public interface Records {
      * @param record Запись для проверки
      * @return true, если запись отсутствует в базе, иначе false
      */
-    boolean IsUnique(Record record);
+    boolean isUnique(Record record);
 
     /**
      * Добавить запись в таблицу
@@ -90,5 +90,5 @@ public interface Records {
      * Преобразует в список
      * @return Список из записей
      */
-    List<Record> toArray();
+    List<Record> toList();
 }

@@ -14,13 +14,13 @@ public interface FindCommand extends Command {
      * @param id ID записи, передаваемое команде
      * @return Запись, с данным ID
      */
-    public Record Execute(int id);
+    public Record execute(int id);
     
     /**
      * Выполнить команду поиска
      * @param record Запись-шаблон, передаваемая команде
      * @return Записи, которые подходят под шаблон
      */
-    public Records Execute(Record record);
+    public Records execute(Record record);
     
 }

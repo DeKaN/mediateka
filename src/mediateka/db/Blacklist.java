@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -15,7 +16,6 @@ public class Blacklist extends Table {
 
     public Blacklist() {
         tableName = "blackList";
-        factory = new BlackListRecordFactory();
     }
 
     /**
@@ -30,7 +30,7 @@ public class Blacklist extends Table {
                 DefaultElement elem = (DefaultElement) it.next();
                 recordsList.add(new BlackListRecord(
                         Integer.parseInt(elem.attribute("recordID").getValue()),
-                        (Person) MediatekaView.managers.getPersManager().find(Integer.parseInt(elem.node(0).getText())),
+                        (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(0).getText())),
                         elem.node(1).getText()));
             }
             return true;
@@ -70,5 +70,10 @@ public class Blacklist extends Table {
             }
         }
         return retVal.size() > 0 ? retVal : null;
+    }
+
+    @Override
+    protected Record createRecord(int id) {
+        return new BlackListRecord(id);
     }
 }

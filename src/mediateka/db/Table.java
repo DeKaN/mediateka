@@ -30,12 +30,13 @@ public abstract class Table implements Records {
     protected int autoIndex;
     protected ArrayList<Record> recordsList;
     protected String tableName = "table";
-    protected RecordFactory factory;
 
     public Table() {
         autoIndex = 1;
         recordsList = new ArrayList<Record>();
     }
+    
+    protected abstract Record createRecord(int id);
 
     public Record getRecord(int index) throws IndexOutOfBoundsException {
         return recordsList.get(index);
@@ -45,12 +46,12 @@ public abstract class Table implements Records {
         return recordsList.size();
     }
 
-    public boolean IsUnique(Record record) {
+    public boolean isUnique(Record record) {
         return (find(record) == null);
     }
 
     public boolean add(Record record) {
-        if (!IsUnique(record)) {
+        if (!isUnique(record)) {
             return false;
         }
         record.setID(autoIndex++);
@@ -112,7 +113,7 @@ public abstract class Table implements Records {
     public abstract Records find(Record record);
     
     public Record find(int id){
-        return find(factory.createInstance(id)).getRecord(0);
+        return find(createRecord(id)).getRecord(0);
     }
 
     public Element toXmlElement() {
@@ -127,7 +128,7 @@ public abstract class Table implements Records {
         return elem;
     }
 
-    public List<Record> toArray() {
+    public List<Record> toList() {
         return (List<Record>)recordsList.clone();
     }
 }

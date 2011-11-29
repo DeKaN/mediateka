@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.MediatekaView;
 import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Managers;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -17,7 +18,6 @@ public class Discs extends Table {
 
     public Discs() {
         tableName = "discs";
-        factory = new DiscFactory();
     }
 
     /**
@@ -34,7 +34,7 @@ public class Discs extends Table {
                     Films films = new Films();
                     for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
                         Node node = it1.next();
-                        films.add(MediatekaView.managers.getFilmsManager().find(Integer.parseInt(node.getText())));
+                        films.add(Managers.getInstance().getFilmsManager().find(Integer.parseInt(node.getText())));
                     }
                     recordsList.add(new Disc(
                             Integer.parseInt(elem.attribute("discID").getValue()),
@@ -94,5 +94,10 @@ public class Discs extends Table {
             }
         }
         return retVal.size() > 0 ? retVal : null;
+    }
+    
+    @Override
+    protected Record createRecord(int id) {
+        return new Disc(id);
     }
 }

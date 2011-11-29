@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 import mediateka.db.Record;
 import mediateka.db.Records;
 
@@ -10,17 +10,17 @@ import mediateka.db.Records;
  */
 public class FindBlRecordCommand implements FindCommand {
 
-    public Record Execute(int id) {
+    public Record execute(int id) {
         try {
-            return MediatekaView.managers.getBlListManager().find(id);
+            return Managers.getInstance().getBlListManager().find(id);
         } catch (Exception ex) {
             return null;
         }
     }
 
-    public Records Execute(Record record) {
+    public Records execute(Record record) {
         try {
-            return MediatekaView.managers.getBlListManager().find(record);
+            return Managers.getInstance().getBlListManager().find(record);
         } catch (Exception ex) {
             return null;
         }

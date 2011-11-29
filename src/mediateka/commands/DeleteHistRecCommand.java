@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 
 /**
  * Класс, представляющий команду удаления записи из таблицы истории
@@ -8,9 +8,9 @@ import mediateka.MediatekaView;
  */
 public class DeleteHistRecCommand implements DeleteCommand {
 
-    public boolean Execute(int id) {
+    public boolean execute(int id) {
         try {
-            return MediatekaView.managers.getHistManager().delete(id);
+            return Managers.getInstance().getHistManager().delete(id);
         } catch (Exception ex) {
             return false;
         }

@@ -17,7 +17,6 @@ public class Films extends Table {
 
     public Films() {
         tableName = "films";
-        factory = new FilmFactory();
     }
 
     /**
@@ -148,5 +147,10 @@ public class Films extends Table {
             }
         }
         return retVal.size() > 0 ? retVal : null;
+    }
+    
+    @Override
+    protected Record createRecord(int id) {
+        return new Film(id);
     }
 }

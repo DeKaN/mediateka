@@ -11,6 +11,6 @@ public interface DeleteCommand extends Command {
      * @param id ID записи, передаваемое команде
      * @return true, если выполнение завершилось успешно, иначе false
      */
-    public boolean Execute(int id);
+    public boolean execute(int id);
     
 }

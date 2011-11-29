@@ -1,6 +1,6 @@
 package mediateka.commands;
 
-import mediateka.MediatekaView;
+import mediateka.datamanagers.Managers;
 
 /**
  * Класс, представляющий команду удаления диска
@@ -8,9 +8,9 @@ import mediateka.MediatekaView;
  */
 public class DeleteDiscCommand implements DeleteCommand {
 
-    public boolean Execute(int id) {
+    public boolean execute(int id) {
         try {
-            return MediatekaView.managers.getDiscsManager().delete(id);
+            return Managers.getInstance().getDiscsManager().delete(id);
         } catch (Exception ex) {
             return false;
         }
