@@ -95,7 +95,6 @@ public class Discs extends Table {
         return retVal.size() > 0 ? retVal : null;
     }
     
-    @Override
     protected Record createRecord(int id) {
         return new Disc(id);
     }

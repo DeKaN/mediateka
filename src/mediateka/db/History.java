@@ -80,7 +80,6 @@ public class History extends Table {
         return retVal;
     }
     
-    @Override
     protected Record createRecord(int id) {
         return new HistoryRecord(id);
     }
