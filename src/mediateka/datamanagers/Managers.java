@@ -2,7 +2,12 @@ package mediateka.datamanagers;
 
 import java.io.FileInputStream;
 import java.security.MessageDigest;
+import mediateka.db.Blacklist;
+import mediateka.db.Discs;
+import mediateka.db.Films;
+import mediateka.db.History;
 import mediateka.db.LoadException;
+import mediateka.db.Persons;
 
 /**
  * Класс, хранящий и предоставляющий доступ к менеджерам
@@ -22,11 +27,7 @@ public class Managers {
             xsdHash = hashXSD;
         }
     }
-    BlackListManager blListManager = null;
-    DiscsManager discsManager = null;
-    FilmsManager filmsManager = null;
-    HistoryManager histManager = null;
-    PersonsManager persManager = null;
+    Manager blListManager = null, discsManager = null, filmsManager = null, histManager = null, persManager = null;
     private static final String dir = ".\\XML\\",//TODO after debug change to %APPDATA%\mediateka
             blFile = dir + "blacklist.xml",
             dFile = dir + "discs.xml",
@@ -53,56 +54,56 @@ public class Managers {
     private Managers() {
     }
 
-    public BlackListManager getBlListManager() throws Exception {
+    public Manager getBlListManager() throws Exception {
         if (blListManager == null) {
             getPersManager();
             if (!validateSchema(blInfo)) {
                 throw new LoadException("Схема черного списка повреждена!");
             }
-            blListManager = new BlackListManager(blFile);
+            blListManager = new Manager(new Blacklist(), blFile);
         }
         return blListManager;
     }
 
-    public DiscsManager getDiscsManager() throws Exception {
+    public Manager getDiscsManager() throws Exception {
         if (discsManager == null) {
             getFilmsManager();
             if (!validateSchema(dInfo)) {
                 throw new LoadException("Схема дисков повреждена!");
             }
-            discsManager = new DiscsManager(dFile);
+            discsManager = new Manager(new Discs(), dFile);
         }
         return discsManager;
     }
 
-    public FilmsManager getFilmsManager() throws Exception {
+    public Manager getFilmsManager() throws Exception {
         if (filmsManager == null) {
             if (!validateSchema(fInfo)) {
                 throw new LoadException("Схема фильмов повреждена!");
             }
-            filmsManager = new FilmsManager(fFile);
+            filmsManager = new Manager(new Films(), fFile);
         }
         return filmsManager;
     }
 
-    public HistoryManager getHistManager() throws Exception {
+    public Manager getHistManager() throws Exception {
         if (histManager == null) {
             getDiscsManager();
             getPersManager();
             if (!validateSchema(hInfo)) {
                 throw new LoadException("Схема истории повреждена!");
             }
-            histManager = new HistoryManager(hFile);
+            histManager = new Manager(new History(), hFile);
         }
         return histManager;
     }
 
-    public PersonsManager getPersManager() throws Exception {
+    public Manager getPersManager() throws Exception {
         if (persManager == null) {
             if (!validateSchema(pInfo)) {
                 throw new LoadException("Схема персональных данных повреждена!");
             }
-            persManager = new PersonsManager(pFile);
+            persManager = new Manager(new Persons(), pFile);
         }
         return persManager;
     }
