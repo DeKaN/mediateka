@@ -5,7 +5,9 @@ import java.util.logging.Logger;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import mediateka.commands.AddCommand;
 import mediateka.commands.AddPersonCommand;
+import mediateka.commands.EditCommand;
 import mediateka.commands.EditPersonCommand;
 import mediateka.db.ChangeDataException;
 import mediateka.db.Person;
@@ -19,6 +21,8 @@ public class PersonView extends javax.swing.JDialog {
 
     Person pers = null;
     boolean flag = true;
+    private static final AddCommand addCommand = new AddPersonCommand();
+    private static final EditCommand editCommand = new EditPersonCommand();
 
     /** Creates new form PersonView */
     public PersonView(java.awt.Frame parent, boolean modal, Person person) {
@@ -252,7 +256,7 @@ public class PersonView extends javax.swing.JDialog {
                 pers.setSecondName(jTextField3.getText());
                 pers.setPhone(jFormattedTextField1.getText());
                 pers.setComment(jTextArea1.getText());
-                if (!((new EditPersonCommand()).execute(pers))) {
+                if (!editCommand.execute(pers)) {
                     throw new ChangeDataException("Ошибка при сохранении");
                 }
                 //MediatekaView.managers.getPersManager().edit(pers.getID(), pers);
@@ -260,7 +264,7 @@ public class PersonView extends javax.swing.JDialog {
                 pers = new Person(jTextField1.getText(), jTextField2.getText(),
                         jTextField3.getText(), jFormattedTextField1.getText(),
                         jTextArea1.getText());
-                if (!((new AddPersonCommand()).execute(pers))) {
+                if (!addCommand.execute(pers)) {
                     throw new ChangeDataException("Ошибка при добавлении");
                 }
                 //MediatekaView.managers.getPersManager().add(pers);

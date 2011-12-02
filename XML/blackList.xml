@@ -4,10 +4,6 @@
    xsi:schemaLocation="mediateka blackList.xsd" autoIndex="3">
     <record recordID="1">
         <personID>1</personID>
-        <comment>qwer</comment>
-    </record>
-    <record recordID="2">
-        <personID>4</personID>
-        <comment>qwer</comment>
+        <comment>Просрочил диск</comment>
     </record>
 </blackList>

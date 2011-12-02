@@ -2,18 +2,18 @@
 <discs xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="mediateka discs.xsd" autoIndex="3">
     <disc discID="1">
-        <ownerID>1</ownerID>
+        <ownerID>0</ownerID>
         <format>DVD</format>
-        <regionCode>3</regionCode>
+        <regionCode>0</regionCode>
         <isPresent>false</isPresent>
         <films>
             <filmID>1</filmID>
         </films>
     </disc>
     <disc discID="2">
-        <ownerID>1</ownerID>
+        <ownerID>0</ownerID>
         <format>Blu-ray</format>
-        <regionCode>2</regionCode>
+        <regionCode>0</regionCode>
         <isPresent>true</isPresent>
         <films>
             <filmID>1</filmID>

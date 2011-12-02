@@ -3,18 +3,18 @@
    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
    xsi:schemaLocation="mediateka persons.xsd" autoIndex="3">
     <person personID="1">
-        <firstName>Alex</firstName>
-        <lastName>John</lastName>
-        <secondName>Smith</secondName>
-        <phoneNumber>12345678</phoneNumber>
-        <comment>SomeComment1</comment>
+        <firstName>Иван</firstName>
+        <lastName>Иванов</lastName>
+        <secondName>Иванович</secondName>
+        <phoneNumber>2702702</phoneNumber>
+        <comment/>
     </person>
     <person personID="2">
-        <firstName>Mitrich</firstName>
-        <lastName>Alex</lastName>
-        <secondName>Smith</secondName>
-        <phoneNumber>12345678</phoneNumber>
-        <comment>SomeComment2</comment>
+        <firstName>Петр</firstName>
+        <lastName>Петров</lastName>
+        <secondName>Петрович</secondName>
+        <phoneNumber>2562562</phoneNumber>
+        <comment/>
     </person>
 </persons>
 

@@ -13,9 +13,14 @@ import mediateka.db.Table;
  *
  * @author DeKaN
  */
-public abstract class Manager implements RecordsManager {
+public class Manager implements RecordsManager {
     
-    protected Table table;
+    private Table table;
+    
+    public Manager(Table t, String filename){
+        table = t;
+        table.load(filename);
+    }
 
     public boolean add(Record record) {
         return table.add(record);
