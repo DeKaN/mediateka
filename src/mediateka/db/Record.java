@@ -19,11 +19,10 @@ public interface Record {
      * @param value 
      */
     void setID(int value);
-    
+
     /**
      * Сериализует запись в XML
      * @return Строка с записью, сериализованной в XML element
      */
-	Element toXmlElement();
-
+    Element toXmlElement();
 }

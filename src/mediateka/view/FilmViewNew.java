@@ -1,9 +1,4 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
  * FilmViewNew.java
  *
  * Created on Nov 20, 2011, 9:29:27 PM
@@ -11,17 +6,14 @@
 package mediateka.view;
 
 import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import mediateka.commands.AddFilmCommand;
+import mediateka.commands.EditFilmCommand;
+import mediateka.db.ChangeDataException;
 import mediateka.db.Film;
 import org.jdesktop.application.Action;
 
@@ -109,8 +101,8 @@ public class FilmViewNew extends javax.swing.JDialog {
     /** Creates new form FilmViewNew */
     public FilmViewNew(java.awt.Frame parent, boolean modal, Film flm) {
         super(parent, modal);
-        initComponents();
         film = flm;
+        initComponents();
         jComboBox1.setModel(new DefaultComboBoxModel(genres));
         jComboBox2.setModel(new DefaultComboBoxModel(genres));
         jComboBox3.setModel(new DefaultComboBoxModel(genres));
@@ -124,9 +116,11 @@ public class FilmViewNew extends javax.swing.JDialog {
         jComboBox11.setModel(new DefaultComboBoxModel(languages));
         jComboBox12.setModel(new DefaultComboBoxModel(languages));
         if (film == null) {
-            this.setTitle("Добавление фильма...");
+            this.setTitle("Добавить фильм...");
             jButton2.setText("Добавить");
         } else {
+            this.setTitle("Изменить фильм...");
+            jButton2.setText("Сохранить");
             jTextField1.setText(film.getRussianTitle());
             jTextField2.setText(film.getEnglishTitle());
             jTextField3.setText(Integer.toString(film.getYear()));
@@ -138,12 +132,7 @@ public class FilmViewNew extends javax.swing.JDialog {
             comboBoxPrepare(film.getSoundLanguages(), jComboBox10, jComboBox11, jComboBox12);
             if (film.getCover() != null) {
                 jPanel4 = new ImagePanel((new ImageIcon(film.getCover())).getImage());
-                //jPanel4.paintComponents(null);
-                //Graphics g = canvas1.getGraphics();
-
-                //g.drawImage(img, 0, 0, null);
             }
-            //new ImageIcon(flm.getCover())).getImage()
             jTextField5.setText(((Film) film).getComment());
             switch (((Film) film).getRating()) {
                 case 0:
@@ -166,8 +155,6 @@ public class FilmViewNew extends javax.swing.JDialog {
                     break;
             }
             jRadioButton8.setSelected((film).isSeen());
-
-            //TODO paste code here
         }
     }
 
@@ -386,6 +373,7 @@ public class FilmViewNew extends javax.swing.JDialog {
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setSelected(true);
         jRadioButton1.setText(resourceMap.getString("jRadioButton1.text")); // NOI18N
+        jRadioButton1.setActionCommand(resourceMap.getString("jRadioButton1.actionCommand")); // NOI18N
         jRadioButton1.setName("jRadioButton1"); // NOI18N
 
         buttonGroup1.add(jRadioButton2);
@@ -429,7 +417,7 @@ public class FilmViewNew extends javax.swing.JDialog {
                             .addComponent(jRadioButton6)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)))
-                .addContainerGap(209, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -504,10 +492,13 @@ public class FilmViewNew extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel6)
                             .addGap(61, 61, 61)
@@ -554,8 +545,7 @@ public class FilmViewNew extends javax.swing.JDialog {
                                 .addComponent(jTextField4)
                                 .addComponent(jTextField3)
                                 .addComponent(jTextField2)
-                                .addComponent(jTextField1))))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextField1))))))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jButton2, jButton3});
@@ -612,9 +602,9 @@ public class FilmViewNew extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
@@ -659,40 +649,24 @@ public class FilmViewNew extends javax.swing.JDialog {
 
     @Action
     public void choiseFile() {
-        JFileChooser fc = new JFileChooser();
-        fc.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Picture", new String[]{"jpg", "jpeg"}));
-        int returnVal = fc.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            try {
-                File file = fc.getSelectedFile();
-                BufferedImage img = ImageIO.read(file);
-//                Graphics g = img.createGraphics();
-//                g.drawLine(3, 5, 3, 10);
-//                canvas1.update(g);
-                jPanel4 = new ImagePanel(img);
-//                int w = img.getWidth(), h = img.getHeight();
-//                if ((h > 184) || (w > 184)) {
-//                    Image newImg;
-//                    if (h > w) {
-//                        newImg = img.getScaledInstance(Math.round(w * 184f / h), 184, Image.SCALE_DEFAULT);
-//                    } else {
-//                        //newImg = img.getScaledInstance(184, Math.round(h * 184f / w), Image.SCALE_DEFAULT);
-//                        newImg = img.getScaledInstance(w, h, Image.SCALE_DEFAULT);
-//                    }
-//                    ImageInputStream out = ImageIO.createImageInputStream((Object) newImg);
-//                    jTextArea1.setText(jTextArea1.getText() + Byte.toString(out.readByte()));
-//                }
-            } catch (IOException e) {
-            }
-        }
+//        JFileChooser fc = new JFileChooser();
+//        fc.addChoosableFileFilter(new FileNameExtensionFilter("JPEG Picture", new String[]{"jpg", "jpeg"}));
+//        int returnVal = fc.showOpenDialog(this);
+//        if (returnVal == JFileChooser.APPROVE_OPTION) {
+//            try {
+//                File file = fc.getSelectedFile();
+//                BufferedImage img = ImageIO.read(file);
+//                jPanel4 = new ImagePanel(img);
+//            } catch (IOException e) {
+//            }
+//        }
     }
 
     @Action
     public void okButton() {
         String _russianTitle = jTextField1.getText().trim();
 
-        if (_russianTitle.equals(
-                "")) {
+        if (_russianTitle.equals("")) {
             JOptionPane.showMessageDialog(this, "Не заполнено обязательное поле (Русское зазвание)", "Ошибка!", JOptionPane.ERROR_MESSAGE);
         } else {
             String _englishTitle = jTextField2.getText().trim();
@@ -716,103 +690,30 @@ public class FilmViewNew extends javax.swing.JDialog {
             boolean _isSeen = (jRadioButton8.isSelected());
             String _comment = jTextField5.getText().trim();
             String _description = jTextArea1.getText().trim();
-            ArrayList<String> gnrs = new ArrayList<String>();
 
-            if ((jComboBox1.getSelectedIndex() != 0) && (!gnrs.contains((String) (jComboBox1.getSelectedItem())))) {
-                gnrs.add((String) (jComboBox1.getSelectedItem()));
-            }
-            if ((jComboBox2.getSelectedIndex() != 0) && (!gnrs.contains((String) (jComboBox2.getSelectedItem())))) {
-                gnrs.add((String) (jComboBox2.getSelectedItem()));
-            }
-            if ((jComboBox3.getSelectedIndex() != 0) && (!gnrs.contains((String) (jComboBox3.getSelectedItem())))) {
-                gnrs.add((String) (jComboBox3.getSelectedItem()));
-            }
-            String[] _genres = null;
+            String[] _genres = getDataFromComboboxsAsStrings(jComboBox1, jComboBox2, jComboBox3);
+            String[] _countries = getDataFromComboboxsAsStrings(jComboBox4, jComboBox5, jComboBox6);
+            String[] _subtitles = getDataFromComboboxsAsStrings(jComboBox7, jComboBox8, jComboBox9);
+            String[] _soundLanguages = getDataFromComboboxsAsStrings(jComboBox10, jComboBox11, jComboBox12);
 
-            if (gnrs.size() != 0) {
-                _genres = gnrs.toArray(new String[1]);
-            }
-            ArrayList<String> cnts = new ArrayList<String>();
-
-
-            if ((jComboBox4.getSelectedIndex() != 0) && (!cnts.contains((String) (jComboBox4.getSelectedItem())))) {
-                cnts.add((String) (jComboBox4.getSelectedItem()));
-            }
-
-
-            if ((jComboBox5.getSelectedIndex() != 0) && (!cnts.contains((String) (jComboBox5.getSelectedItem())))) {
-                cnts.add((String) (jComboBox5.getSelectedItem()));
-            }
-
-
-            if ((jComboBox6.getSelectedIndex() != 0) && (!cnts.contains((String) (jComboBox6.getSelectedItem())))) {
-                cnts.add((String) (jComboBox6.getSelectedItem()));
-            }
-            String[] _countries = null;
-
-
-            if ((cnts.size() == 1) && (cnts.get(0) == "")) {
-                _countries = (String[]) cnts.toArray();
-            }
-            ArrayList<String> sbttls = new ArrayList<String>();
-
-            if ((jComboBox7.getSelectedIndex() != 0) && (!sbttls.contains((String) (jComboBox7.getSelectedItem())))) {
-                sbttls.add((String) (jComboBox7.getSelectedItem()));
-            }
-
-            if ((jComboBox8.getSelectedIndex() != 0) && (!sbttls.contains((String) (jComboBox8.getSelectedItem())))) {
-                sbttls.add((String) (jComboBox8.getSelectedItem()));
-            }
-
-            if ((jComboBox9.getSelectedIndex() != 0) && (!sbttls.contains((String) (jComboBox9.getSelectedItem())))) {
-                sbttls.add((String) (jComboBox9.getSelectedItem()));
-            }
-            String[] _subtitles = null;
-
-            if ((sbttls.size() == 1) && (sbttls.get(0) == "")) {
-                _subtitles = (String[]) sbttls.toArray();
-            }
-            ArrayList<String> sl = new ArrayList<String>();
-
-            if ((jComboBox10.getSelectedIndex() != 0) && (!sl.contains((String) (jComboBox10.getSelectedItem())))) {
-                sl.add((String) (jComboBox10.getSelectedItem()));
-            }
-
-            if ((jComboBox11.getSelectedIndex() != 0) && (!sl.contains((String) (jComboBox11.getSelectedItem())))) {
-                sl.add((String) (jComboBox11.getSelectedItem()));
-            }
-
-            if ((jComboBox12.getSelectedIndex() != 0) && (!sl.contains((String) (jComboBox12.getSelectedItem())))) {
-                sl.add((String) (jComboBox12.getSelectedItem()));
-            }
-            String[] _soundLanguages = null;
-
-
-            if ((sl.size() == 1) && (sl.get(0) == "")) {
-                _soundLanguages = (String[]) sl.toArray();
-            }
             int _rating = 0;
+// TODO как лучше обработать радиобаттоны?
+//            if (jRadioButton1.isSelected()) {
+//                _rating = 0;
+//            } else if (jRadioButton2.isSelected()) {
+//                _rating = 1;
+//            } else if (jRadioButton3.isSelected()) {
+//                _rating = 2;
+//            } else if (jRadioButton4.isSelected()) {
+//                _rating = 3;
+//            } else if (jRadioButton5.isSelected()) {
+//                _rating = 4;
+//            } else if (jRadioButton6.isSelected()) {
+//                _rating = 5;
+//            }
+            _rating = Integer.parseInt(buttonGroup1.getSelection().getActionCommand());
 
-
-            if (jRadioButton1.isSelected()) {
-                _rating = 0;
-            } else if (jRadioButton2.isSelected()) {
-                _rating = 1;
-            } else if (jRadioButton3.isSelected()) {
-                _rating = 2;
-            } else if (jRadioButton4.isSelected()) {
-                _rating = 3;
-            } else if (jRadioButton5.isSelected()) {
-                _rating = 4;
-            } else if (jRadioButton6.isSelected()) {
-                _rating = 5;
-            }
-
-            if (film == null) {
-                Film retFilm = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
-                        _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
-                //MediatekaView.managers.getFilmsManager().add(retFilm);
-            } else if (film.getID() != 0) {
+            if (film != null) {
                 film.setRussianTitle(_russianTitle);
                 film.setEnglishTitle(_englishTitle);
                 film.setYear(_year);
@@ -826,10 +727,33 @@ public class FilmViewNew extends javax.swing.JDialog {
                 film.setCover(_cover);
                 film.setSoundLanguages(_soundLanguages);
                 film.setSeen(_isSeen);
-                //MediatekaView.managers.getFilmsManager().edit(film.getID(), film);
+                if (!((new EditFilmCommand()).execute(film))) {
+                    throw new ChangeDataException("Ошибка при сохранении");
+                }
+            } else if (film.getID() != 0) {
+                film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
+                        _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
+                if (!((new AddFilmCommand()).execute(film))) {
+                    throw new ChangeDataException("Ошибка при добавлении");
+                }
             }
             this.dispose();
         }
+    }
+
+    private String[] getDataFromComboboxsAsStrings(JComboBox cb1, JComboBox cb2, JComboBox cb3) {
+        ArrayList<String> list = new ArrayList<String>();
+        if ((cb1.getSelectedIndex() != 0) && (!list.contains((String) cb1.getSelectedItem()))) {
+            list.add((String) (cb1.getSelectedItem()));
+        }
+        if ((cb2.getSelectedIndex() != 0) && (!list.contains((String) cb2.getSelectedItem()))) {
+            list.add((String) (cb2.getSelectedItem()));
+        }
+        if ((cb3.getSelectedIndex() != 0) && (!list.contains((String) cb3.getSelectedItem()))) {
+            list.add((String) (cb3.getSelectedItem()));
+        }
+        return (list.size() == 0) ? null : list.toArray(new String[1]);
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;

@@ -22,7 +22,7 @@ public interface Records {
      * @return Количество записей
      */
     int size();
-    
+
     /**
      * Проверяет уникальность записи
      * @param record Запись для проверки
@@ -72,7 +72,7 @@ public interface Records {
      * @return Виртуальная таблица с записями, подходящими под шаблон
      */
     Records find(Record record);
-    
+
     /**
      * Найти запись в таблице с заданным ID
      * @param id ID записи

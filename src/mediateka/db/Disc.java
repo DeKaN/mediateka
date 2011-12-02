@@ -1,5 +1,6 @@
 package mediateka.db;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +53,7 @@ public class Disc implements Record {
     public void setID(int value) {
         this.discID = value;
     }
-    
+
     /**
      * Получить все фильмы на диске
      * @return Фильмы
@@ -211,5 +212,22 @@ public class Disc implements Record {
             str[i] = ((Film) record).toString();
         }
         return format + " №" + discID + " (" + StringUtils.join(str, ", ") + ")";
+    }
+
+    public static String[] getFormats() {
+        Format[] formats = Format.values();
+        String[] retVal = new String[formats.length];
+        for (int i = 0; i < retVal.length; i++) {
+            retVal[i] = formats[i].name();
+        }
+        return retVal;
+    }
+
+    public ArrayList<Integer> getListOfFilmIDs() {
+        ArrayList<Integer> retVal = new ArrayList<Integer>();
+        for (int i = 0; i < films.size(); i++) {
+            retVal.add(films.getRecord(i).getID());
+        }
+        return retVal;
     }
 }
