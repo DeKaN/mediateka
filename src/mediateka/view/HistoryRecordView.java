@@ -5,10 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mediateka.commands.AddCommand;
-import mediateka.commands.AddHistRecCommand;
-import mediateka.commands.EditCommand;
-import mediateka.commands.EditHistRecCommand;
 import mediateka.datamanagers.Managers;
 import mediateka.db.ChangeDataException;
 import mediateka.db.Disc;
@@ -25,8 +21,6 @@ public class HistoryRecordView extends javax.swing.JDialog {
 
     HistoryRecord history = null;
     HashMap<Integer, Integer> discIds = null, personIds = null;
-    private static final AddCommand addCommand = new AddHistRecCommand();
-    private static final EditCommand editCommand = new EditHistRecCommand();
     String[] discs, persons;
     int dIndex = 0, pIndex = 0;
 
@@ -278,17 +272,15 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 history.setPromisedDate(jDateChooser2.getDate());
                 history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
                 history.setComment(jTextArea1.getText());
-                if (!editCommand.execute(history)) {
+                if (!Managers.getInstance().getHistManager().edit(history)) {
                     throw new ChangeDataException("Ошибка при сохранении");
                 }
-                //MediatekaView.managers.getHistManager().edit(history.getID(), history);
             } else {
                 history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
                         jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
-                if (!addCommand.execute(history)) {
+                if (!Managers.getInstance().getHistManager().add(history)) {
                     throw new ChangeDataException("Ошибка при добавлении");
                 }
-                //MediatekaView.managers.getHistManager().add(history);
             }
         } catch (Exception ex) {
             Logger.getLogger(HistoryRecordView.class.getName()).log(Level.SEVERE, null, ex);

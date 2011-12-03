@@ -3,30 +3,20 @@
  */
 package mediateka.view;
 
-import mediateka.view.MediatekaAboutBox;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
 import org.jdesktop.application.Action;
-import org.jdesktop.application.ResourceMap;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import org.jdesktop.application.TaskMonitor;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
-import javax.swing.Timer;
-import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionListener;
 import mediateka.MediatekaApp;
-import mediateka.commands.FindFilmCommand;
 import mediateka.datamanagers.Managers;
-import mediateka.db.Disc;
 import mediateka.db.Film;
-import mediateka.db.Films;
 import mediateka.db.Record;
 
 /**
@@ -109,10 +99,14 @@ public class MediatekaView extends FrameView {
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
-                int filmID = Integer.parseInt((String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
-                Film f = (Film) (new FindFilmCommand().execute(filmID));
-                //FilmViewNew fv = new FilmViewNew(null, true, f);
-                updateInfo(f);
+                try {
+                    int filmID = Integer.parseInt((String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
+                    Film f = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
+                    //FilmViewNew fv = new FilmViewNew(null, true, f);
+                    updateInfo(f);
+                } catch (Exception ex) {
+                    Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 
@@ -2008,12 +2002,16 @@ public class MediatekaView extends FrameView {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if (evt.getClickCount() == 2) {
-            int row = jTable1.rowAtPoint(evt.getPoint());
-            int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
-            Film film = (Film) ((new FindFilmCommand()).execute(filmID));
-            FilmViewNew fv = new FilmViewNew(null, true, film);
-            fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-            MediatekaApp.getApplication().show(fv);
+            try {
+                int row = jTable1.rowAtPoint(evt.getPoint());
+                int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
+                Film film = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
+                FilmViewNew fv = new FilmViewNew(null, true, film);
+                fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                MediatekaApp.getApplication().show(fv);
+            } catch (Exception ex) {
+                Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
