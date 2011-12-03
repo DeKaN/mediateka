@@ -1,10 +1,12 @@
 package mediateka.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -24,21 +26,15 @@ import org.jdesktop.application.Action;
 public class DiscView extends javax.swing.JDialog {
 
     Disc disc = null;
-    Object[][] data = null;
-    String[] columnNames = null;
-    DefaultTableModel model = null;
     String[] formats = null;
-    
+    List<Record> recs = null;
+    private HashMap<Record, Boolean> map = null;
+
     /** Creates new form DiscView */
     public DiscView(java.awt.Frame parent, boolean modal, Disc dsc) {
         super(parent, modal);
         try {
             disc = dsc;
-            columnNames = new String[]{
-                "ID", "Русское название"
-            };
-            data = new Object[0][];
-            model = new DefaultTableModel(data, columnNames);
             formats = Disc.getFormats();
             initComponents();
             ListSelectionModel selModel1 = jTable1.getSelectionModel();
@@ -48,6 +44,7 @@ public class DiscView extends javax.swing.JDialog {
                     jButton4.setEnabled((jTable1.getSelectedRow() != -1) && (jTable1.getRowCount() != 0));
                 }
             });
+
             ListSelectionModel selModel2 = jTable2.getSelectionModel();
             selModel2.addListSelectionListener(new ListSelectionListener() {
 
@@ -59,41 +56,62 @@ public class DiscView extends javax.swing.JDialog {
             jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(formats));
             jComboBox1.setSelectedItem("DVD");
 
-            List<Record> recs = Managers.getInstance().getDiscsManager().getRecords();
-            data = new Object[recs.size()][];
+            recs = Managers.getInstance().getFilmsManager().getRecords();
+
+            ArrayList<Integer> ids = new ArrayList<Integer>();
+            if (disc != null) {
+                ids = disc.getListOfFilmIDs();
+            }
+            map = new HashMap<Record, Boolean>();
+            for (Record rec : recs) {
+                map.put(rec, ids.contains(rec.getID()));
+            }
+
+            updateTables(jTable1, jTable2);
+
             if (disc == null) {
                 this.setTitle("Добавить диск...");
                 jButton1.setText("Добавить");
-                for (int i = 0; i < recs.size(); i++) {
-                    data[i][0] = recs.get(i).getID();
-                    data[i][1] = ((Film) recs.get(i)).getRussianTitle();
-                }
-                jTable2.setModel(new DefaultTableModel(data, columnNames));
             } else {
                 this.setTitle(String.format("Изменить диск... / ID диска = %d", disc.getID()));
                 jButton1.setText("Сохранить");
                 jComboBox1.setSelectedItem(disc.getFormat().toString());
                 jTextField1.setText(Integer.toString(disc.getRegionCode()));
                 jCheckBox1.setSelected(disc.isPresented());
-                ArrayList<Integer> ids = disc.getListOfFilmIDs();
-                Object[][] data_disc = new Object[ids.size()][];
-                int tmp;
-                for (int i = 0; i < recs.size(); i++) {
-                    tmp = recs.get(i).getID();
-                    if (ids.contains(tmp)) {
-                        data_disc[i][0] = tmp;
-                        data_disc[i][1] = ((Film) recs.get(i)).getRussianTitle();
-                    } else {
-                        data[i][0] = recs.get(i).getID();
-                        data[i][1] = ((Film) recs.get(i)).getRussianTitle();
-                    }
-                }
-                jTable1.setModel(new DefaultTableModel(data, columnNames));
-                jTable2.setModel(new DefaultTableModel(data_disc, columnNames));
             }
         } catch (Exception ex) {
             Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    private void updateTables(JTable table1, JTable table2) {
+        String[] columnNames = new String[]{"ID", "Русское название"};
+        DefaultTableModel model;
+        ArrayList<Object[]> list1 = new ArrayList<Object[]>();
+        ArrayList<Object[]> list2 = new ArrayList<Object[]>();
+        Object[] row = null;
+        for (Record rec : recs) {
+            row = new Object[2];
+            row[0] = rec.getID();
+            row[1] = ((Film) rec).getRussianTitle();
+            if ((map != null) && map.get(rec)) {
+                list1.add(row);
+            } else {
+                list2.add(row);
+            }
+        }
+        Object[][] data1 = new Object[list1.size()][];
+        Object[][] data2 = new Object[list2.size()][];
+        for (int i = 0; i < list1.size(); i++) {
+            data1[i] = list1.get(i);
+        }
+        for (int i = 0; i < list2.size(); i++) {
+            data2[i] = list2.get(i);
+        }
+        model = new DefaultTableModel(data1, columnNames);
+        table1.setModel(model);
+        model = new DefaultTableModel(data2, columnNames);
+        table2.setModel(model);
     }
 
     /** This method is called from within the constructor to
@@ -159,21 +177,37 @@ public class DiscView extends javax.swing.JDialog {
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
-        jTable1.setModel(model);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         jTable1.setName("jTable1"); // NOI18N
         jScrollPane1.setViewportView(jTable1);
 
+        jButton3.setAction(actionMap.get("addButton")); // NOI18N
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
         jButton3.setEnabled(false);
         jButton3.setName("jButton3"); // NOI18N
 
+        jButton4.setAction(actionMap.get("removeButton")); // NOI18N
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setEnabled(false);
         jButton4.setName("jButton4"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
-        jTable2.setModel(model);
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         jTable2.setName("jTable2"); // NOI18N
         jScrollPane2.setViewportView(jTable2);
 
@@ -305,20 +339,53 @@ public class DiscView extends javax.swing.JDialog {
         if (jTable1.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "На диск не добавлено ни одного фильма", "Ошибка!", JOptionPane.ERROR_MESSAGE);
         } else {
+            Films films = new Films();
+            for (Record rec : recs) {
+                if (map.get(rec)) {
+                    films.add(rec);
+                }
+            }
+            Format format = Format.valueOf((String) jComboBox1.getSelectedItem());
+            String s = jTextField1.getText();
+            int region = (s.isEmpty()) ? 0 : Integer.parseInt(s);
+            Boolean isPresented = jCheckBox1.isSelected();
             if (disc == null) {
-                int id = 0;
-                Films films = new Films();
-                Film f = null;
-                for (int i = 0; i < jTable1.getRowCount(); i++) {
-                    id = (Integer) jTable1.getValueAt(i, 0);
-                }
-                try {
-                    f = (Film) Managers.getInstance().getFilmsManager().find(id);
-                } catch (Exception ex) {
-                    Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                films.add(f);
-                Managers.getInstance().getDiscsManager().add(new Disc(films, 0, (Format) jComboBox1.getSelectedItem(), Integer.parseInt(jTextField1.getText()), jCheckBox1.isSelected()));
+                Managers.getInstance().getDiscsManager().add(new Disc(films, 0, format, region, isPresented));
+            } else {
+                disc.setFilms(films);
+                disc.setFormat(format);
+                disc.setPresented(isPresented);
+                disc.setRegionCode(region);
+            }
+            dispose();
+        }
+    }
+
+    @Action
+    public void addButton() {
+        try {
+            changeMap(jTable2, true);
+            updateTables(jTable1, jTable2);
+        } catch (Exception ex) {
+            Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Action
+    public void removeButton() {
+        try {
+            changeMap(jTable1, false);
+            updateTables(jTable1, jTable2);
+        } catch (Exception ex) {
+            Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void changeMap(JTable table, boolean flag) {
+        int id = (Integer) table.getValueAt(table.getSelectedRow(), 0);
+        for (Record rec : recs) {
+            if (rec.getID() == id) {
+                map.put(rec, flag);
             }
         }
     }
