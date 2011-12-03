@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import mediateka.commands.AddBlRecordCommand;
-import mediateka.commands.AddCommand;
-import mediateka.commands.EditBlRecordCommand;
-import mediateka.commands.EditCommand;
 import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
 import mediateka.db.ChangeDataException;
@@ -24,8 +20,6 @@ public class BlackListRecordView extends javax.swing.JDialog {
     BlackListRecord record = null;
     private HashMap<Integer, Integer> map = null;
     //TODO:выкинуть команды и хранить менеджера
-    private static final AddCommand addCommand = new AddBlRecordCommand();
-    private static final EditCommand editCommand = new EditBlRecordCommand();
     String[] strs = null;
     int index = 0;
 
@@ -166,16 +160,14 @@ public class BlackListRecordView extends javax.swing.JDialog {
             if (record != null) {
                 record.setPerson(p);
                 record.setComment(jTextArea1.getText());
-                if (!editCommand.execute(record)) {
+                if (!Managers.getInstance().getBlListManager().edit(record)) {
                     throw new ChangeDataException("Ошибка при сохранении");
-                }
-                //Managers.getInstance().getBlListManager().edit(record.getID(), record);
+                }                
             } else {
                 record = new BlackListRecord(p, jTextArea1.getText());
-                if (!addCommand.execute(record)) {
+                if (!Managers.getInstance().getBlListManager().add(record)) {
                     throw new ChangeDataException("Ошибка при добавлении");
                 }
-                //Managers.getInstance().getBlListManager().add(record);
             }
         } catch (Exception ex) {
             Logger.getLogger(BlackListRecordView.class.getName()).log(Level.SEVERE, null, ex);

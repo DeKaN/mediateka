@@ -7,12 +7,13 @@ package mediateka.view;
 
 import java.awt.Image;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import mediateka.commands.AddFilmCommand;
-import mediateka.commands.EditFilmCommand;
+import mediateka.datamanagers.Managers;
 import mediateka.db.ChangeDataException;
 import mediateka.db.Film;
 import org.jdesktop.application.Action;
@@ -665,39 +666,40 @@ public class FilmViewNew extends javax.swing.JDialog {
 
     @Action
     public void okButton() {
-        String _russianTitle = jTextField1.getText().trim();
+        try {
+            String _russianTitle = jTextField1.getText().trim();
 
-        if (_russianTitle.equals("")) {
-            JOptionPane.showMessageDialog(this, "Не заполнено обязательное поле (Русское зазвание)", "Ошибка!", JOptionPane.ERROR_MESSAGE);
-        } else {
-            String _englishTitle = jTextField2.getText().trim();
-            int _year = 0;
-            String tmpStr = jTextField3.getText();
-            try {
-                if (jTextField3.getText().length() != 0) {
-                    _year = Integer.parseInt(tmpStr);
+            if (_russianTitle.equals("")) {
+                JOptionPane.showMessageDialog(this, "Не заполнено обязательное поле (Русское зазвание)", "Ошибка!", JOptionPane.ERROR_MESSAGE);
+            } else {
+                String _englishTitle = jTextField2.getText().trim();
+                int _year = 0;
+                String tmpStr = jTextField3.getText();
+                try {
+                    if (jTextField3.getText().length() != 0) {
+                        _year = Integer.parseInt(tmpStr);
+                    }
+                } catch (Exception e) {
                 }
-            } catch (Exception e) {
-            }
-            int _length = 0;
-            tmpStr = jTextField4.getText();
-            try {
-                if (jTextField4.getText().length() != 0) {
-                    _length = Integer.parseInt(tmpStr);
+                int _length = 0;
+                tmpStr = jTextField4.getText();
+                try {
+                    if (jTextField4.getText().length() != 0) {
+                        _length = Integer.parseInt(tmpStr);
+                    }
+                } catch (Exception e) {
                 }
-            } catch (Exception e) {
-            }
-            byte[] _cover = null;
-            boolean _isSeen = (jRadioButton8.isSelected());
-            String _comment = jTextField5.getText().trim();
-            String _description = jTextArea1.getText().trim();
+                byte[] _cover = null;
+                boolean _isSeen = (jRadioButton8.isSelected());
+                String _comment = jTextField5.getText().trim();
+                String _description = jTextArea1.getText().trim();
 
-            String[] _genres = getDataFromComboboxsAsStrings(jComboBox1, jComboBox2, jComboBox3);
-            String[] _countries = getDataFromComboboxsAsStrings(jComboBox4, jComboBox5, jComboBox6);
-            String[] _subtitles = getDataFromComboboxsAsStrings(jComboBox7, jComboBox8, jComboBox9);
-            String[] _soundLanguages = getDataFromComboboxsAsStrings(jComboBox10, jComboBox11, jComboBox12);
+                String[] _genres = getDataFromComboboxsAsStrings(jComboBox1, jComboBox2, jComboBox3);
+                String[] _countries = getDataFromComboboxsAsStrings(jComboBox4, jComboBox5, jComboBox6);
+                String[] _subtitles = getDataFromComboboxsAsStrings(jComboBox7, jComboBox8, jComboBox9);
+                String[] _soundLanguages = getDataFromComboboxsAsStrings(jComboBox10, jComboBox11, jComboBox12);
 
-            int _rating = 0;
+                int _rating = 0;
 // TODO как лучше обработать радиобаттоны? через события
 //            if (jRadioButton1.isSelected()) {
 //                _rating = 0;
@@ -712,34 +714,41 @@ public class FilmViewNew extends javax.swing.JDialog {
 //            } else if (jRadioButton6.isSelected()) {
 //                _rating = 5;
 //            }
-            _rating = Integer.parseInt(buttonGroup1.getSelection().getActionCommand());
+                _rating = Integer.parseInt(buttonGroup1.getSelection().getActionCommand());
 
-            if (film != null) {
-                film.setRussianTitle(_russianTitle);
-                film.setEnglishTitle(_englishTitle);
-                film.setYear(_year);
-                film.setDescription(_description);
-                film.setGenres(_genres);
-                film.setCountries(_countries);
-                film.setComment(_comment);
-                film.setLength(_length);
-                film.setRating(_rating);
-                film.setSubtitles(_subtitles);
-                film.setCover(_cover);
-                film.setSoundLanguages(_soundLanguages);
-                film.setSeen(_isSeen);
-                if (!((new EditFilmCommand()).execute(film))) {
-                    throw new ChangeDataException("Ошибка при сохранении");
+                if (film != null) {
+
+                    film.setRussianTitle(_russianTitle);
+                    film.setEnglishTitle(_englishTitle);
+                    film.setYear(_year);
+                    film.setDescription(_description);
+                    film.setGenres(_genres);
+                    film.setCountries(_countries);
+                    film.setComment(_comment);
+                    film.setLength(_length);
+                    film.setRating(_rating);
+                    film.setSubtitles(_subtitles);
+                    film.setCover(_cover);
+                    film.setSoundLanguages(_soundLanguages);
+                    film.setSeen(_isSeen);
+                    if (!Managers.getInstance().getFilmsManager().edit(film)) {
+                        throw new ChangeDataException("Ошибка при сохранении");
+                    }
+
+                } else if (film.getID() != 0) {
+                    film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
+                            _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
+                    if (!Managers.getInstance().getFilmsManager().add(film)) {
+                        throw new ChangeDataException("Ошибка при добавлении");
+                    }
                 }
-            } else if (film.getID() != 0) {
-                film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
-                        _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
-                if (!((new AddFilmCommand()).execute(film))) {
-                    throw new ChangeDataException("Ошибка при добавлении");
-                }
+
             }
-            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(FilmViewNew.class.getName()).log(Level.SEVERE, null, ex);
+
         }
+        this.dispose();
     }
 
     private String[] getDataFromComboboxsAsStrings(JComboBox cb1, JComboBox cb2, JComboBox cb3) {
