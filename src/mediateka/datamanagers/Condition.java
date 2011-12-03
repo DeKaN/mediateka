@@ -35,10 +35,11 @@ public class Condition {
     public boolean isEquals(Record rec) {
         Element elem = rec.toXmlElement();
         Set<String> keys = conds.keySet();
-        boolean retVal = true;
+        boolean retVal = true, needFullMatch = false;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
             String key = it.next();
-            String val = elem.elementText(key);
+            needFullMatch = key.contains("Id");
+            String val = elem.attributeValue(key, "");
             if (val.isEmpty()) {
                 return false;
             }
@@ -46,11 +47,11 @@ public class Condition {
             String[] ids = StringUtils.split(val, ',');
             if (ids.length > 1) {
                 for (String str : ids) {
-                    if (key.equals(str)) break;
+                    if ((needFullMatch && str.equals(key)) || (!needFullMatch && str.contains(key))) break;
                     retVal = false;
                 }                
             } else {
-                if (!val.contains(key)) {
+                if ((needFullMatch && !val.equals(key)) || (!needFullMatch && !val.contains(key))) {
                     retVal = false;
                     break;
                 }

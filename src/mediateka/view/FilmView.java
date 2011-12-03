@@ -159,8 +159,7 @@ public class FilmView extends javax.swing.JDialog {
             if (film.getCover() != null) {
                 jPanel4 = new ImagePanel((new ImageIcon(film.getCover())).getImage());
             }
-            jTextField5.setText(film.getComment());
-            //через ролучене компонента по имени
+            jTextField5.setText(film.getComment());            
             _rating = film.getRating();
             ((JRadioButton) (componentMap.get("jRadioButton" + Integer.toString(_rating + 1)))).setSelected(true);
             jRadioButton8.setSelected((film).isSeen());
