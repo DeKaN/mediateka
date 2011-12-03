@@ -28,7 +28,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="standartToolBar" min="-2" pref="25" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" pref="575" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" pref="569" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -133,17 +133,15 @@
                     <Component class="javax.swing.JTable" name="jTable1">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="8" rowCount="1">
-                            <Column editable="false" title="ID" type="java.lang.String">
-                              <Data value="1"/>
-                            </Column>
+                          <Table columnCount="8" rowCount="0">
+                            <Column editable="false" title="ID" type="java.lang.Integer"/>
                             <Column editable="false" title="&#x420;&#x443;&#x441;&#x441;&#x43a;&#x43e;&#x435; &#x43d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.String"/>
                             <Column editable="false" title="&#x416;&#x430;&#x43d;&#x440;" type="java.lang.String"/>
                             <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x434;&#x43e;&#x43b;&#x436;&#x438;&#x442;&#x435;&#x43b;&#x44c;&#x43d;&#x43e;&#x441;&#x442;&#x44c;" type="java.lang.String"/>
                             <Column editable="false" title="&#x413;&#x43e;&#x434;" type="java.lang.String"/>
                             <Column editable="false" title="&#x421;&#x443;&#x431;&#x442;&#x438;&#x442;&#x440;&#x44b;" type="java.lang.String"/>
                             <Column editable="false" title="&#x41e;&#x446;&#x435;&#x43d;&#x43a;&#x430;" type="java.lang.String"/>
-                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x43d;" type="java.lang.Boolean"/>
+                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x43d;" type="java.lang.String"/>
                           </Table>
                         </Property>
                         <Property name="autoResizeMode" type="int" value="3"/>
@@ -174,12 +172,12 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="150" prefWidth="200" resizable="true">
+                            <Column maxWidth="180" minWidth="180" prefWidth="180" resizable="true">
                               <Title resourceKey="jTable1.columnModel.title9"/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="40" minWidth="40" prefWidth="40" resizable="true">
+                            <Column maxWidth="60" minWidth="60" prefWidth="60" resizable="true">
                               <Title resourceKey="jTable1.columnModel.title8"/>
                               <Editor/>
                               <Renderer/>
@@ -3037,9 +3035,6 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
                   <Properties>
-                    <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                      <action class="mediateka.MediatekaView" id="showRussianName" methodName="showRussianName"/>
-                    </Property>
                     <Property name="text" type="java.lang.String" resourceKey="jMenuItem5.text"/>
                     <Property name="name" type="java.lang.String" value="jMenuItem5" noResource="true"/>
                   </Properties>

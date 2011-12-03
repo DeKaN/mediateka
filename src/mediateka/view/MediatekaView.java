@@ -10,13 +10,20 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 import mediateka.MediatekaApp;
 import mediateka.datamanagers.Managers;
+import mediateka.db.BlackListRecord;
+import mediateka.db.Disc;
 import mediateka.db.Film;
+import mediateka.db.HistoryRecord;
+import mediateka.db.Person;
 import mediateka.db.Record;
 
 /**
@@ -25,8 +32,9 @@ import mediateka.db.Record;
 public class MediatekaView extends FrameView {
 
     private static final String appPath = (new File("")).getAbsolutePath();
+    String[] columnNamesFilms = new String[]{"ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"};
 
-    private void updateInfo(Film film) {
+    private void updateFilmInfo(Film film) {
         if (film != null) {
             String result = "";
             result = film.getRussianTitle();
@@ -44,16 +52,16 @@ public class MediatekaView extends FrameView {
             result = film.getComment();
             jTextField5.setText((result.length() == 0) ? "-" : result);
             jTextField5.setCaretPosition(0);
-            result = StringArrayToString(film.getGenres());
+            result = stringArrayToString(film.getGenres());
             jTextField6.setText(result);
             jTextField6.setCaretPosition(0);
-            result = StringArrayToString(film.getCountries());
+            result = stringArrayToString(film.getCountries());
             jTextField7.setText(result);
             jTextField7.setCaretPosition(0);
-            result = StringArrayToString(film.getSubtitles());
+            result = stringArrayToString(film.getSubtitles());
             jTextField8.setText(result);
             jTextField8.setCaretPosition(0);
-            result = StringArrayToString(film.getSoundLanguages());
+            result = stringArrayToString(film.getSoundLanguages());
             jTextField9.setText(result);
             jTextField9.setCaretPosition(0);
             jLabel12.setText(Integer.toString(film.getRating()));
@@ -77,7 +85,19 @@ public class MediatekaView extends FrameView {
         }
     }
 
-    private String StringArrayToString(String[] arr) {
+    private void updateDiscInfo(Disc disc) {
+    }
+
+    private void updatePersonInfo(Person person) {
+    }
+
+    private void updateBlackListInfo(BlackListRecord blackListRecord) {
+    }
+
+    private void updateHistoryInfo(HistoryRecord historyRecord) {
+    }
+
+    private String stringArrayToString(String[] arr) {
         String retStr = "";
         if ((arr != null) && (arr.length != 0)) {
             for (int i = 0; i < arr.length; i++) {
@@ -94,16 +114,14 @@ public class MediatekaView extends FrameView {
 
     public MediatekaView(SingleFrameApplication app) {
         super(app);
-
         initComponents();
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
                 try {
-                    int filmID = Integer.parseInt((String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
+                    int filmID = (Integer) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
                     Film f = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
-                    //FilmViewNew fv = new FilmView(null, true, f);
-                    updateInfo(f);
+                    updateFilmInfo(f);
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -114,24 +132,49 @@ public class MediatekaView extends FrameView {
     }
 
     private void updateTableFilms() {
-        List<Record> recs = null;
         try {
-            recs = Managers.getInstance().getFilmsManager().getRecords();
+            List<Record> recs = Managers.getInstance().getFilmsManager().getRecords();
+            ArrayList<Object[]> listOfRows = new ArrayList<Object[]>();
+            Film film = null;
+            Object[] row = null;
+            for (Record rec : recs) {
+                film = (Film) rec;
+                row = new Object[8];
+                row[0] = rec.getID();
+                row[1] = film.getRussianTitle();
+                row[2] = (film.getGenres() != null) ? stringArrayToString(film.getGenres()) : "-";
+                row[3] = (film.getLength() != 0) ? Integer.toString(film.getLength()) : "-";
+                row[4] = (film.getYear() != 0) ? Integer.toString(film.getYear()) : "-";
+                row[5] = (film.getSubtitles() != null) ? stringArrayToString(film.getSubtitles()) : "-";
+                row[6] = (film.getRating() != 0) ? Integer.toString(film.getRating()) : "-";
+                row[7] = (film.isSeen()) ? "да" : "нет";
+                listOfRows.add(row);
+            }
+            Object[][] data = new Object[listOfRows.size()][];
+            for (int i = 0; i < listOfRows.size(); i++) {
+                data[i] = listOfRows.get(i);
+            }
+            
+            jTable1.setModel(new DefaultTableModel(data, columnNamesFilms) {
+
+                Class[] types = new Class[]{
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false, false, false, false
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types[columnIndex];
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            });
+
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (recs != null) {
-//            jTable1.setModel(new javax.swing.table.DefaultTableModel(
-//            new Object [][] { {"1", null, null, null, null, null, null, null} },
-//            new String [] {
-//                "ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"
-//            }
-//        )
-//            DefaultTableModel dtm = (DefaultTableModel) (jTable1.getModel());
-//            for (Record rec : recs) {
-//                dtm.addRow(new String[]{"2", "3", "4", "5", "6"});
-//            }
-//            jTable1.setModel(dtm);
         }
     }
 
@@ -383,14 +426,14 @@ public class MediatekaView extends FrameView {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false
@@ -436,12 +479,13 @@ public class MediatekaView extends FrameView {
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(50);
         jTable1.getColumnModel().getColumn(4).setMaxWidth(50);
         jTable1.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable1.getColumnModel().getColumn(5).setMinWidth(150);
-        jTable1.getColumnModel().getColumn(5).setPreferredWidth(200);
+        jTable1.getColumnModel().getColumn(5).setMinWidth(180);
+        jTable1.getColumnModel().getColumn(5).setPreferredWidth(180);
+        jTable1.getColumnModel().getColumn(5).setMaxWidth(180);
         jTable1.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
-        jTable1.getColumnModel().getColumn(6).setMinWidth(40);
-        jTable1.getColumnModel().getColumn(6).setPreferredWidth(40);
-        jTable1.getColumnModel().getColumn(6).setMaxWidth(40);
+        jTable1.getColumnModel().getColumn(6).setMinWidth(60);
+        jTable1.getColumnModel().getColumn(6).setPreferredWidth(60);
+        jTable1.getColumnModel().getColumn(6).setMaxWidth(60);
         jTable1.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
         jTable1.getColumnModel().getColumn(7).setMinWidth(80);
         jTable1.getColumnModel().getColumn(7).setPreferredWidth(80);
@@ -1934,7 +1978,6 @@ public class MediatekaView extends FrameView {
         jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
         jMenu1.setName("jMenu1"); // NOI18N
 
-        jMenuItem5.setAction(actionMap.get("showRussianName")); // NOI18N
         jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
         jMenuItem5.setName("jMenuItem5"); // NOI18N
         jMenu1.add(jMenuItem5);
@@ -2004,7 +2047,7 @@ public class MediatekaView extends FrameView {
         if (evt.getClickCount() == 2) {
             try {
                 int row = jTable1.rowAtPoint(evt.getPoint());
-                int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
+                int filmID = (Integer) jTable1.getValueAt(row, 0);
                 Film film = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
                 FilmView fv = new FilmView(null, true, film);
                 fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
@@ -2045,11 +2088,6 @@ public class MediatekaView extends FrameView {
         FilmView fv = new FilmView(null, true, null);
         fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
         MediatekaApp.getApplication().show(fv);
-    }
-
-    @Action
-    public void showRussianName() {
-        jTable1.getColumnModel().removeColumn(jTable1.getColumnModel().getColumns().nextElement());
     }
 
     @Action
