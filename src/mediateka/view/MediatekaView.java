@@ -102,7 +102,7 @@ public class MediatekaView extends FrameView {
                 try {
                     int filmID = Integer.parseInt((String) (jTable1.getValueAt(jTable1.getSelectedRow(), 0)));
                     Film f = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
-                    //FilmViewNew fv = new FilmViewNew(null, true, f);
+                    //FilmViewNew fv = new FilmView(null, true, f);
                     updateInfo(f);
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -2006,7 +2006,7 @@ public class MediatekaView extends FrameView {
                 int row = jTable1.rowAtPoint(evt.getPoint());
                 int filmID = Integer.parseInt((String) jTable1.getValueAt(row, 0));
                 Film film = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
-                FilmViewNew fv = new FilmViewNew(null, true, film);
+                FilmView fv = new FilmView(null, true, film);
                 fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
                 MediatekaApp.getApplication().show(fv);
             } catch (Exception ex) {
@@ -2042,7 +2042,7 @@ public class MediatekaView extends FrameView {
 
     @Action
     public void addFilm() {
-        FilmViewNew fv = new FilmViewNew(null, true, null);
+        FilmView fv = new FilmView(null, true, null);
         fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
         MediatekaApp.getApplication().show(fv);
     }
