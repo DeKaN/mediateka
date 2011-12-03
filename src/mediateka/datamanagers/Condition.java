@@ -37,7 +37,8 @@ public class Condition {
         Set<String> keys = conds.keySet();
         boolean retVal = true, needFullMatch = false;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
-            String key = it.next();            
+            String key = it.next();
+            needFullMatch = key.contains("Id");
             String val = elem.attributeValue(key, "");
             if (val.isEmpty()) {
                 return false;
