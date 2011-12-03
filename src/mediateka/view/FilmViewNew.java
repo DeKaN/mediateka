@@ -134,6 +134,7 @@ public class FilmViewNew extends javax.swing.JDialog {
                 jPanel4 = new ImagePanel((new ImageIcon(film.getCover())).getImage());
             }
             jTextField5.setText(((Film) film).getComment());
+            //через ролучене компонента по имени
             switch (((Film) film).getRating()) {
                 case 0:
                     jRadioButton1.setSelected(true);
@@ -697,7 +698,7 @@ public class FilmViewNew extends javax.swing.JDialog {
             String[] _soundLanguages = getDataFromComboboxsAsStrings(jComboBox10, jComboBox11, jComboBox12);
 
             int _rating = 0;
-// TODO как лучше обработать радиобаттоны?
+// TODO как лучше обработать радиобаттоны? через события
 //            if (jRadioButton1.isSelected()) {
 //                _rating = 0;
 //            } else if (jRadioButton2.isSelected()) {

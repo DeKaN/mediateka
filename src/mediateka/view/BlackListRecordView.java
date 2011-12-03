@@ -23,6 +23,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
 
     BlackListRecord record = null;
     private HashMap<Integer, Integer> map = null;
+    //TODO:выкинуть команды и хранить менеджера
     private static final AddCommand addCommand = new AddBlRecordCommand();
     private static final EditCommand editCommand = new EditBlRecordCommand();
     String[] strs = null;
@@ -168,13 +169,13 @@ public class BlackListRecordView extends javax.swing.JDialog {
                 if (!editCommand.execute(record)) {
                     throw new ChangeDataException("Ошибка при сохранении");
                 }
-                //MediatekaView.managers.getBlListManager().edit(record.getID(), record);
+                //Managers.getInstance().getBlListManager().edit(record.getID(), record);
             } else {
                 record = new BlackListRecord(p, jTextArea1.getText());
                 if (!addCommand.execute(record)) {
                     throw new ChangeDataException("Ошибка при добавлении");
                 }
-                //MediatekaView.managers.getBlListManager().add(record);
+                //Managers.getInstance().getBlListManager().add(record);
             }
         } catch (Exception ex) {
             Logger.getLogger(BlackListRecordView.class.getName()).log(Level.SEVERE, null, ex);

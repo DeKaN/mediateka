@@ -100,7 +100,8 @@ public abstract class Table implements Records {
             parser.setProperty("http://java.sun.com/xml/jaxp/properties/schemaLanguage",
                     "http://www.w3.org/2001/XMLSchema");
             SAXReader reader = new SAXReader(parser.getXMLReader(), true);
-            DefaultElement root = (DefaultElement) (reader.read(new File(fileName)).getRootElement());
+            Document document = reader.read(new File(fileName));
+            DefaultElement root = (DefaultElement) document.getRootElement();
             autoIndex = Integer.parseInt(root.attribute("autoIndex").getValue());
             return root;
         } catch (Exception ex) {

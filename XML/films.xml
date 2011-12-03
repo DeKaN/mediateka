@@ -15,14 +15,14 @@
             <genre>Фантастика</genre>
             <genre>Боевик</genre>
             <genre>Триллер</genre>
-			<genre>Драма</genre>
-			<genre>Детектив</genre>
+            <genre>Драма</genre>
+            <genre>Детектив</genre>
         </genres>
-        <countries/>
+        <countries><country>Russia</country></countries>
         <comment/>
         <length>148</length>
         <rating>5</rating>
-        <subtitles/>
+        <subtitles><subtitle>английский</subtitle></subtitles>
         <cover></cover>
         <soundLanguages>
             <soundLanguage>русский</soundLanguage>

@@ -28,7 +28,7 @@ public class Managers {
         }
     }
     Manager blListManager = null, discsManager = null, filmsManager = null, histManager = null, persManager = null;
-    private static final String dir = ".\\XML\\",//TODO after debug change to %APPDATA%\mediateka
+    private static final String dir = "XML\\",//TODO after debug change to %APPDATA%\mediateka
             blFile = dir + "blacklist.xml",
             dFile = dir + "discs.xml",
             fFile = dir + "films.xml",
