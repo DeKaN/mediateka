@@ -37,8 +37,8 @@ public class Condition {
         Set<String> keys = conds.keySet();
         boolean retVal = true;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
-            String key = it.next();
-            String val = elem.elementText(key);
+            String key = it.next();            
+            String val = elem.attributeValue(key, "");
             if (val.isEmpty()) {
                 return false;
             }
