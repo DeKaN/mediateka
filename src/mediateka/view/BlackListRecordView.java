@@ -19,7 +19,6 @@ public class BlackListRecordView extends javax.swing.JDialog {
 
     BlackListRecord record = null;
     private HashMap<Integer, Integer> map = null;
-    //TODO:выкинуть команды и хранить менеджера
     String[] strs = null;
     int index = 0;
 
