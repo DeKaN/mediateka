@@ -119,8 +119,12 @@ public class MediatekaView extends FrameView {
 
             public void valueChanged(ListSelectionEvent e) {
                 try {
-                    int filmID = (Integer) jTable1.getValueAt(jTable1.getSelectedRow(), 0);
-                    Film f = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
+                    Film f = null;
+                    int rowIndex = jTable1.getSelectedRow();
+                    if (rowIndex >= 0) {
+                        int filmID = (Integer) jTable1.getValueAt(rowIndex, 0);
+                        f = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
+                    }
                     updateFilmInfo(f);
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -173,10 +177,14 @@ public class MediatekaView extends FrameView {
                 }
             });
             Integer[] widths = new Integer[]{40, 150, 150, 115, 50, 180, 60, 80};
-            for(int i = 0; i<widths.length; i++)
-            {
-                jTable1.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+            for (int i = 0; i < widths.length; i++) {
+                if (i != 1) {
+                    jTable1.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                    jTable1.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                }
             }
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(220);
 
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -2058,6 +2066,7 @@ public class MediatekaView extends FrameView {
                 FilmView fv = new FilmView(null, true, film);
                 fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
                 MediatekaApp.getApplication().show(fv);
+                updateTableFilms();
             } catch (Exception ex) {
                 Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
             }
