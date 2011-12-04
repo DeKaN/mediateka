@@ -154,7 +154,7 @@ public class MediatekaView extends FrameView {
             for (int i = 0; i < listOfRows.size(); i++) {
                 data[i] = listOfRows.get(i);
             }
-            
+
             jTable1.setModel(new DefaultTableModel(data, columnNamesFilms) {
 
                 Class[] types = new Class[]{
@@ -172,6 +172,11 @@ public class MediatekaView extends FrameView {
                     return canEdit[columnIndex];
                 }
             });
+            Integer[] widths = new Integer[]{40, 150, 150, 115, 50, 180, 60, 80};
+            for(int i = 0; i<widths.length; i++)
+            {
+                jTable1.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
