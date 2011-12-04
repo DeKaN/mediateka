@@ -12,7 +12,6 @@ import org.jdesktop.application.FrameView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.event.ListSelectionListener;
@@ -32,7 +31,8 @@ import mediateka.db.Record;
 public class MediatekaView extends FrameView {
 
     private static final String appPath = (new File("")).getAbsolutePath();
-    String[] columnNamesFilms = new String[]{"ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"};
+    private static final String[] columnNamesFilms = new String[]{"ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"};
+    private static final String[] columnNamesPersons = new String[]{"ID", "Фамилия", "Имя", "Отчество", "Телефон", "Комментарий"};
 
     private void updateFilmInfo(Film film) {
         if (film != null) {
@@ -132,7 +132,7 @@ public class MediatekaView extends FrameView {
             }
         });
 
-        updateTableFilms();
+        update();
     }
 
     private void updateTableFilms() {
@@ -181,11 +181,63 @@ public class MediatekaView extends FrameView {
                 if (i != 1) {
                     jTable1.getColumnModel().getColumn(i).setMinWidth(widths[i]);
                     jTable1.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                    jTable1.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
                 }
             }
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(220);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(275);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(350);
 
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void updateTablePersons() {
+        try {
+            List<Record> recs = Managers.getInstance().getPersManager().getRecords();
+            ArrayList<Object[]> listOfRows = new ArrayList<Object[]>();
+            Person pers = null;
+            Object[] row = null;
+            for (Record rec : recs) {
+                pers = (Person) rec;
+                row = new Object[6];
+                row[0] = rec.getID();
+                row[1] = (pers.getFirstName().isEmpty()) ? "-" : pers.getFirstName();
+                row[2] = (pers.getLastName().isEmpty()) ? "-" : pers.getLastName();
+                row[3] = (pers.getSecondName().isEmpty()) ? "-" : pers.getSecondName();
+                row[4] = (pers.getPhone().isEmpty()) ? "-" : pers.getPhone();
+                row[5] = (pers.getComment().isEmpty()) ? "-" : pers.getComment();
+                listOfRows.add(row);
+            }
+            Object[][] data = new Object[listOfRows.size()][];
+            for (int i = 0; i < listOfRows.size(); i++) {
+                data[i] = listOfRows.get(i);
+            }
+
+            jTable5.setModel(new DefaultTableModel(data, columnNamesPersons) {
+
+                Class[] types = new Class[]{
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false, false
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types[columnIndex];
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            });
+            Integer[] widths = new Integer[]{40, 200, 200, 200, 150};
+            for (int i = 0; i < widths.length; i++) {
+                jTable5.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                jTable5.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                jTable5.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+            }
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -283,27 +335,13 @@ public class MediatekaView extends FrameView {
         jLabel58 = new javax.swing.JLabel();
         jLabel59 = new javax.swing.JLabel();
         jLabel60 = new javax.swing.JLabel();
-        jLabel61 = new javax.swing.JLabel();
         jTextField37 = new javax.swing.JTextField();
         jTextField38 = new javax.swing.JTextField();
         jTextField39 = new javax.swing.JTextField();
         jTextField40 = new javax.swing.JTextField();
-        jTextField41 = new javax.swing.JTextField();
-        jLabel62 = new javax.swing.JLabel();
-        jLabel63 = new javax.swing.JLabel();
-        jLabel64 = new javax.swing.JLabel();
-        jLabel65 = new javax.swing.JLabel();
-        jLabel66 = new javax.swing.JLabel();
-        jTextField42 = new javax.swing.JTextField();
-        jTextField43 = new javax.swing.JTextField();
-        jTextField44 = new javax.swing.JTextField();
-        jTextField45 = new javax.swing.JTextField();
         jLabel67 = new javax.swing.JLabel();
         jScrollPane10 = new javax.swing.JScrollPane();
         jTextArea5 = new javax.swing.JTextArea();
-        jLabel68 = new javax.swing.JLabel();
-        jLabel69 = new javax.swing.JLabel();
-        jLabel70 = new javax.swing.JLabel();
         blackListPane = new javax.swing.JSplitPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
@@ -399,7 +437,7 @@ public class MediatekaView extends FrameView {
         standartToolBar.setName("standartToolBar"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
-        jButton1.setAction(actionMap.get("showDiscView")); // NOI18N
+        jButton1.setAction(actionMap.get("showFindView")); // NOI18N
         jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setFocusable(false);
@@ -417,7 +455,6 @@ public class MediatekaView extends FrameView {
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton2);
 
-        jButton3.setAction(actionMap.get("update")); // NOI18N
         jButton3.setIcon(resourceMap.getIcon("jButton3.icon")); // NOI18N
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -487,7 +524,6 @@ public class MediatekaView extends FrameView {
         jTable1.getColumnModel().getColumn(3).setMinWidth(115);
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(115);
         jTable1.getColumnModel().getColumn(3).setMaxWidth(115);
-        jTable1.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
         jTable1.getColumnModel().getColumn(4).setMinWidth(50);
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(50);
         jTable1.getColumnModel().getColumn(4).setMaxWidth(50);
@@ -495,15 +531,12 @@ public class MediatekaView extends FrameView {
         jTable1.getColumnModel().getColumn(5).setMinWidth(180);
         jTable1.getColumnModel().getColumn(5).setPreferredWidth(180);
         jTable1.getColumnModel().getColumn(5).setMaxWidth(180);
-        jTable1.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
         jTable1.getColumnModel().getColumn(6).setMinWidth(60);
         jTable1.getColumnModel().getColumn(6).setPreferredWidth(60);
         jTable1.getColumnModel().getColumn(6).setMaxWidth(60);
-        jTable1.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
         jTable1.getColumnModel().getColumn(7).setMinWidth(80);
         jTable1.getColumnModel().getColumn(7).setPreferredWidth(80);
         jTable1.getColumnModel().getColumn(7).setMaxWidth(80);
-        jTable1.getColumnModel().getColumn(7).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
 
         filmPane.setLeftComponent(jScrollPane1);
 
@@ -791,18 +824,14 @@ public class MediatekaView extends FrameView {
         jTable2.getColumnModel().getColumn(8).setMinWidth(115);
         jTable2.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable2.getColumnModel().getColumn(8).setMaxWidth(115);
-        jTable2.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
         jTable2.getColumnModel().getColumn(9).setMinWidth(40);
         jTable2.getColumnModel().getColumn(9).setPreferredWidth(40);
         jTable2.getColumnModel().getColumn(9).setMaxWidth(40);
-        jTable2.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
         jTable2.getColumnModel().getColumn(10).setMinWidth(150);
         jTable2.getColumnModel().getColumn(10).setPreferredWidth(200);
-        jTable2.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
         jTable2.getColumnModel().getColumn(11).setMinWidth(80);
         jTable2.getColumnModel().getColumn(11).setPreferredWidth(80);
         jTable2.getColumnModel().getColumn(11).setMaxWidth(80);
-        jTable2.getColumnModel().getColumn(11).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
 
         diskPane.setLeftComponent(jScrollPane2);
 
@@ -1026,24 +1055,17 @@ public class MediatekaView extends FrameView {
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
-                {"2", "От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
-                {"3", "Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
-                {"4", "Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
-                {"5", "Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
-                {"6", "Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
-                {"7", "Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
-                {"8", "Знамение", null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+                "ID", "Фамилия", "Имя", "Отчество", "Телефон", "Комментарий"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1069,30 +1091,23 @@ public class MediatekaView extends FrameView {
         jTable5.getColumnModel().getColumn(0).setMinWidth(40);
         jTable5.getColumnModel().getColumn(0).setPreferredWidth(40);
         jTable5.getColumnModel().getColumn(0).setMaxWidth(40);
-        jTable5.getColumnModel().getColumn(1).setPreferredWidth(150);
+        jTable5.getColumnModel().getColumn(1).setMinWidth(200);
+        jTable5.getColumnModel().getColumn(1).setPreferredWidth(200);
+        jTable5.getColumnModel().getColumn(1).setMaxWidth(200);
         jTable5.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable5.getColumnModel().getColumn(3).setMinWidth(50);
-        jTable5.getColumnModel().getColumn(3).setPreferredWidth(50);
-        jTable5.getColumnModel().getColumn(3).setMaxWidth(50);
+        jTable5.getColumnModel().getColumn(2).setMinWidth(200);
+        jTable5.getColumnModel().getColumn(2).setPreferredWidth(200);
+        jTable5.getColumnModel().getColumn(2).setMaxWidth(200);
+        jTable5.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable5.columnModel.title2")); // NOI18N
+        jTable5.getColumnModel().getColumn(3).setMinWidth(200);
+        jTable5.getColumnModel().getColumn(3).setPreferredWidth(200);
+        jTable5.getColumnModel().getColumn(3).setMaxWidth(200);
         jTable5.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable5.getColumnModel().getColumn(5).setMinWidth(150);
-        jTable5.getColumnModel().getColumn(5).setPreferredWidth(220);
+        jTable5.getColumnModel().getColumn(4).setMinWidth(150);
+        jTable5.getColumnModel().getColumn(4).setPreferredWidth(150);
+        jTable5.getColumnModel().getColumn(4).setMaxWidth(150);
+        jTable5.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable5.columnModel.title4")); // NOI18N
         jTable5.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable5.getColumnModel().getColumn(8).setMinWidth(115);
-        jTable5.getColumnModel().getColumn(8).setPreferredWidth(115);
-        jTable5.getColumnModel().getColumn(8).setMaxWidth(115);
-        jTable5.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
-        jTable5.getColumnModel().getColumn(9).setMinWidth(40);
-        jTable5.getColumnModel().getColumn(9).setPreferredWidth(40);
-        jTable5.getColumnModel().getColumn(9).setMaxWidth(40);
-        jTable5.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
-        jTable5.getColumnModel().getColumn(10).setMinWidth(150);
-        jTable5.getColumnModel().getColumn(10).setPreferredWidth(200);
-        jTable5.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
-        jTable5.getColumnModel().getColumn(11).setMinWidth(80);
-        jTable5.getColumnModel().getColumn(11).setPreferredWidth(80);
-        jTable5.getColumnModel().getColumn(11).setMaxWidth(80);
-        jTable5.getColumnModel().getColumn(11).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
 
         personPane.setLeftComponent(jScrollPane5);
 
@@ -1118,10 +1133,6 @@ public class MediatekaView extends FrameView {
         jLabel60.setText(resourceMap.getString("jLabel60.text")); // NOI18N
         jLabel60.setName("jLabel60"); // NOI18N
 
-        jLabel61.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel61.setText(resourceMap.getString("jLabel61.text")); // NOI18N
-        jLabel61.setName("jLabel61"); // NOI18N
-
         jTextField37.setBackground(resourceMap.getColor("jTextField45.background")); // NOI18N
         jTextField37.setEditable(false);
         jTextField37.setName("jTextField37"); // NOI18N
@@ -1138,46 +1149,6 @@ public class MediatekaView extends FrameView {
         jTextField40.setEditable(false);
         jTextField40.setName("jTextField40"); // NOI18N
 
-        jTextField41.setBackground(resourceMap.getColor("jTextField45.background")); // NOI18N
-        jTextField41.setEditable(false);
-        jTextField41.setName("jTextField41"); // NOI18N
-
-        jLabel62.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel62.setText(resourceMap.getString("jLabel62.text")); // NOI18N
-        jLabel62.setName("jLabel62"); // NOI18N
-
-        jLabel63.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel63.setText(resourceMap.getString("jLabel63.text")); // NOI18N
-        jLabel63.setName("jLabel63"); // NOI18N
-
-        jLabel64.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel64.setText(resourceMap.getString("jLabel64.text")); // NOI18N
-        jLabel64.setName("jLabel64"); // NOI18N
-
-        jLabel65.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel65.setText(resourceMap.getString("jLabel65.text")); // NOI18N
-        jLabel65.setName("jLabel65"); // NOI18N
-
-        jLabel66.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel66.setText(resourceMap.getString("jLabel66.text")); // NOI18N
-        jLabel66.setName("jLabel66"); // NOI18N
-
-        jTextField42.setBackground(resourceMap.getColor("jTextField45.background")); // NOI18N
-        jTextField42.setEditable(false);
-        jTextField42.setName("jTextField42"); // NOI18N
-
-        jTextField43.setBackground(resourceMap.getColor("jTextField45.background")); // NOI18N
-        jTextField43.setEditable(false);
-        jTextField43.setName("jTextField43"); // NOI18N
-
-        jTextField44.setBackground(resourceMap.getColor("jTextField45.background")); // NOI18N
-        jTextField44.setEditable(false);
-        jTextField44.setName("jTextField44"); // NOI18N
-
-        jTextField45.setBackground(resourceMap.getColor("jTextField45.background")); // NOI18N
-        jTextField45.setEditable(false);
-        jTextField45.setName("jTextField45"); // NOI18N
-
         jLabel67.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
         jLabel67.setText(resourceMap.getString("jLabel67.text")); // NOI18N
         jLabel67.setName("jLabel67"); // NOI18N
@@ -1192,71 +1163,27 @@ public class MediatekaView extends FrameView {
         jTextArea5.setName("jTextArea5"); // NOI18N
         jScrollPane10.setViewportView(jTextArea5);
 
-        jLabel68.setText(resourceMap.getString("jLabel68.text")); // NOI18N
-        jLabel68.setName("jLabel68"); // NOI18N
-
-        jLabel69.setFont(resourceMap.getFont("jLabel57.font")); // NOI18N
-        jLabel69.setText(resourceMap.getString("jLabel69.text")); // NOI18N
-        jLabel69.setName("jLabel69"); // NOI18N
-
-        jLabel70.setText(resourceMap.getString("jLabel70.text")); // NOI18N
-        jLabel70.setName("jLabel70"); // NOI18N
-
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel61)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel60)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel59)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel58)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel57)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel57)
+                    .addComponent(jLabel58)
+                    .addComponent(jLabel59)
+                    .addComponent(jLabel60))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel64)
-                    .addComponent(jLabel62)
-                    .addComponent(jLabel63)
-                    .addComponent(jLabel65)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel66)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel68)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jTextField42, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel67))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField43, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField44, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField45, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addGap(75, 75, 75)
-                                .addComponent(jLabel69)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel70)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)))
+                    .addComponent(jLabel67)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -1265,38 +1192,22 @@ public class MediatekaView extends FrameView {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel57)
                     .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel62)
-                    .addComponent(jTextField42, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel67))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel58)
                             .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel63)
-                            .addComponent(jTextField43, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel58))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel59)
                             .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel64)
-                            .addComponent(jTextField44, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel59))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel60)
                             .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel65)
-                            .addComponent(jTextField45, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel61)
-                            .addComponent(jTextField41, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel66)
-                            .addComponent(jLabel68)
-                            .addComponent(jLabel69)
-                            .addComponent(jLabel70)))
-                    .addComponent(jScrollPane10))
+                            .addComponent(jLabel60)))
+                    .addComponent(jScrollPane10, 0, 0, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1371,18 +1282,14 @@ public class MediatekaView extends FrameView {
         jTable3.getColumnModel().getColumn(8).setMinWidth(115);
         jTable3.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable3.getColumnModel().getColumn(8).setMaxWidth(115);
-        jTable3.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
         jTable3.getColumnModel().getColumn(9).setMinWidth(40);
         jTable3.getColumnModel().getColumn(9).setPreferredWidth(40);
         jTable3.getColumnModel().getColumn(9).setMaxWidth(40);
-        jTable3.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
         jTable3.getColumnModel().getColumn(10).setMinWidth(150);
         jTable3.getColumnModel().getColumn(10).setPreferredWidth(200);
-        jTable3.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
         jTable3.getColumnModel().getColumn(11).setMinWidth(80);
         jTable3.getColumnModel().getColumn(11).setPreferredWidth(80);
         jTable3.getColumnModel().getColumn(11).setMaxWidth(80);
-        jTable3.getColumnModel().getColumn(11).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
 
         blackListPane.setLeftComponent(jScrollPane3);
 
@@ -1660,18 +1567,14 @@ public class MediatekaView extends FrameView {
         jTable4.getColumnModel().getColumn(8).setMinWidth(115);
         jTable4.getColumnModel().getColumn(8).setPreferredWidth(115);
         jTable4.getColumnModel().getColumn(8).setMaxWidth(115);
-        jTable4.getColumnModel().getColumn(8).setHeaderValue(resourceMap.getString("jTable1.columnModel.title7")); // NOI18N
         jTable4.getColumnModel().getColumn(9).setMinWidth(40);
         jTable4.getColumnModel().getColumn(9).setPreferredWidth(40);
         jTable4.getColumnModel().getColumn(9).setMaxWidth(40);
-        jTable4.getColumnModel().getColumn(9).setHeaderValue(resourceMap.getString("jTable1.columnModel.title8")); // NOI18N
         jTable4.getColumnModel().getColumn(10).setMinWidth(150);
         jTable4.getColumnModel().getColumn(10).setPreferredWidth(200);
-        jTable4.getColumnModel().getColumn(10).setHeaderValue(resourceMap.getString("jTable1.columnModel.title9")); // NOI18N
         jTable4.getColumnModel().getColumn(11).setMinWidth(80);
         jTable4.getColumnModel().getColumn(11).setPreferredWidth(80);
         jTable4.getColumnModel().getColumn(11).setMaxWidth(80);
-        jTable4.getColumnModel().getColumn(11).setHeaderValue(resourceMap.getString("jTable1.columnModel.title11")); // NOI18N
 
         historyPane.setLeftComponent(jScrollPane4);
 
@@ -2057,37 +1960,22 @@ public class MediatekaView extends FrameView {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-        if (evt.getClickCount() == 2) {
-            try {
-                int row = jTable1.rowAtPoint(evt.getPoint());
-                int filmID = (Integer) jTable1.getValueAt(row, 0);
-                Film film = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
-                FilmView fv = new FilmView(null, true, film);
-                fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-                MediatekaApp.getApplication().show(fv);
-                updateTableFilms();
-            } catch (Exception ex) {
-                Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_jTable1MouseClicked
-
-    private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable2MouseClicked
-
-    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable3MouseClicked
-
     private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable4MouseClicked
+        // TODO add your handling code here:}//GEN-LAST:event_jTable4MouseClicked
+    
+    }
+        private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        // TODO add your handling code here:}//GEN-LAST:event_jTable3MouseClicked
+    }
+        private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
+        // TODO add your handling code here:}//GEN-LAST:event_jTable5MouseClicked
+    }
+        private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+        // TODO add your handling code here:}//GEN-LAST:event_jTable2MouseClicked
+    }
+        private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
 
-    private void jTable5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable5MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTable5MouseClicked
+        if (evt.getClickCount() == 2) {             try {                 int row = jTable1.rowAtPoint(evt.getPoint());                 int filmID = (Integer) jTable1.getValueAt(row, 0);                 Film film = (Film) (Managers.getInstance().getFilmsManager().find(filmID));                 FilmView fv = new FilmView(null, true, film);                 fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());                 MediatekaApp.getApplication().show(fv);                 updateTableFilms();             } catch (Exception ex) {                 Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);             }         }     }//GEN-LAST:event_jTable1MouseClicked
 
     @Action
     public void showFilmView() {
@@ -2108,6 +1996,7 @@ public class MediatekaView extends FrameView {
     @Action
     public void update() {
         updateTableFilms();
+        updateTablePersons();
     }
 
     @Action
@@ -2115,6 +2004,13 @@ public class MediatekaView extends FrameView {
         DiscView dv = new DiscView(null, true, null);
         dv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
         MediatekaApp.getApplication().show(dv);
+    }
+
+    @Action
+    public void showFindView() {
+        FindView fv = new FindView(null, true);
+        fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+        MediatekaApp.getApplication().show(fv);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane blackListPane;
@@ -2186,17 +2082,8 @@ public class MediatekaView extends FrameView {
     private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel60;
-    private javax.swing.JLabel jLabel61;
-    private javax.swing.JLabel jLabel62;
-    private javax.swing.JLabel jLabel63;
-    private javax.swing.JLabel jLabel64;
-    private javax.swing.JLabel jLabel65;
-    private javax.swing.JLabel jLabel66;
     private javax.swing.JLabel jLabel67;
-    private javax.swing.JLabel jLabel68;
-    private javax.swing.JLabel jLabel69;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel70;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
@@ -2271,11 +2158,6 @@ public class MediatekaView extends FrameView {
     private javax.swing.JTextField jTextField39;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField40;
-    private javax.swing.JTextField jTextField41;
-    private javax.swing.JTextField jTextField42;
-    private javax.swing.JTextField jTextField43;
-    private javax.swing.JTextField jTextField44;
-    private javax.swing.JTextField jTextField45;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
