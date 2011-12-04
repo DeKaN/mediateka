@@ -86,9 +86,43 @@ public class MediatekaView extends FrameView {
     }
 
     private void updateDiscInfo(Disc disc) {
+                
     }
 
     private void updatePersonInfo(Person person) {
+        //37 38 39 40
+        if (person != null) {
+            String result = "";
+            result = person.getLastName();
+            jTextField37.setText((result.length() == 0) ? "-" : result);
+            jTextField37.setCaretPosition(0);
+            result = person.getFirstName();
+            jTextField38.setText((result.length() == 0) ? "-" : result);
+            jTextField38.setCaretPosition(0);
+            result = person.getSecondName();
+            jTextField39.setText((result.length() == 0) ? "-" : result);
+            jTextField39.setCaretPosition(0);
+            result=person.getPhone();
+            jTextField40.setText((result.length() == 0) ? "-" : result);
+            jTextField40.setCaretPosition(0);
+            result = person.getComment();
+            jTextArea5.setText((result.length() == 0) ? "-" : result);
+            jTextArea5.setCaretPosition(0);
+        } else {
+            // TODO: ???????????????
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jTextField5.setText("");
+            jTextField6.setText("");
+            jTextField7.setText("");
+            jTextField8.setText("");
+            jTextField9.setText("");
+            jTextArea1.setText("");
+            jLabel12.setText("");
+            jLabel14.setText("");
+        }
     }
 
     private void updateBlackListInfo(BlackListRecord blackListRecord) {
@@ -176,7 +210,7 @@ public class MediatekaView extends FrameView {
                     return canEdit[columnIndex];
                 }
             });
-            Integer[] widths = new Integer[]{40, 150, 150, 115, 50, 180, 60, 80};
+            Integer[] widths = new Integer[]{40, 150, 350, 115, 50, 180, 60, 80};
             for (int i = 0; i < widths.length; i++) {
                 if (i != 1) {
                     jTable1.getColumnModel().getColumn(i).setMinWidth(widths[i]);
@@ -185,8 +219,8 @@ public class MediatekaView extends FrameView {
                 }
             }
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(150);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(275);
-            jTable1.getColumnModel().getColumn(2).setMaxWidth(350);
+            jTable1.getColumnModel().getColumn(2).setPreferredWidth(350);
+            jTable1.getColumnModel().getColumn(2).setMaxWidth(450);
 
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
