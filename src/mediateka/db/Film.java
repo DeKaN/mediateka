@@ -40,7 +40,7 @@ public final class Film implements Record {
     public int getID() {
         return this.filmID;
     }
-    
+
     /**
      * Записать ID записи
      * @param value 
@@ -341,27 +341,43 @@ public final class Film implements Record {
         elem.addElement("year").addText(Integer.toString(year));
         elem.addElement("description").addText(description);
         tempElem = new DOMElement("genres");
-        for (int i = 0; i < genres.length; i++) {
-            tempElem.addElement("genre").addText(genres[i]);
+        if (genres == null || genres.length == 0) {
+            tempElem.addElement("genre");
+        } else {
+            for (int i = 0; i < genres.length; i++) {
+                tempElem.addElement("genre").addText(genres[i]);
+            }
         }
         elem.add(tempElem);
         tempElem = new DOMElement("countries");
-        for (int i = 0; i < countries.length; i++) {
-            tempElem.addElement("country").addText(countries[i]);
+        if (countries == null || countries.length == 0) {
+            tempElem.addElement("country");
+        } else {
+            for (int i = 0; i < countries.length; i++) {
+                tempElem.addElement("country").addText(countries[i]);
+            }
         }
         elem.add(tempElem);
         elem.addElement("comment").addText(comment);
         elem.addElement("length").addText(Integer.toString(length));
         elem.addElement("rating").addText(Integer.toString(rating));
         tempElem = new DOMElement("subtitles");
-        for (int i = 0; i < subtitles.length; i++) {
-            tempElem.addElement("subtitle").addText(subtitles[i]);
+        if (subtitles == null || subtitles.length == 0) {
+            tempElem.addElement("subtitle");
+        } else {
+            for (int i = 0; i < subtitles.length; i++) {
+                tempElem.addElement("subtitle").addText(subtitles[i]);
+            }
         }
         elem.add(tempElem);
         elem.addElement("cover").addText(Base64Coder.encodeLines(cover));
         tempElem = new DOMElement("soundLanguages");
-        for (int i = 0; i < soundLanguages.length; i++) {
-            tempElem.addElement("soundLanguage").addText(soundLanguages[i]);
+        if (soundLanguages == null || soundLanguages.length == 0) {
+            tempElem.addElement("soundLanguage");
+        } else {
+            for (int i = 0; i < soundLanguages.length; i++) {
+                tempElem.addElement("soundLanguage").addText(soundLanguages[i]);
+            }
         }
         elem.add(tempElem);
         elem.addElement("isSeen").addText(Boolean.toString(seen));
