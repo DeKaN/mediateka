@@ -6,6 +6,7 @@
 package mediateka.view;
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import mediateka.datamanagers.Managers;
 import mediateka.db.ChangeDataException;
@@ -36,7 +38,7 @@ public class FilmView extends javax.swing.JDialog {
 
         public void actionPerformed(ActionEvent e) {
             String temp = ((AbstractButton) (e.getSource())).getText();
-            _rating = temp.equals("(нет)") ? 0 : Integer.parseInt(temp);
+            _rating = Integer.parseInt(temp);
         }
     };
     private Image image;
@@ -101,12 +103,12 @@ public class FilmView extends javax.swing.JDialog {
         "Эритрея", "Эстония", "Эфиопия", "Южная Корея",
         "Южно-Африканская Республика", "Ямайка", "Япония"};
     private String[] languages = new String[]{
-        "", "английский (Великобритания)", "английский (США)",
-        "арабский", "болгарский", "венгерский", "вьетнамский", "голландский",
-        "греческий", "датский", "иврит", "индонезийский", "испанский (Испания)",
-        "испанский (Латинская Америка)", "итальянский", "каталанский",
-        "китайский (Традиционная китайская)", "китайский (Упрощенная китайская)",
-        "корейский", "латышский", "литовский", "малайский", "немецкий",
+        "", "английский", "арабский", "болгарский", "венгерский", "вьетнамский",
+        "голландский", "греческий", "датский", "иврит", "индонезийский",
+        "испанский (Испания)", "испанский (Латинская Америка)", "итальянский",
+        "каталанский", "китайский (Традиционная китайская)",
+        "китайский (Упрощенная китайская)", "корейский", "латышский",
+        "литовский", "малайский", "немецкий",
         "норвежский", "персидский", "польский", "португальский (Бразилия)",
         "португальский (Португалия)", "румынский", "русский", "сербский",
         "словацкий", "словенский", "тайский", "турецкий", "украинский",
@@ -116,9 +118,16 @@ public class FilmView extends javax.swing.JDialog {
 
     private void createComponentMap() {
         componentMap = new HashMap<String, Component>();
-        Component[] components = getContentPane().getComponents();
+        addChildComponents(getContentPane());
+    }
+
+    private void addChildComponents(Container panel) {
+        Component[] components = panel.getComponents();
         for (int i = 0; i < components.length; i++) {
             componentMap.put(components[i].getName(), components[i]);
+            if (components[i] instanceof Container) {
+                addChildComponents((Container) components[i]);
+            }
         }
     }
 
@@ -159,7 +168,7 @@ public class FilmView extends javax.swing.JDialog {
             if (film.getCover() != null) {
                 jPanel4 = new ImagePanel((new ImageIcon(film.getCover())).getImage());
             }
-            jTextField5.setText(film.getComment());            
+            jTextField5.setText(film.getComment());
             _rating = film.getRating();
             ((JRadioButton) (componentMap.get("jRadioButton" + Integer.toString(_rating + 1)))).setSelected(true);
             jRadioButton8.setSelected((film).isSeen());
@@ -407,29 +416,29 @@ public class FilmView extends javax.swing.JDialog {
                     .addComponent(jLabel10)
                     .addComponent(jLabel9))
                 .addGap(39, 39, 39)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jPanel3Layout.createSequentialGroup()
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jRadioButton1)
-                                .addComponent(jRadioButton7))
-                            .addGap(18, 18, 18)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel3Layout.createSequentialGroup()
-                                    .addComponent(jRadioButton2)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton3)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton4)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jRadioButton5))
-                                .addComponent(jRadioButton8))
-                            .addGap(18, 18, 18)
-                            .addComponent(jRadioButton6)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)))
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jRadioButton1)
+                                    .addComponent(jRadioButton7))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jRadioButton2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jRadioButton3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jRadioButton4)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jRadioButton5))
+                                    .addComponent(jRadioButton8))
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButton6))
+                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addContainerGap(154, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -442,19 +451,24 @@ public class FilmView extends javax.swing.JDialog {
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jRadioButton4)
-                    .addComponent(jRadioButton5)
-                    .addComponent(jRadioButton6)
-                    .addComponent(jLabel12))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton7)
-                    .addComponent(jRadioButton8)
-                    .addComponent(jLabel13))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jRadioButton1)
+                            .addComponent(jLabel12))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jRadioButton7)
+                            .addComponent(jLabel13)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jRadioButton2)
+                            .addComponent(jRadioButton3)
+                            .addComponent(jRadioButton4)
+                            .addComponent(jRadioButton5)
+                            .addComponent(jRadioButton6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jRadioButton8)))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -699,7 +713,7 @@ public class FilmView extends javax.swing.JDialog {
                     }
                 } catch (Exception e) {
                 }
-                byte[] _cover = null;
+                byte[] _cover = new byte[]{'n','o','n','e'};
                 boolean _isSeen = (jRadioButton8.isSelected());
                 String _comment = jTextField5.getText().trim();
                 String _description = jTextArea1.getText().trim();

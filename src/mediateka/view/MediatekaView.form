@@ -524,6 +524,7 @@
                             <Property name="columns" type="int" value="20"/>
                             <Property name="editable" type="boolean" value="false"/>
                             <Property name="font" type="java.awt.Font" resourceKey="jTextArea1.font"/>
+                            <Property name="lineWrap" type="boolean" value="true"/>
                             <Property name="rows" type="int" value="5"/>
                             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[2147483647, 74]"/>

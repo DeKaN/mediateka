@@ -594,6 +594,7 @@ public class MediatekaView extends FrameView {
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
         jTextArea1.setFont(resourceMap.getFont("jTextArea1.font")); // NOI18N
+        jTextArea1.setLineWrap(true);
         jTextArea1.setRows(5);
         jTextArea1.setMaximumSize(new java.awt.Dimension(2147483647, 74));
         jTextArea1.setName("jTextArea1"); // NOI18N

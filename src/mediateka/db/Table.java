@@ -35,7 +35,7 @@ public abstract class Table implements Records {
         autoIndex = 1;
         recordsList = new ArrayList<Record>();
     }
-    
+
     protected abstract Record createRecord(int id);
 
     public Record getRecord(int index) throws IndexOutOfBoundsException {
@@ -54,7 +54,9 @@ public abstract class Table implements Records {
         if (!isUnique(record)) {
             return false;
         }
-        record.setID(autoIndex++);
+        if (record.getID() == 0) {
+            record.setID(autoIndex++);
+        }
         recordsList.add(record);
         return true;
     }
@@ -112,8 +114,8 @@ public abstract class Table implements Records {
     public abstract boolean load(String fileName) throws LoadException;
 
     public abstract Records find(Record record);
-    
-    public Record find(int id){
+
+    public Record find(int id) {
         return find(createRecord(id)).getRecord(0);
     }
 
@@ -130,6 +132,6 @@ public abstract class Table implements Records {
     }
 
     public List<Record> toList() {
-        return (List<Record>)recordsList.clone();
+        return (List<Record>) recordsList.clone();
     }
 }
