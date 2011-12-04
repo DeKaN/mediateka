@@ -9,13 +9,11 @@ import javax.swing.event.ListSelectionEvent;
 import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mediateka.MediatekaApp;
@@ -33,6 +31,7 @@ import mediateka.db.Record;
 public class MediatekaView extends FrameView {
 
     private static final String[] columnNamesFilms = new String[]{"ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"};
+    private static final String[] columnNamesDiscs = new String[]{"ID", "Список фильмов", "Формат", "Регион", "В наличии"};
     private static final String[] columnNamesPersons = new String[]{"ID", "Фамилия", "Имя", "Отчество", "Телефон", "Комментарий"};
     private static final String[] columnNamesBLRecords = new String[]{"ID", "ФИО", "Комментарий"};
     private static final String[] columnNamesHistoty = new String[]{"ID", "Диск", "Человек", "Дата выдачи", "Обещанная дата", "Дата возврата", "Комментарий"};
@@ -89,6 +88,18 @@ public class MediatekaView extends FrameView {
     }
 
     private void updateDiscInfo(Disc disc) {
+        List<Record> films = disc.getFilms().toList();
+        String tmp = "";
+        if (films.size() != 0) {
+            tmp += ((Film) films.get(0)).toString();
+        }
+        for (int i = 1; i < films.size(); i++) {
+            tmp += ", " + ((Film) films.get(i)).toString();
+        }
+        jTextField10.setText(tmp);
+        jTextField11.setText(disc.getFormat().toString());
+        jTextField12.setText(Integer.toString(disc.getRegionCode()));
+        jTextField13.setText((disc.isPresented()) ? "да" : "нет");
     }
 
     private void updatePersonInfo(Person person) {
@@ -211,6 +222,22 @@ public class MediatekaView extends FrameView {
                 }
             }
         });
+        jTable2.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+            public void valueChanged(ListSelectionEvent e) {
+                try {
+                    Disc disc = null;
+                    int rowIndex = jTable2.getSelectedRow();
+                    if (rowIndex >= 0) {
+                        int discID = (Integer) jTable2.getValueAt(rowIndex, 0);
+                        disc = (Disc) (Managers.getInstance().getDiscsManager().find(discID));
+                    }
+                    updateDiscInfo(disc);
+                } catch (Exception ex) {
+                    Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         jTable5.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
@@ -315,6 +342,65 @@ public class MediatekaView extends FrameView {
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(350);
             jTable1.getColumnModel().getColumn(2).setMaxWidth(450);
 
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void updateTableDiscs() {
+        try {
+            List<Record> recs = Managers.getInstance().getDiscsManager().getRecords();
+            ArrayList<Object[]> listOfRows = new ArrayList<Object[]>();
+            Disc disc = null;
+            Object[] row = null;
+            for (Record rec : recs) {
+                disc = (Disc) rec;
+                row = new Object[columnNamesDiscs.length];
+                row[0] = rec.getID();
+                List<Record> films = disc.getFilms().toList();
+                String tmp = "";
+                if (films.size() != 0) {
+                    tmp += ((Film) films.get(0)).toString();
+                }
+                for (int i = 1; i < films.size(); i++) {
+                    tmp += ", " + ((Film) films.get(i)).toString();
+                }
+                row[1] = tmp;
+                row[2] = disc.getFormat().toString();
+                row[3] = (disc.getRegionCode() != 0) ? Integer.toString(disc.getRegionCode()) : "-";
+                row[4] = (disc.isPresented()) ? "да" : "нет";
+                listOfRows.add(row);
+            }
+            Object[][] data = new Object[listOfRows.size()][];
+            for (int i = 0; i < listOfRows.size(); i++) {
+                data[i] = listOfRows.get(i);
+            }
+
+            jTable2.setModel(new DefaultTableModel(data, columnNamesDiscs) {
+
+                Class[] types = new Class[]{
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types[columnIndex];
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            });
+            Integer[] widths = new Integer[]{40, 0, 100, 75, 100};
+            for (int i = 0; i < widths.length; i++) {
+                if (i != 1) {
+                    jTable2.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                    jTable2.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                    jTable2.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+                }
+            }
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -430,9 +516,9 @@ public class MediatekaView extends FrameView {
                 row[0] = rec.getID();
                 row[1] = historyRecord.getDisc().toString();
                 row[2] = historyRecord.getPerson().toString();
-                row[3] = formatter.format(historyRecord.getGiveDate());
-                row[4] = formatter.format(historyRecord.getPromisedDate());
-                row[5] = formatter.format(historyRecord.getReturnDate());
+                row[3] = (historyRecord.getGiveDate() != null) ? formatter.format(historyRecord.getGiveDate()) : "-";
+                row[4] = (historyRecord.getPromisedDate() != null) ? formatter.format(historyRecord.getPromisedDate()) : "-";
+                row[5] = (historyRecord.getReturnDate() != null) ? formatter.format(historyRecord.getReturnDate()) : "-";
                 row[6] = historyRecord.getComment().toString();
                 listOfRows.add(row);
             }
@@ -498,7 +584,23 @@ public class MediatekaView extends FrameView {
         standartToolBar = new javax.swing.JToolBar();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jSeparator7 = new javax.swing.JToolBar.Separator();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jSeparator6 = new javax.swing.JToolBar.Separator();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jSeparator5 = new javax.swing.JToolBar.Separator();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jSeparator8 = new javax.swing.JToolBar.Separator();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jSeparator9 = new javax.swing.JToolBar.Separator();
+        jButton11 = new javax.swing.JButton();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(150, 32767));
+        jButton12 = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jTabbedPane1 = new javax.swing.JTabbedPane();
         filmPane = new javax.swing.JSplitPane();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -529,7 +631,7 @@ public class MediatekaView extends FrameView {
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        diskPane = new javax.swing.JSplitPane();
+        discPane = new javax.swing.JSplitPane();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -537,27 +639,10 @@ public class MediatekaView extends FrameView {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
         jTextField10 = new javax.swing.JTextField();
         jTextField11 = new javax.swing.JTextField();
         jTextField12 = new javax.swing.JTextField();
         jTextField13 = new javax.swing.JTextField();
-        jTextField14 = new javax.swing.JTextField();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        jTextField15 = new javax.swing.JTextField();
-        jTextField16 = new javax.swing.JTextField();
-        jTextField17 = new javax.swing.JTextField();
-        jTextField18 = new javax.swing.JTextField();
-        jLabel25 = new javax.swing.JLabel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jLabel26 = new javax.swing.JLabel();
-        jLabel27 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
         personPane = new javax.swing.JSplitPane();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
@@ -605,44 +690,17 @@ public class MediatekaView extends FrameView {
         jLabel48 = new javax.swing.JLabel();
         jScrollPane9 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
-        menuBar = new javax.swing.JMenuBar();
-        javax.swing.JMenu fileMenuItem = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
-        createMenuItem = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        importMenuItem = new javax.swing.JMenuItem();
-        exportMenuItem = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        printMenuItem = new javax.swing.JMenuItem();
-        jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenuItem exitMenuItem = new javax.swing.JMenuItem();
-        editMenuItem = new javax.swing.JMenu();
-        undoMenuItem = new javax.swing.JMenuItem();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        viewMenuItem = new javax.swing.JMenu();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        searchMenu = new javax.swing.JMenu();
-        findMenuItem = new javax.swing.JMenuItem();
-        serviceMenuItem = new javax.swing.JMenu();
-        preferencesMenuItem = new javax.swing.JMenuItem();
-        javax.swing.JMenu helpMenu = new javax.swing.JMenu();
-        javax.swing.JMenuItem aboutMenuItem = new javax.swing.JMenuItem();
-        jPopupMenu1 = new javax.swing.JPopupMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(MediatekaView.class);
         mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
         mainPanel.setName("mainPanel"); // NOI18N
 
+        standartToolBar.setFloatable(false);
         standartToolBar.setRollover(true);
         standartToolBar.setName("standartToolBar"); // NOI18N
 
         javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
-        jButton1.setAction(actionMap.get("showFindView")); // NOI18N
+        jButton1.setAction(actionMap.get("showFilmView")); // NOI18N
         jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setFocusable(false);
@@ -651,7 +709,6 @@ public class MediatekaView extends FrameView {
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton1);
 
-        jButton2.setAction(actionMap.get("showDiscView")); // NOI18N
         jButton2.setIcon(resourceMap.getIcon("jButton2.icon")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setFocusable(false);
@@ -660,12 +717,111 @@ public class MediatekaView extends FrameView {
         jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton2);
 
+        jSeparator7.setName("jSeparator7"); // NOI18N
+        standartToolBar.add(jSeparator7);
+
+        jButton3.setAction(actionMap.get("showDiscView")); // NOI18N
         jButton3.setIcon(resourceMap.getIcon("jButton3.icon")); // NOI18N
+        jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
         jButton3.setFocusable(false);
         jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton3.setName("jButton3"); // NOI18N
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton3);
+
+        jButton4.setIcon(resourceMap.getIcon("jButton4.icon")); // NOI18N
+        jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
+        jButton4.setFocusable(false);
+        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton4.setName("jButton4"); // NOI18N
+        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton4);
+
+        jSeparator6.setName("jSeparator6"); // NOI18N
+        standartToolBar.add(jSeparator6);
+
+        jButton5.setAction(actionMap.get("showPersonView")); // NOI18N
+        jButton5.setIcon(resourceMap.getIcon("jButton5.icon")); // NOI18N
+        jButton5.setText(resourceMap.getString("jButton5.text")); // NOI18N
+        jButton5.setFocusable(false);
+        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton5.setName("jButton5"); // NOI18N
+        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton5);
+
+        jButton6.setIcon(resourceMap.getIcon("jButton6.icon")); // NOI18N
+        jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
+        jButton6.setFocusable(false);
+        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton6.setName("jButton6"); // NOI18N
+        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton6);
+
+        jSeparator5.setName("jSeparator5"); // NOI18N
+        standartToolBar.add(jSeparator5);
+
+        jButton7.setAction(actionMap.get("showBlackListRecordView")); // NOI18N
+        jButton7.setIcon(resourceMap.getIcon("jButton7.icon")); // NOI18N
+        jButton7.setText(resourceMap.getString("jButton7.text")); // NOI18N
+        jButton7.setFocusable(false);
+        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton7.setName("jButton7"); // NOI18N
+        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton7);
+
+        jButton8.setIcon(resourceMap.getIcon("jButton8.icon")); // NOI18N
+        jButton8.setText(resourceMap.getString("jButton8.text")); // NOI18N
+        jButton8.setFocusable(false);
+        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton8.setName("jButton8"); // NOI18N
+        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton8);
+
+        jSeparator8.setName("jSeparator8"); // NOI18N
+        standartToolBar.add(jSeparator8);
+
+        jButton9.setAction(actionMap.get("showHistoryView")); // NOI18N
+        jButton9.setIcon(resourceMap.getIcon("jButton9.icon")); // NOI18N
+        jButton9.setText(resourceMap.getString("jButton9.text")); // NOI18N
+        jButton9.setFocusable(false);
+        jButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton9.setName("jButton9"); // NOI18N
+        jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton9);
+
+        jButton10.setIcon(resourceMap.getIcon("jButton10.icon")); // NOI18N
+        jButton10.setText(resourceMap.getString("jButton10.text")); // NOI18N
+        jButton10.setFocusable(false);
+        jButton10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton10.setName("jButton10"); // NOI18N
+        jButton10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton10);
+
+        jSeparator9.setName("jSeparator9"); // NOI18N
+        standartToolBar.add(jSeparator9);
+
+        jButton11.setIcon(resourceMap.getIcon("jButton11.icon")); // NOI18N
+        jButton11.setText(resourceMap.getString("jButton11.text")); // NOI18N
+        jButton11.setFocusable(false);
+        jButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton11.setName("jButton11"); // NOI18N
+        jButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton11);
+
+        filler1.setName("filler1"); // NOI18N
+        standartToolBar.add(filler1);
+
+        jButton12.setAction(actionMap.get("quit")); // NOI18N
+        jButton12.setIcon(resourceMap.getIcon("jButton12.icon")); // NOI18N
+        jButton12.setText(resourceMap.getString("jButton12.text")); // NOI18N
+        jButton12.setFocusable(false);
+        jButton12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton12.setName("jButton12"); // NOI18N
+        jButton12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        standartToolBar.add(jButton12);
+
+        filler2.setName("filler2"); // NOI18N
+        standartToolBar.add(filler2);
 
         jTabbedPane1.setMaximumSize(new java.awt.Dimension(32767, 100));
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
@@ -703,7 +859,6 @@ public class MediatekaView extends FrameView {
             }
         });
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        jTable1.setComponentPopupMenu(jPopupMenu1);
         jTable1.setMaximumSize(new java.awt.Dimension(2147483647, 85));
         jTable1.setName("jTable1"); // NOI18N
         jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -725,7 +880,6 @@ public class MediatekaView extends FrameView {
         jTable1.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
         jTable1.getColumnModel().getColumn(2).setMinWidth(150);
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(220);
-        jTable1.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
         jTable1.getColumnModel().getColumn(3).setMinWidth(115);
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(115);
         jTable1.getColumnModel().getColumn(3).setMaxWidth(115);
@@ -915,7 +1069,7 @@ public class MediatekaView extends FrameView {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel14)))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)))
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -963,35 +1117,28 @@ public class MediatekaView extends FrameView {
 
         jTabbedPane1.addTab(resourceMap.getString("filmPane.TabConstraints.tabTitle"), filmPane); // NOI18N
 
-        diskPane.setDividerLocation(800);
-        diskPane.setDividerSize(3);
-        diskPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
-        diskPane.setResizeWeight(1.0);
-        diskPane.setName("diskPane"); // NOI18N
+        discPane.setDividerLocation(800);
+        discPane.setDividerSize(3);
+        discPane.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
+        discPane.setResizeWeight(1.0);
+        discPane.setName("discPane"); // NOI18N
 
         jScrollPane2.setBackground(resourceMap.getColor("jScrollPane2.background")); // NOI18N
         jScrollPane2.setName("jScrollPane2"); // NOI18N
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
-                {"2", "От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
-                {"3", "Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
-                {"4", "Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
-                {"5", "Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
-                {"6", "Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
-                {"7", "Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
-                {"8", "Знамение", null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+                "ID", "Список фильмов", "Формат", "Регион", "В наличии"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1003,7 +1150,6 @@ public class MediatekaView extends FrameView {
             }
         });
         jTable2.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        jTable2.setComponentPopupMenu(jPopupMenu1);
         jTable2.setMaximumSize(new java.awt.Dimension(2147483647, 85));
         jTable2.setName("jTable2"); // NOI18N
         jTable2.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -1017,28 +1163,21 @@ public class MediatekaView extends FrameView {
         jTable2.getColumnModel().getColumn(0).setMinWidth(40);
         jTable2.getColumnModel().getColumn(0).setPreferredWidth(40);
         jTable2.getColumnModel().getColumn(0).setMaxWidth(40);
-        jTable2.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTable2.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable2.getColumnModel().getColumn(3).setMinWidth(50);
-        jTable2.getColumnModel().getColumn(3).setPreferredWidth(50);
-        jTable2.getColumnModel().getColumn(3).setMaxWidth(50);
+        jTable2.getColumnModel().getColumn(2).setMinWidth(100);
+        jTable2.getColumnModel().getColumn(2).setPreferredWidth(100);
+        jTable2.getColumnModel().getColumn(2).setMaxWidth(100);
+        jTable2.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable2.columnModel.title2")); // NOI18N
+        jTable2.getColumnModel().getColumn(3).setMinWidth(75);
+        jTable2.getColumnModel().getColumn(3).setPreferredWidth(75);
+        jTable2.getColumnModel().getColumn(3).setMaxWidth(75);
         jTable2.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable2.getColumnModel().getColumn(5).setMinWidth(150);
-        jTable2.getColumnModel().getColumn(5).setPreferredWidth(220);
-        jTable2.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable2.getColumnModel().getColumn(8).setMinWidth(115);
-        jTable2.getColumnModel().getColumn(8).setPreferredWidth(115);
-        jTable2.getColumnModel().getColumn(8).setMaxWidth(115);
-        jTable2.getColumnModel().getColumn(9).setMinWidth(40);
-        jTable2.getColumnModel().getColumn(9).setPreferredWidth(40);
-        jTable2.getColumnModel().getColumn(9).setMaxWidth(40);
-        jTable2.getColumnModel().getColumn(10).setMinWidth(150);
-        jTable2.getColumnModel().getColumn(10).setPreferredWidth(200);
-        jTable2.getColumnModel().getColumn(11).setMinWidth(80);
-        jTable2.getColumnModel().getColumn(11).setPreferredWidth(80);
-        jTable2.getColumnModel().getColumn(11).setMaxWidth(80);
+        jTable2.getColumnModel().getColumn(4).setMinWidth(100);
+        jTable2.getColumnModel().getColumn(4).setPreferredWidth(100);
+        jTable2.getColumnModel().getColumn(4).setMaxWidth(100);
+        jTable2.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable2.columnModel.title4")); // NOI18N
 
-        diskPane.setLeftComponent(jScrollPane2);
+        discPane.setLeftComponent(jScrollPane2);
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(resourceMap.getString("jPanel2.border.title"))); // NOI18N
         jPanel2.setMaximumSize(new java.awt.Dimension(32767, 160));
@@ -1062,10 +1201,6 @@ public class MediatekaView extends FrameView {
         jLabel18.setText(resourceMap.getString("jLabel18.text")); // NOI18N
         jLabel18.setName("jLabel18"); // NOI18N
 
-        jLabel19.setFont(resourceMap.getFont("jLabel15.font")); // NOI18N
-        jLabel19.setText(resourceMap.getString("jLabel19.text")); // NOI18N
-        jLabel19.setName("jLabel19"); // NOI18N
-
         jTextField10.setBackground(resourceMap.getColor("jTextField14.background")); // NOI18N
         jTextField10.setEditable(false);
         jTextField10.setName("jTextField10"); // NOI18N
@@ -1082,172 +1217,50 @@ public class MediatekaView extends FrameView {
         jTextField13.setEditable(false);
         jTextField13.setName("jTextField13"); // NOI18N
 
-        jTextField14.setBackground(resourceMap.getColor("jTextField14.background")); // NOI18N
-        jTextField14.setEditable(false);
-        jTextField14.setName("jTextField14"); // NOI18N
-
-        jLabel20.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel20.setText(resourceMap.getString("jLabel20.text")); // NOI18N
-        jLabel20.setName("jLabel20"); // NOI18N
-
-        jLabel21.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel21.setText(resourceMap.getString("jLabel21.text")); // NOI18N
-        jLabel21.setName("jLabel21"); // NOI18N
-
-        jLabel22.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel22.setText(resourceMap.getString("jLabel22.text")); // NOI18N
-        jLabel22.setName("jLabel22"); // NOI18N
-
-        jLabel23.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel23.setText(resourceMap.getString("jLabel23.text")); // NOI18N
-        jLabel23.setName("jLabel23"); // NOI18N
-
-        jLabel24.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel24.setText(resourceMap.getString("jLabel24.text")); // NOI18N
-        jLabel24.setName("jLabel24"); // NOI18N
-
-        jTextField15.setBackground(resourceMap.getColor("jTextField14.background")); // NOI18N
-        jTextField15.setEditable(false);
-        jTextField15.setName("jTextField15"); // NOI18N
-
-        jTextField16.setBackground(resourceMap.getColor("jTextField14.background")); // NOI18N
-        jTextField16.setEditable(false);
-        jTextField16.setName("jTextField16"); // NOI18N
-
-        jTextField17.setBackground(resourceMap.getColor("jTextField14.background")); // NOI18N
-        jTextField17.setEditable(false);
-        jTextField17.setName("jTextField17"); // NOI18N
-
-        jTextField18.setBackground(resourceMap.getColor("jTextField14.background")); // NOI18N
-        jTextField18.setEditable(false);
-        jTextField18.setName("jTextField18"); // NOI18N
-
-        jLabel25.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel25.setText(resourceMap.getString("jLabel25.text")); // NOI18N
-        jLabel25.setName("jLabel25"); // NOI18N
-
-        jScrollPane7.setName("jScrollPane7"); // NOI18N
-
-        jTextArea2.setColumns(20);
-        jTextArea2.setEditable(false);
-        jTextArea2.setFont(resourceMap.getFont("jTextArea2.font")); // NOI18N
-        jTextArea2.setRows(5);
-        jTextArea2.setMaximumSize(new java.awt.Dimension(2147483647, 74));
-        jTextArea2.setName("jTextArea2"); // NOI18N
-        jScrollPane7.setViewportView(jTextArea2);
-
-        jLabel26.setText(resourceMap.getString("jLabel26.text")); // NOI18N
-        jLabel26.setName("jLabel26"); // NOI18N
-
-        jLabel27.setFont(resourceMap.getFont("jLabel20.font")); // NOI18N
-        jLabel27.setText(resourceMap.getString("jLabel27.text")); // NOI18N
-        jLabel27.setName("jLabel27"); // NOI18N
-
-        jLabel28.setText(resourceMap.getString("jLabel28.text")); // NOI18N
-        jLabel28.setName("jLabel28"); // NOI18N
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18))
+                .addGap(10, 10, 10)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel16)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel22)
-                    .addComponent(jLabel20)
-                    .addComponent(jLabel21)
-                    .addComponent(jLabel23)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel24)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel26)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel25))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(75, 75, 75)
-                                .addComponent(jLabel27)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel28)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE)
+                    .addComponent(jTextField11)
+                    .addComponent(jTextField12)
+                    .addComponent(jTextField13))
+                .addGap(663, 663, 663))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20)
-                    .addComponent(jTextField15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25))
+                    .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel16)
-                            .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21)
-                            .addComponent(jTextField16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
-                            .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel22)
-                            .addComponent(jTextField17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel18)
-                            .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel23)
-                            .addComponent(jTextField18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel19)
-                            .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel26)
-                            .addComponent(jLabel27)
-                            .addComponent(jLabel28)))
-                    .addComponent(jScrollPane7))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel16))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        diskPane.setBottomComponent(jPanel2);
+        discPane.setBottomComponent(jPanel2);
         jPanel2.getAccessibleContext().setAccessibleName(resourceMap.getString("jPanel2.AccessibleContext.accessibleName")); // NOI18N
 
-        jTabbedPane1.addTab(resourceMap.getString("diskPane.TabConstraints.tabTitle"), diskPane); // NOI18N
+        jTabbedPane1.addTab(resourceMap.getString("discPane.TabConstraints.tabTitle"), discPane); // NOI18N
 
         personPane.setDividerLocation(800);
         personPane.setDividerSize(3);
@@ -1282,7 +1295,6 @@ public class MediatekaView extends FrameView {
             }
         });
         jTable5.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        jTable5.setComponentPopupMenu(jPopupMenu1);
         jTable5.setMaximumSize(new java.awt.Dimension(2147483647, 85));
         jTable5.setName("jTable5"); // NOI18N
         jTable5.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -1312,7 +1324,6 @@ public class MediatekaView extends FrameView {
         jTable5.getColumnModel().getColumn(4).setPreferredWidth(150);
         jTable5.getColumnModel().getColumn(4).setMaxWidth(150);
         jTable5.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable5.columnModel.title4")); // NOI18N
-        jTable5.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
 
         personPane.setLeftComponent(jScrollPane5);
 
@@ -1379,35 +1390,38 @@ public class MediatekaView extends FrameView {
                     .addComponent(jLabel58)
                     .addComponent(jLabel59)
                     .addComponent(jLabel60))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTextField38, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField37, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                    .addComponent(jTextField39, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField40, javax.swing.GroupLayout.Alignment.LEADING))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel67)
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 775, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel67, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 821, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        jPanel5Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField37, jTextField38, jTextField39, jTextField40});
+
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel57)
-                    .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel67))
+                    .addComponent(jLabel67)
+                    .addComponent(jTextField37, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel58))
+                            .addComponent(jLabel58)
+                            .addComponent(jTextField38, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel59))
+                            .addComponent(jLabel59)
+                            .addComponent(jTextField39, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField40, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1454,7 +1468,6 @@ public class MediatekaView extends FrameView {
             }
         });
         jTable3.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        jTable3.setComponentPopupMenu(jPopupMenu1);
         jTable3.setMaximumSize(new java.awt.Dimension(2147483647, 85));
         jTable3.setName("jTable3"); // NOI18N
         jTable3.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -1551,8 +1564,8 @@ public class MediatekaView extends FrameView {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel33)
-                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(287, Short.MAX_VALUE))
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 823, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1616,7 +1629,6 @@ public class MediatekaView extends FrameView {
             }
         });
         jTable4.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_LAST_COLUMN);
-        jTable4.setComponentPopupMenu(jPopupMenu1);
         jTable4.setMaximumSize(new java.awt.Dimension(2147483647, 85));
         jTable4.setName("jTable4"); // NOI18N
         jTable4.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -1647,7 +1659,6 @@ public class MediatekaView extends FrameView {
         jTable4.getColumnModel().getColumn(5).setMinWidth(100);
         jTable4.getColumnModel().getColumn(5).setPreferredWidth(100);
         jTable4.getColumnModel().getColumn(5).setMaxWidth(100);
-        jTable4.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
         jTable4.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable4.columnModel.title7")); // NOI18N
 
         historyPane.setLeftComponent(jScrollPane4);
@@ -1738,7 +1749,7 @@ public class MediatekaView extends FrameView {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel48)
                     .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 446, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(310, Short.MAX_VALUE))
+                .addContainerGap(353, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1748,7 +1759,7 @@ public class MediatekaView extends FrameView {
                     .addComponent(jLabel43)
                     .addComponent(jLabel48))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField30, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1765,7 +1776,7 @@ public class MediatekaView extends FrameView {
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel47)
                             .addComponent(jTextField29, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
+                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -1777,174 +1788,30 @@ public class MediatekaView extends FrameView {
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(mainPanelLayout.createSequentialGroup()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1159, Short.MAX_VALUE))
-                    .addComponent(standartToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 1169, Short.MAX_VALUE))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1202, Short.MAX_VALUE))
+                    .addComponent(standartToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 1222, Short.MAX_VALUE))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 535, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jTabbedPane1.getAccessibleContext().setAccessibleName(resourceMap.getString("jTabbedPane1.AccessibleContext.accessibleName")); // NOI18N
 
-        menuBar.setName("menuBar"); // NOI18N
-
-        fileMenuItem.setText(resourceMap.getString("fileMenuItem.text")); // NOI18N
-        fileMenuItem.setName("fileMenuItem"); // NOI18N
-
-        openMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        openMenuItem.setIcon(resourceMap.getIcon("openMenuItem.icon")); // NOI18N
-        openMenuItem.setText(resourceMap.getString("openMenuItem.text")); // NOI18N
-        openMenuItem.setName("openMenuItem"); // NOI18N
-        fileMenuItem.add(openMenuItem);
-
-        jSeparator1.setName("jSeparator1"); // NOI18N
-        fileMenuItem.add(jSeparator1);
-
-        createMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.CTRL_MASK));
-        createMenuItem.setIcon(resourceMap.getIcon("createMenuItem.icon")); // NOI18N
-        createMenuItem.setText(resourceMap.getString("createMenuItem.text")); // NOI18N
-        createMenuItem.setName("createMenuItem"); // NOI18N
-        fileMenuItem.add(createMenuItem);
-
-        jSeparator2.setName("jSeparator2"); // NOI18N
-        fileMenuItem.add(jSeparator2);
-
-        importMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        importMenuItem.setIcon(resourceMap.getIcon("importMenuItem.icon")); // NOI18N
-        importMenuItem.setText(resourceMap.getString("importMenuItem.text")); // NOI18N
-        importMenuItem.setName("importMenuItem"); // NOI18N
-        fileMenuItem.add(importMenuItem);
-
-        exportMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-        exportMenuItem.setIcon(resourceMap.getIcon("exportMenuItem.icon")); // NOI18N
-        exportMenuItem.setText(resourceMap.getString("exportMenuItem.text")); // NOI18N
-        exportMenuItem.setName("exportMenuItem"); // NOI18N
-        fileMenuItem.add(exportMenuItem);
-
-        jSeparator3.setName("jSeparator3"); // NOI18N
-        fileMenuItem.add(jSeparator3);
-
-        printMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_MASK));
-        printMenuItem.setIcon(resourceMap.getIcon("printMenuItem.icon")); // NOI18N
-        printMenuItem.setText(resourceMap.getString("printMenuItem.text")); // NOI18N
-        printMenuItem.setName("printMenuItem"); // NOI18N
-        fileMenuItem.add(printMenuItem);
-
-        jSeparator4.setName("jSeparator4"); // NOI18N
-        fileMenuItem.add(jSeparator4);
-
-        exitMenuItem.setAction(actionMap.get("quit")); // NOI18N
-        exitMenuItem.setIcon(resourceMap.getIcon("exitMenuItem.icon")); // NOI18N
-        exitMenuItem.setText(resourceMap.getString("exitMenuItem.text")); // NOI18N
-        exitMenuItem.setName("exitMenuItem"); // NOI18N
-        fileMenuItem.add(exitMenuItem);
-
-        menuBar.add(fileMenuItem);
-
-        editMenuItem.setText(resourceMap.getString("editMenuItem.text")); // NOI18N
-        editMenuItem.setName("editMenuItem"); // NOI18N
-
-        undoMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.event.InputEvent.CTRL_MASK));
-        undoMenuItem.setText(resourceMap.getString("undoMenuItem.text")); // NOI18N
-        undoMenuItem.setName("undoMenuItem"); // NOI18N
-        editMenuItem.add(undoMenuItem);
-
-        jMenuItem1.setAction(actionMap.get("showFilmView")); // NOI18N
-        jMenuItem1.setText(resourceMap.getString("jMenuItem1.text")); // NOI18N
-        jMenuItem1.setName("jMenuItem1"); // NOI18N
-        jMenuItem1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem1MouseClicked(evt);
-            }
-        });
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        editMenuItem.add(jMenuItem1);
-
-        menuBar.add(editMenuItem);
-
-        viewMenuItem.setText(resourceMap.getString("viewMenuItem.text")); // NOI18N
-        viewMenuItem.setName("viewMenuItem"); // NOI18N
-
-        jMenu1.setText(resourceMap.getString("jMenu1.text")); // NOI18N
-        jMenu1.setName("jMenu1"); // NOI18N
-
-        jMenuItem5.setText(resourceMap.getString("jMenuItem5.text")); // NOI18N
-        jMenuItem5.setName("jMenuItem5"); // NOI18N
-        jMenu1.add(jMenuItem5);
-
-        viewMenuItem.add(jMenu1);
-
-        menuBar.add(viewMenuItem);
-
-        searchMenu.setText(resourceMap.getString("searchMenu.text")); // NOI18N
-        searchMenu.setName("searchMenu"); // NOI18N
-
-        findMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F3, 0));
-        findMenuItem.setText(resourceMap.getString("findMenuItem.text")); // NOI18N
-        findMenuItem.setName("findMenuItem"); // NOI18N
-        searchMenu.add(findMenuItem);
-
-        menuBar.add(searchMenu);
-
-        serviceMenuItem.setText(resourceMap.getString("serviceMenuItem.text")); // NOI18N
-        serviceMenuItem.setName("serviceMenuItem"); // NOI18N
-
-        preferencesMenuItem.setText(resourceMap.getString("preferencesMenuItem.text")); // NOI18N
-        preferencesMenuItem.setName("preferencesMenuItem"); // NOI18N
-        serviceMenuItem.add(preferencesMenuItem);
-
-        menuBar.add(serviceMenuItem);
-
-        helpMenu.setText(resourceMap.getString("helpMenu.text")); // NOI18N
-        helpMenu.setName("helpMenu"); // NOI18N
-
-        aboutMenuItem.setAction(actionMap.get("showAboutBox")); // NOI18N
-        aboutMenuItem.setText(resourceMap.getString("aboutMenuItem.text")); // NOI18N
-        aboutMenuItem.setName("aboutMenuItem"); // NOI18N
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
-
-        jPopupMenu1.setName("jPopupMenu1"); // NOI18N
-
-        jMenuItem2.setText(resourceMap.getString("jMenuItem2.text")); // NOI18N
-        jMenuItem2.setName("jMenuItem2"); // NOI18N
-        jPopupMenu1.add(jMenuItem2);
-
-        jMenuItem3.setText(resourceMap.getString("jMenuItem3.text")); // NOI18N
-        jMenuItem3.setName("jMenuItem3"); // NOI18N
-        jPopupMenu1.add(jMenuItem3);
-
-        jMenuItem4.setText(resourceMap.getString("jMenuItem4.text")); // NOI18N
-        jMenuItem4.setName("jMenuItem4"); // NOI18N
-        jPopupMenu1.add(jMenuItem4);
-
         setComponent(mainPanel);
-        setMenuBar(menuBar);
         setToolBar(standartToolBar);
 
         bindingGroup.bind();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jMenuItem1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1MouseClicked
-    }//GEN-LAST:event_jMenuItem1MouseClicked
-
-	private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 	private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
             if (evt.getClickCount() == 2) {
@@ -1952,9 +1819,9 @@ public class MediatekaView extends FrameView {
                     int row = jTable4.rowAtPoint(evt.getPoint());
                     int histID = (Integer) jTable4.getValueAt(row, 0);
                     HistoryRecord hist = (HistoryRecord) (Managers.getInstance().getHistManager().find(histID));
-                    HistoryRecordView hv = new HistoryRecordView(null, true, hist);
-                    hv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-                    MediatekaApp.getApplication().show(hv);
+                    historyRecordView = new HistoryRecordView(null, true, hist);
+                    historyRecordView.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                    MediatekaApp.getApplication().show(historyRecordView);
                     updateTableHistory();
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -1968,9 +1835,9 @@ public class MediatekaView extends FrameView {
                     int row = jTable3.rowAtPoint(evt.getPoint());
                     int blID = (Integer) jTable3.getValueAt(row, 0);
                     BlackListRecord bl = (BlackListRecord) (Managers.getInstance().getBlListManager().find(blID));
-                    BlackListRecordView blv = new BlackListRecordView(null, true, bl);
-                    blv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-                    MediatekaApp.getApplication().show(blv);
+                    blackListRecordView = new BlackListRecordView(null, true, bl);
+                    blackListRecordView.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                    MediatekaApp.getApplication().show(blackListRecordView);
                     updateTableBlackList();
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
@@ -1984,10 +1851,12 @@ public class MediatekaView extends FrameView {
                     int row = jTable5.rowAtPoint(evt.getPoint());
                     int personID = (Integer) jTable5.getValueAt(row, 0);
                     Person pers = (Person) (Managers.getInstance().getPersManager().find(personID));
-                    PersonView pv = new PersonView(null, true, pers);
-                    pv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-                    MediatekaApp.getApplication().show(pv);
+                    personView = new PersonView(null, true, pers);
+                    personView.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                    MediatekaApp.getApplication().show(personView);
                     updateTablePersons();
+                    updateTableBlackList();
+                    updateTableHistory();
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -1995,6 +1864,20 @@ public class MediatekaView extends FrameView {
 	}//GEN-LAST:event_jTable5MouseClicked
 
 	private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
+            if (evt.getClickCount() == 2) {
+                try {
+                    int row = jTable1.rowAtPoint(evt.getPoint());
+                    int discID = (Integer) jTable1.getValueAt(row, 0);
+                    Disc disc = (Disc) (Managers.getInstance().getDiscsManager().find(discID));
+                    discView = new DiscView(null, true, disc);
+                    discView.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                    MediatekaApp.getApplication().show(discView);
+                    updateTableDiscs();
+                    updateTableHistory();
+                } catch (Exception ex) {
+                    Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 	}//GEN-LAST:event_jTable2MouseClicked
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
@@ -2004,10 +1887,12 @@ public class MediatekaView extends FrameView {
                 int row = jTable1.rowAtPoint(evt.getPoint());
                 int filmID = (Integer) jTable1.getValueAt(row, 0);
                 Film film = (Film) (Managers.getInstance().getFilmsManager().find(filmID));
-                FilmView fv = new FilmView(null, true, film);
-                fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-                MediatekaApp.getApplication().show(fv);
+                filmView = new FilmView(null, true, film);
+                filmView.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                MediatekaApp.getApplication().show(filmView);
                 updateTableFilms();
+                updateTableDiscs();
+                updateTableHistory();
             } catch (Exception ex) {
                 Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -2015,34 +1900,63 @@ public class MediatekaView extends FrameView {
     }
 
     @Action
-    public void showFilmView() {
-        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
-        filmView = new FilmView(mainFrame, true, null);
-        filmView.setLocationRelativeTo(mainFrame);
-
-        MediatekaApp.getApplication().show(filmView);
-    }
-
-    @Action
-    public void addFilm() {
-        FilmView fv = new FilmView(null, true, null);
-        fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-        MediatekaApp.getApplication().show(fv);
-    }
-
-    @Action
     public void update() {
         updateTableFilms();
+        updateTableDiscs();
         updateTablePersons();
         updateTableBlackList();
         updateTableHistory();
     }
 
     @Action
+    public void showFilmView() {
+        jTabbedPane1.setSelectedComponent(filmPane);
+        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+        filmView = new FilmView(mainFrame, true, null);
+        filmView.setLocationRelativeTo(mainFrame);
+        MediatekaApp.getApplication().show(filmView);
+        updateTableFilms();
+    }
+
+    @Action
     public void showDiscView() {
-        DiscView dv = new DiscView(null, true, null);
-        dv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
-        MediatekaApp.getApplication().show(dv);
+        jTabbedPane1.setSelectedComponent(discPane);
+        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+        discView = new DiscView(mainFrame, true, null);
+        discView.setLocationRelativeTo(mainFrame);
+        MediatekaApp.getApplication().show(discView);
+        updateTableDiscs();
+        updateTableHistory();
+    }
+
+    @Action
+    public void showPersonView() {
+        jTabbedPane1.setSelectedComponent(personPane);
+        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+        personView = new PersonView(mainFrame, true, null);
+        personView.setLocationRelativeTo(mainFrame);
+        MediatekaApp.getApplication().show(personView);
+        updateTablePersons();
+    }
+
+    @Action
+    public void showBlackListRecordView() {
+        jTabbedPane1.setSelectedComponent(blackListPane);
+        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+        blackListRecordView = new BlackListRecordView(mainFrame, true, null);
+        blackListRecordView.setLocationRelativeTo(mainFrame);
+        MediatekaApp.getApplication().show(blackListRecordView);
+        updateTableBlackList();
+    }
+
+    @Action
+    public void showHistoryView() {
+        jTabbedPane1.setSelectedComponent(historyPane);
+        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+        historyRecordView = new HistoryRecordView(mainFrame, true, null);
+        historyRecordView.setLocationRelativeTo(mainFrame);
+        MediatekaApp.getApplication().show(historyRecordView);
+        updateTableHistory();
     }
 
     @Action
@@ -2053,17 +1967,23 @@ public class MediatekaView extends FrameView {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane blackListPane;
-    private javax.swing.JMenuItem createMenuItem;
-    private javax.swing.JSplitPane diskPane;
-    private javax.swing.JMenu editMenuItem;
-    private javax.swing.JMenuItem exportMenuItem;
+    private javax.swing.JSplitPane discPane;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler2;
     private javax.swing.JSplitPane filmPane;
-    private javax.swing.JMenuItem findMenuItem;
     private javax.swing.JSplitPane historyPane;
-    private javax.swing.JMenuItem importMenuItem;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -2074,17 +1994,7 @@ public class MediatekaView extends FrameView {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
-    private javax.swing.JLabel jLabel25;
-    private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
@@ -2108,18 +2018,11 @@ public class MediatekaView extends FrameView {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
@@ -2127,13 +2030,13 @@ public class MediatekaView extends FrameView {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
-    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JToolBar.Separator jSeparator5;
+    private javax.swing.JToolBar.Separator jSeparator6;
+    private javax.swing.JToolBar.Separator jSeparator7;
+    private javax.swing.JToolBar.Separator jSeparator8;
+    private javax.swing.JToolBar.Separator jSeparator9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
@@ -2141,7 +2044,6 @@ public class MediatekaView extends FrameView {
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
@@ -2150,11 +2052,6 @@ public class MediatekaView extends FrameView {
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
-    private javax.swing.JTextField jTextField14;
-    private javax.swing.JTextField jTextField15;
-    private javax.swing.JTextField jTextField16;
-    private javax.swing.JTextField jTextField17;
-    private javax.swing.JTextField jTextField18;
     private javax.swing.JTextField jTextField19;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField20;
@@ -2177,18 +2074,14 @@ public class MediatekaView extends FrameView {
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JPanel mainPanel;
-    private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JSplitPane personPane;
-    private javax.swing.JMenuItem preferencesMenuItem;
-    private javax.swing.JMenuItem printMenuItem;
-    private javax.swing.JMenu searchMenu;
-    private javax.swing.JMenu serviceMenuItem;
     private javax.swing.JToolBar standartToolBar;
-    private javax.swing.JMenuItem undoMenuItem;
-    private javax.swing.JMenu viewMenuItem;
     private org.jdesktop.beansbinding.BindingGroup bindingGroup;
     // End of variables declaration//GEN-END:variables
-    private JDialog aboutBox;
-    private JDialog filmView;
+    private JDialog aboutBox = null;
+    private JDialog filmView = null;
+    private JDialog discView = null;
+    private JDialog personView = null;
+    private JDialog blackListRecordView = null;
+    private JDialog historyRecordView = null;
 }

@@ -106,6 +106,7 @@
         <Component class="javax.swing.JTextArea" name="jTextArea1">
           <Properties>
             <Property name="columns" type="int" value="20"/>
+            <Property name="font" type="java.awt.Font" resourceKey="jTextArea1.font"/>
             <Property name="rows" type="int" value="5"/>
             <Property name="name" type="java.lang.String" value="jTextArea1" noResource="true"/>
           </Properties>

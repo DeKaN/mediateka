@@ -733,20 +733,19 @@ public class FilmView extends javax.swing.JDialog {
                         throw new ChangeDataException("Ошибка при сохранении");
                     }
 
-                } else if (film.getID() != 0) {
+                } else {
                     film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
                             _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
                     if (!Managers.getInstance().getFilmsManager().add(film)) {
                         throw new ChangeDataException("Ошибка при добавлении");
                     }
                 }
-
+                this.dispose();
             }
         } catch (Exception ex) {
             Logger.getLogger(FilmView.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-        this.dispose();
     }
 
     private String[] getDataFromComboboxsAsStrings(JComboBox cb1, JComboBox cb2, JComboBox cb3) {

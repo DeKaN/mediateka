@@ -11,13 +11,13 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace min="10" pref="10" max="10" attributes="0"/>
-                          <Component id="jTabbedPane1" pref="1159" max="32767" attributes="0"/>
+                          <Component id="jTabbedPane1" pref="1202" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="standartToolBar" alignment="0" pref="1169" max="32767" attributes="0"/>
+                      <Component id="standartToolBar" alignment="1" pref="1222" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -26,9 +26,9 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="standartToolBar" min="-2" max="-2" attributes="0"/>
+                  <Component id="standartToolBar" min="-2" pref="63" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" pref="535" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" pref="559" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -37,6 +37,7 @@
       <SubComponents>
         <Container class="javax.swing.JToolBar" name="standartToolBar">
           <Properties>
+            <Property name="floatable" type="boolean" value="false"/>
             <Property name="rollover" type="boolean" value="true"/>
             <Property name="name" type="java.lang.String" value="standartToolBar" noResource="true"/>
           </Properties>
@@ -46,7 +47,7 @@
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="mediateka.view.MediatekaView" id="showFindView" methodName="showFindView"/>
+                  <action class="mediateka.view.MediatekaView" id="showFilmView" methodName="showFilmView"/>
                 </Property>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="jButton1.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="jButton1.text"/>
@@ -58,9 +59,6 @@
             </Component>
             <Component class="javax.swing.JButton" name="jButton2">
               <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="mediateka.view.MediatekaView" id="showDiscView" methodName="showDiscView"/>
-                </Property>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="jButton2.icon"/>
                 <Property name="text" type="java.lang.String" resourceKey="jButton2.text"/>
                 <Property name="focusable" type="boolean" value="false"/>
@@ -69,14 +67,179 @@
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator7">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator7" noResource="true"/>
+              </Properties>
+            </Component>
             <Component class="javax.swing.JButton" name="jButton3">
               <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="mediateka.view.MediatekaView" id="showDiscView" methodName="showDiscView"/>
+                </Property>
                 <Property name="icon" type="javax.swing.Icon" resourceKey="jButton3.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton3.text"/>
                 <Property name="focusable" type="boolean" value="false"/>
                 <Property name="horizontalTextPosition" type="int" value="0"/>
                 <Property name="name" type="java.lang.String" value="jButton3" noResource="true"/>
                 <Property name="verticalTextPosition" type="int" value="3"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton4">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton4.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton4.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton4" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator6">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator6" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton5">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="mediateka.view.MediatekaView" id="showPersonView" methodName="showPersonView"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton5.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton5.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton5" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton6">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton6.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton6.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton6" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator5">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator5" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton7">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="mediateka.view.MediatekaView" id="showBlackListRecordView" methodName="showBlackListRecordView"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton7.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton7.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton7" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton8">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton8.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton8.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton8" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator8">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator8" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton9">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="mediateka.view.MediatekaView" id="showHistoryView" methodName="showHistoryView"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton9.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton9.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton9" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton10">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton10.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton10.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton10" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JToolBar$Separator" name="jSeparator9">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator9" noResource="true"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton11">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton11.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton11.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton11" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.Box$Filler" name="filler1">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[150, 32767]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 0]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[100, 0]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="filler1" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalStrut"/>
+              </AuxValues>
+            </Component>
+            <Component class="javax.swing.JButton" name="jButton12">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+                  <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" resourceKey="jButton12.icon"/>
+                <Property name="text" type="java.lang.String" resourceKey="jButton12.text"/>
+                <Property name="focusable" type="boolean" value="false"/>
+                <Property name="horizontalTextPosition" type="int" value="0"/>
+                <Property name="name" type="java.lang.String" value="jButton12" noResource="true"/>
+                <Property name="verticalTextPosition" type="int" value="3"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.Box$Filler" name="filler2">
+              <Properties>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 32767]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 0]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[10, 0]"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="filler2" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="classDetails" type="java.lang.String" value="Box.Filler.HorizontalStrut"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>
@@ -103,7 +266,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="&#x424;&#x438;&#x43b;&#x44c;&#x43c;">
+                  <JTabbedPaneConstraints tabName="&#x424;&#x438;&#x43b;&#x44c;&#x43c;&#x44b;            ">
                     <Property name="tabTitle" type="java.lang.String" resourceKey="filmPane.TabConstraints.tabTitle"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
@@ -155,7 +318,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="150" prefWidth="220" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title4"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -187,7 +350,7 @@
                           </TableColumnModel>
                         </Property>
                         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="jPopupMenu1"/>
+                          <ComponentRef name="default"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[2147483647, 85]"/>
@@ -299,7 +462,7 @@
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane6" pref="353" max="32767" attributes="0"/>
+                                      <Component id="jScrollPane6" pref="396" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
@@ -554,18 +717,18 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Container class="javax.swing.JSplitPane" name="diskPane">
+            <Container class="javax.swing.JSplitPane" name="discPane">
               <Properties>
                 <Property name="dividerLocation" type="int" value="800"/>
                 <Property name="dividerSize" type="int" value="3"/>
                 <Property name="orientation" type="int" value="0"/>
                 <Property name="resizeWeight" type="double" value="1.0"/>
-                <Property name="name" type="java.lang.String" value="diskPane" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="discPane" noResource="true"/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="&#x414;&#x438;&#x441;&#x43a;">
-                    <Property name="tabTitle" type="java.lang.String" resourceKey="diskPane.TabConstraints.tabTitle"/>
+                  <JTabbedPaneConstraints tabName="&#x414;&#x438;&#x441;&#x43a;&#x438;                   ">
+                    <Property name="tabTitle" type="java.lang.String" resourceKey="discPane.TabConstraints.tabTitle"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
               </Constraints>
@@ -591,127 +754,12 @@
                     <Component class="javax.swing.JTable" name="jTable2">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="12" rowCount="8">
-                            <Column editable="false" title="ID" type="java.lang.String">
-                              <Data value="1"/>
-                              <Data value="2"/>
-                              <Data value="3"/>
-                              <Data value="4"/>
-                              <Data value="5"/>
-                              <Data value="6"/>
-                              <Data value="7"/>
-                              <Data value="8"/>
-                            </Column>
-                            <Column editable="false" title="&#x420;&#x443;&#x441;&#x441;&#x43a;&#x43e;&#x435; &#x43d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.String">
-                              <Data value="2012"/>
-                              <Data value="&#x41e;&#x442; &#x437;&#x430;&#x43a;&#x430;&#x442;&#x430; &#x434;&#x43e; &#x440;&#x430;&#x441;&#x441;&#x432;&#x435;&#x442;&#x430;"/>
-                              <Data value="&#x41f;&#x43e;&#x441;&#x43b;&#x435;&#x437;&#x430;&#x432;&#x442;&#x440;&#x430;"/>
-                              <Data value="&#x412;&#x43e;&#x439;&#x43d;&#x430; &#x43c;&#x438;&#x440;&#x43e;&#x432;"/>
-                              <Data value="&#x41f;&#x440;&#x438;&#x43a;&#x43b;&#x44e;&#x447;&#x435;&#x43d;&#x438;&#x44f; &#x448;&#x443;&#x440;&#x438;&#x43a;&#x430;"/>
-                              <Data value="&#x41a;&#x430;&#x440;&#x442;&#x44b;, &#x434;&#x435;&#x43d;&#x44c;&#x433;&#x438;, &#x434;&#x432;&#x430; &#x441;&#x442;&#x432;&#x43e;&#x43b;&#x430;"/>
-                              <Data value="&#x41c;&#x430;&#x442;&#x440;&#x438;&#x446;&#x430; (1 &#x447;&#x430;&#x441;&#x442;&#x44c;)"/>
-                              <Data value="&#x417;&#x43d;&#x430;&#x43c;&#x435;&#x43d;&#x438;&#x435;"/>
-                            </Column>
-                            <Column editable="false" title="&#x410;&#x43d;&#x433;&#x43b;. &#x43d;&#x430;&#x437;&#x432;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.String">
-                              <Data value="2012"/>
-                              <Data value="fhj"/>
-                              <Data value="cf"/>
-                              <Data value="g"/>
-                              <Data value="f"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x413;&#x43e;&#x434;" type="java.lang.String">
-                              <Data value="2009"/>
-                              <Data value="f"/>
-                              <Data value="f"/>
-                              <Data value="hjgjh"/>
-                              <Data value="jhg"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41e;&#x43f;&#x438;&#x441;&#x430;&#x43d;&#x438;&#x435;" type="java.lang.String">
-                              <Data value="&#x421;&#x43e;&#x433;&#x43b;&#x430;&#x441;&#x43d;&#x43e; &#x43a;&#x430;&#x43b;&#x435;&#x43d;&#x434;&#x430;&#x440;&#x44e; &#x438;&#x43d;&#x434;&#x435;&#x439;&#x446;&#x435;&#x432; &#x41c;&#x430;&#x439;&#x44f;, &#x432; 2012 &#x433;&#x43e;&#x434;&#x443; &#x43f;&#x43b;&#x430;&#x43d;&#x435;&#x442;&#x44b; &#x441;&#x43e;&#x43b;&#x43d;&#x435;&#x447;&#x43d;&#x43e;&#x439; &#x441;&#x438;&#x441;&#x442;&#x435;&#x43c;&#x44b; &#x43e;&#x43a;&#x430;&#x436;&#x443;&#x442;&#x441;&#x44f; &#x43d;&#x430; &#x43e;&#x434;&#x43d;&#x43e;&#x439; &#x43b;&#x438;&#x43d;&#x438;&#x438; &#x434;&#x440;&#x443;&#x433; &#x441; &#x434;&#x440;&#x443;&#x433;&#x43e;&#x43c;, &#x447;&#x442;&#x43e; &#x43f;&#x440;&#x438;&#x432;&#x435;&#x434;&#x435;&#x442; &#x43a; &#x433;&#x43b;&#x43e;&#x431;&#x430;&#x43b;&#x44c;&#x43d;&#x44b;&#x43c; &#x43f;&#x440;&#x438;&#x440;&#x43e;&#x434;&#x43d;&#x44b;&#x43c; &#x43a;&#x430;&#x442;&#x430;&#x43a;&#x43b;&#x438;&#x437;&#x43c;&#x430;&#x43c;: &#x441;&#x438;&#x43b;&#x44c;&#x43d;&#x435;&#x439;&#x448;&#x438;&#x435; &#x437;&#x435;&#x43c;&#x43b;&#x435;&#x442;&#x440;&#x44f;&#x441;&#x435;&#x43d;&#x438;&#x44f;, &#x446;&#x443;&#x43d;&#x430;&#x43c;&#x438; &#x438; &#x438;&#x437;&#x432;&#x435;&#x440;&#x436;&#x435;&#x43d;&#x438;&#x44f; &#x432;&#x443;&#x43b;&#x43a;&#x430;&#x43d;&#x43e;&#x432; &#x43f;&#x440;&#x435;&#x432;&#x440;&#x430;&#x442;&#x44f;&#x442; &#x441;&#x442;&#x440;&#x430;&#x43d;&#x44b; &#x438; &#x446;&#x435;&#x43b;&#x44b;&#x435; &#x43a;&#x43e;&#x43d;&#x442;&#x438;&#x43d;&#x435;&#x43d;&#x442;&#x44b; &#x432; &#x440;&#x443;&#x438;&#x43d;&#x44b;. &#x41d;&#x435;&#x434;&#x430;&#x432;&#x43d;&#x43e; &#x443;&#x447;&#x435;&#x43d;&#x44b;&#x435; &#x43f;&#x43e;&#x434;&#x442;&#x432;&#x435;&#x440;&#x434;&#x438;&#x43b;&#x438;, &#x447;&#x442;&#x43e; &#x44d;&#x442;&#x43e;&#x442; &#x43c;&#x438;&#x444; &#x43c;&#x43e;&#x436;&#x435;&#x442; &#x441;&#x442;&#x430;&#x442;&#x44c; &#x440;&#x435;&#x430;&#x43b;&#x44c;&#x43d;&#x43e;&#x441;&#x442;&#x44c;&#x44e;."/>
-                              <Data value="jhg"/>
-                              <Data value="jhg"/>
-                              <Data value="fg"/>
-                              <Data value="kg"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x416;&#x430;&#x43d;&#x440;" type="java.lang.String">
-                              <Data value="&#x444;&#x430;&#x43d;&#x442;&#x430;&#x441;&#x442;&#x438;&#x43a;&#x430;, &#x431;&#x43e;&#x435;&#x432;&#x438;&#x43a;, &#x442;&#x440;&#x438;&#x43b;&#x43b;&#x435;&#x440;, &#x434;&#x440;&#x430;&#x43c;&#x430;, &#x43f;&#x440;&#x438;&#x43a;&#x43b;&#x44e;&#x447;&#x435;&#x43d;&#x438;&#x44f;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x421;&#x442;&#x440;&#x430;&#x43d;&#x430;(&#x44b;)" type="java.lang.String">
-                              <Data value="&#x421;&#x428;&#x410;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41a;&#x43e;&#x43c;&#x43c;&#x435;&#x43d;&#x442;&#x430;&#x440;&#x438;&#x439;" type="java.lang.String">
-                              <Data value="&#x41c;&#x43e;&#x439; &#x43b;&#x44e;&#x431;&#x438;&#x43c;&#x44b;&#x439; &#x444;&#x438;&#x43b;&#x44c;&#x43c;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x434;&#x43e;&#x43b;&#x436;&#x438;&#x442;&#x435;&#x43b;&#x44c;&#x43d;&#x43e;&#x441;&#x442;&#x44c;" type="java.lang.String">
-                              <Data value="158 &#x43c;&#x438;&#x43d;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41e;&#x446;&#x435;&#x43d;&#x43a;&#x430;" type="java.lang.String">
-                              <Data value="9/10"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x421;&#x443;&#x431;&#x442;&#x438;&#x442;&#x440;&#x44b;" type="java.lang.String">
-                              <Data value="&#x43d;&#x435;&#x442;"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
-                            <Column editable="false" title="&#x41f;&#x440;&#x43e;&#x441;&#x43c;&#x43e;&#x442;&#x440;&#x435;&#x43d;" type="java.lang.Boolean">
-                              <Data value="true"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                              <Data value="null"/>
-                            </Column>
+                          <Table columnCount="5" rowCount="0">
+                            <Column editable="false" title="ID" type="java.lang.Integer"/>
+                            <Column editable="false" title="&#x421;&#x43f;&#x438;&#x441;&#x43e;&#x43a; &#x444;&#x438;&#x43b;&#x44c;&#x43c;&#x43e;&#x432;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x424;&#x43e;&#x440;&#x43c;&#x430;&#x442;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x420;&#x435;&#x433;&#x438;&#x43e;&#x43d;" type="java.lang.String"/>
+                            <Column editable="false" title="&#x412; &#x43d;&#x430;&#x43b;&#x438;&#x447;&#x438;&#x438;" type="java.lang.String"/>
                           </Table>
                         </Property>
                         <Property name="autoResizeMode" type="int" value="3"/>
@@ -722,65 +770,30 @@
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="150" resizable="true">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                               <Title resourceKey="jTable1.columnModel.title0"/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
+                            <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
+                              <Title resourceKey="jTable2.columnModel.title2"/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="50" minWidth="50" prefWidth="50" resizable="true">
+                            <Column maxWidth="75" minWidth="75" prefWidth="75" resizable="true">
                               <Title resourceKey="jTable1.columnModel.title2"/>
                               <Editor/>
                               <Renderer/>
                             </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="150" prefWidth="220" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title4"/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="115" minWidth="115" prefWidth="115" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="40" minWidth="40" prefWidth="40" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="-1" minWidth="150" prefWidth="200" resizable="true">
-                              <Title/>
-                              <Editor/>
-                              <Renderer/>
-                            </Column>
-                            <Column maxWidth="80" minWidth="80" prefWidth="80" resizable="true">
-                              <Title/>
+                            <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
+                              <Title resourceKey="jTable2.columnModel.title4"/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                           </TableColumnModel>
                         </Property>
                         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="jPopupMenu1"/>
+                          <ComponentRef name="default"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[2147483647, 85]"/>
@@ -833,116 +846,44 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel16" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel17" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel18" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="1">
-                                      <Component id="jLabel19" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jTextField14" min="-2" pref="250" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="1">
-                                      <Component id="jLabel18" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jTextField13" min="-2" pref="250" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="1">
-                                      <Component id="jLabel17" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jTextField12" min="-2" pref="250" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="1">
-                                      <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jTextField11" min="-2" pref="250" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jTextField10" min="-2" pref="250" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="jTextField10" alignment="0" pref="403" max="32767" attributes="1"/>
+                                  <Component id="jTextField11" alignment="0" max="32767" attributes="1"/>
+                                  <Component id="jTextField12" alignment="0" max="32767" attributes="1"/>
+                                  <Component id="jTextField13" alignment="0" max="32767" attributes="1"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel22" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel20" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel21" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel24" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="jLabel26" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jTextField15" min="-2" pref="250" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jLabel25" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jTextField16" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                          <Component id="jTextField17" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                          <Component id="jTextField18" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
-                                              <Component id="jLabel27" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jLabel28" min="-2" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane7" pref="353" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="663" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
+                          <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jTextField10" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel20" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField15" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel25" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField11" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField16" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField12" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField17" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField13" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel23" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField18" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jLabel19" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jTextField14" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel24" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel26" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel27" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabel28" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="jScrollPane7" alignment="0" max="32767" attributes="1"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jTextField11" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jTextField12" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel17" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="jTextField13" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel18" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -978,13 +919,6 @@
                         <Property name="name" type="java.lang.String" value="jLabel18" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel19">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel15.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel19.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel19" noResource="true"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JTextField" name="jTextField10">
                       <Properties>
                         <Property name="background" type="java.awt.Color" resourceKey="jTextField14.background"/>
@@ -1013,126 +947,6 @@
                         <Property name="name" type="java.lang.String" value="jTextField13" noResource="true"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField14">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" resourceKey="jTextField14.background"/>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField14" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel20">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel20.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel20" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel21">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel21.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel21" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel22">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel22.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel22" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel23">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel23.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel23" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel24">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel24.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel24" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField15">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" resourceKey="jTextField14.background"/>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField15" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField16">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" resourceKey="jTextField14.background"/>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField16" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField17">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" resourceKey="jTextField14.background"/>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField17" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextField18">
-                      <Properties>
-                        <Property name="background" type="java.awt.Color" resourceKey="jTextField14.background"/>
-                        <Property name="editable" type="boolean" value="false"/>
-                        <Property name="name" type="java.lang.String" value="jTextField18" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel25">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel25.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel25" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Container class="javax.swing.JScrollPane" name="jScrollPane7">
-                      <Properties>
-                        <Property name="name" type="java.lang.String" value="jScrollPane7" noResource="true"/>
-                      </Properties>
-                      <AuxValues>
-                        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                      </AuxValues>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                      <SubComponents>
-                        <Component class="javax.swing.JTextArea" name="jTextArea2">
-                          <Properties>
-                            <Property name="columns" type="int" value="20"/>
-                            <Property name="editable" type="boolean" value="false"/>
-                            <Property name="font" type="java.awt.Font" resourceKey="jTextArea2.font"/>
-                            <Property name="rows" type="int" value="5"/>
-                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[2147483647, 74]"/>
-                            </Property>
-                            <Property name="name" type="java.lang.String" value="jTextArea2" noResource="true"/>
-                          </Properties>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Component class="javax.swing.JLabel" name="jLabel26">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel26.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel26" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel27">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" resourceKey="jLabel20.font"/>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel27.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel27" noResource="true"/>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel28">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" resourceKey="jLabel28.text"/>
-                        <Property name="name" type="java.lang.String" value="jLabel28" noResource="true"/>
-                      </Properties>
-                    </Component>
                   </SubComponents>
                 </Container>
               </SubComponents>
@@ -1147,7 +961,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="&#x41b;&#x44e;&#x434;&#x438;">
+                  <JTabbedPaneConstraints tabName="&#x41b;&#x44e;&#x434;&#x438;                        ">
                     <Property name="tabTitle" type="java.lang.String" resourceKey="personPane.TabConstraints.tabTitle"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
@@ -1212,14 +1026,14 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title4"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
                           </TableColumnModel>
                         </Property>
                         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="jPopupMenu1"/>
+                          <ComponentRef name="default"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[2147483647, 85]"/>
@@ -1271,24 +1085,24 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel57" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel58" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel59" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel60" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextField37" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                  <Component id="jTextField40" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                  <Component id="jTextField39" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
-                                  <Component id="jTextField38" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="jTextField38" linkSize="1" alignment="0" max="32767" attributes="1"/>
+                                  <Component id="jTextField37" linkSize="1" alignment="0" pref="255" max="32767" attributes="1"/>
+                                  <Component id="jTextField39" linkSize="1" alignment="0" max="32767" attributes="1"/>
+                                  <Component id="jTextField40" linkSize="1" alignment="0" max="32767" attributes="1"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jLabel67" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane10" pref="775" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel67" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane10" pref="821" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -1299,20 +1113,20 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel57" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextField37" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel67" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextField37" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jTextField38" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel58" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jTextField38" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jTextField39" alignment="3" min="-2" max="-2" attributes="0"/>
                                           <Component id="jLabel59" alignment="3" min="-2" max="-2" attributes="0"/>
+                                          <Component id="jTextField39" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
@@ -1429,7 +1243,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="&#x427;&#x435;&#x440;&#x43d;&#x44b;&#x439; &#x441;&#x43f;&#x438;&#x441;&#x43e;&#x43a;">
+                  <JTabbedPaneConstraints tabName="&#x427;&#x435;&#x440;&#x43d;&#x44b;&#x439; &#x441;&#x43f;&#x438;&#x441;&#x43e;&#x43a;          ">
                     <Property name="tabTitle" type="java.lang.String" resourceKey="blackListPane.TabConstraints.tabTitle"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
@@ -1483,7 +1297,7 @@
                           </TableColumnModel>
                         </Property>
                         <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="jPopupMenu1"/>
+                          <ComponentRef name="default"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[2147483647, 85]"/>
@@ -1553,9 +1367,9 @@
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel33" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jScrollPane8" min="-2" pref="503" max="-2" attributes="0"/>
+                                  <Component id="jScrollPane8" pref="823" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="287" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1695,7 +1509,7 @@
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-                  <JTabbedPaneConstraints tabName="&#x416;&#x443;&#x440;&#x43d;&#x430;&#x43b;">
+                  <JTabbedPaneConstraints tabName="&#x416;&#x443;&#x440;&#x43d;&#x430;&#x43b;                         ">
                     <Property name="tabTitle" type="java.lang.String" resourceKey="historyPane.TabConstraints.tabTitle"/>
                   </JTabbedPaneConstraints>
                 </Constraint>
@@ -1761,7 +1575,7 @@
                               <Renderer/>
                             </Column>
                             <Column maxWidth="100" minWidth="100" prefWidth="100" resizable="true">
-                              <Title resourceKey="jTable1.columnModel.title4"/>
+                              <Title/>
                               <Editor/>
                               <Renderer/>
                             </Column>
@@ -1771,9 +1585,6 @@
                               <Renderer/>
                             </Column>
                           </TableColumnModel>
-                        </Property>
-                        <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                          <ComponentRef name="jPopupMenu1"/>
                         </Property>
                         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                           <Dimension value="[2147483647, 85]"/>
@@ -1847,20 +1658,20 @@
                                   <Component id="jLabel48" min="-2" max="-2" attributes="0"/>
                                   <Component id="jScrollPane9" min="-2" pref="446" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace pref="310" max="32767" attributes="0"/>
+                              <EmptySpace pref="353" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
+                          <Group type="102" max="-2" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jTextField28" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel43" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel48" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Group type="103" groupAlignment="3" attributes="0">
                                           <Component id="jTextField30" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -1882,7 +1693,7 @@
                                           <Component id="jTextField29" alignment="3" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <Component id="jScrollPane9" pref="98" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane9" min="-2" pref="98" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -1998,257 +1809,13 @@
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JMenuBar" name="menuBar">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="menuBar" noResource="true"/>
-      </Properties>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <Menu class="javax.swing.JMenu" name="fileMenuItem">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="fileMenuItem.text"/>
-            <Property name="name" type="java.lang.String" value="fileMenuItem" noResource="true"/>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-          </AuxValues>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="openMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+O"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="openMenuItem.icon"/>
-                <Property name="text" type="java.lang.String" resourceKey="openMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="openMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="createMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+N"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="createMenuItem.icon"/>
-                <Property name="text" type="java.lang.String" resourceKey="createMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="createMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator2" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="importMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Alt+I"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="importMenuItem.icon"/>
-                <Property name="text" type="java.lang.String" resourceKey="importMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="importMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="exportMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Alt+E"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="exportMenuItem.icon"/>
-                <Property name="text" type="java.lang.String" resourceKey="exportMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="exportMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator3" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="printMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+P"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="printMenuItem.icon"/>
-                <Property name="text" type="java.lang.String" resourceKey="printMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="printMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
-              <Properties>
-                <Property name="name" type="java.lang.String" value="jSeparator4" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="org.jdesktop.application.Application" id="quit" methodName="quit"/>
-                </Property>
-                <Property name="icon" type="javax.swing.Icon" resourceKey="exitMenuItem.icon"/>
-                <Property name="text" type="java.lang.String" resourceKey="exitMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="exitMenuItem" noResource="true"/>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-              </AuxValues>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="editMenuItem">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="editMenuItem.text"/>
-            <Property name="name" type="java.lang.String" value="editMenuItem" noResource="true"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="undoMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Ctrl+Z"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="undoMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="undoMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="mediateka.MediatekaView" id="showFilmView" methodName="showFilmView"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="jMenuItem1.text"/>
-                <Property name="name" type="java.lang.String" value="jMenuItem1" noResource="true"/>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jMenuItem1MouseClicked"/>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
-              </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="viewMenuItem">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="viewMenuItem.text"/>
-            <Property name="name" type="java.lang.String" value="viewMenuItem" noResource="true"/>
-          </Properties>
-          <SubComponents>
-            <Menu class="javax.swing.JMenu" name="jMenu1">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="jMenu1.text"/>
-                <Property name="name" type="java.lang.String" value="jMenu1" noResource="true"/>
-              </Properties>
-              <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" resourceKey="jMenuItem5.text"/>
-                    <Property name="name" type="java.lang.String" value="jMenuItem5" noResource="true"/>
-                  </Properties>
-                </MenuItem>
-              </SubComponents>
-            </Menu>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="searchMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="searchMenu.text"/>
-            <Property name="name" type="java.lang.String" value="searchMenu" noResource="true"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="findMenuItem">
-              <Properties>
-                <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="F3"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="findMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="findMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="serviceMenuItem">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="serviceMenuItem.text"/>
-            <Property name="name" type="java.lang.String" value="serviceMenuItem" noResource="true"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="preferencesMenuItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" resourceKey="preferencesMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="preferencesMenuItem" noResource="true"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="helpMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="helpMenu.text"/>
-            <Property name="name" type="java.lang.String" value="helpMenu" noResource="true"/>
-          </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-          </AuxValues>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="aboutMenuItem">
-              <Properties>
-                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
-                  <action class="mediateka.MediatekaView" id="showAboutBox" methodName="showAboutBox"/>
-                </Property>
-                <Property name="text" type="java.lang.String" resourceKey="aboutMenuItem.text"/>
-                <Property name="name" type="java.lang.String" value="aboutMenuItem" noResource="true"/>
-              </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-              </AuxValues>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-      </SubComponents>
-    </Container>
-    <Container class="javax.swing.JPopupMenu" name="jPopupMenu1">
-      <Properties>
-        <Property name="name" type="java.lang.String" value="jPopupMenu1" noResource="true"/>
-      </Properties>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
-        <Property name="useNullLayout" type="boolean" value="true"/>
-      </Layout>
-      <SubComponents>
-        <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenuItem2.text"/>
-            <Property name="name" type="java.lang.String" value="jMenuItem2" noResource="true"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenuItem3.text"/>
-            <Property name="name" type="java.lang.String" value="jMenuItem3" noResource="true"/>
-          </Properties>
-        </MenuItem>
-        <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
-          <Properties>
-            <Property name="text" type="java.lang.String" resourceKey="jMenuItem4.text"/>
-            <Property name="name" type="java.lang.String" value="jMenuItem4" noResource="true"/>
-          </Properties>
-        </MenuItem>
-      </SubComponents>
-    </Container>
   </NonVisualComponents>
   <Properties>
     <Property name="component" type="javax.swing.JComponent" editor="org.netbeans.modules.form.ComponentChooserEditor">
       <ComponentRef name="mainPanel"/>
     </Property>
     <Property name="menuBar" type="javax.swing.JMenuBar" editor="org.netbeans.modules.form.ComponentChooserEditor">
-      <ComponentRef name="menuBar"/>
+      <ComponentRef name="default"/>
     </Property>
     <Property name="toolBar" type="javax.swing.JToolBar" editor="org.netbeans.modules.form.ComponentChooserEditor">
       <ComponentRef name="standartToolBar"/>
@@ -2264,6 +1831,6 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,120,0,0,4,-101"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-123,0,0,4,-58"/>
   </AuxValues>
 </Form>

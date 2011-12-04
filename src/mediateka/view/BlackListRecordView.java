@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
 import mediateka.db.ChangeDataException;
@@ -31,6 +32,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
             strs = new String[recs.size()];
             int i = 0, id = record != null ? record.getPerson().getID() : 0;
             Person p = null;
+            map = new HashMap<Integer, Integer>();
             for (Record rec : recs) {
                 try {
                     p = (Person) rec;
@@ -44,6 +46,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
                 }
             }
             initComponents();
+            jComboBox1.setModel(new DefaultComboBoxModel(strs));
             jComboBox1.setSelectedIndex(index);
             if (record == null) {
                 jTextArea1.setText("");
@@ -92,6 +95,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(resourceMap.getFont("jTextArea1.font")); // NOI18N
         jTextArea1.setRows(5);
         jTextArea1.setName("jTextArea1"); // NOI18N
         jScrollPane1.setViewportView(jTextArea1);

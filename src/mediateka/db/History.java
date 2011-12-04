@@ -64,10 +64,10 @@ public class History extends Table {
             if (rec.getGiveDate() != null) {
                 map.put("dateOfIssue", formatter.format(rec.getGiveDate()));
             }
-            if (rec.getGiveDate() != null) {
+            if (rec.getReturnDate() != null) {
                 map.put("dateOfReturn", formatter.format(rec.getReturnDate()));
             }
-            if (rec.getGiveDate() != null) {
+            if (rec.getPromisedDate() != null) {
                 map.put("promisingDate", formatter.format(rec.getPromisedDate()));
             }
         }

@@ -209,7 +209,7 @@ public class Disc implements Record {
         String[] str = new String[fis.size()];
         int i = 0;
         for (Record record : fis) {
-            str[i] = ((Film) record).toString();
+            str[i++] = ((Film) record).toString();
         }
         return format + " №" + discID + " (" + StringUtils.join(str, ", ") + ")";
     }
