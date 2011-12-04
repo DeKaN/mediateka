@@ -30,9 +30,10 @@ public class BlackListRecordView extends javax.swing.JDialog {
             List<Record> recs = Managers.getInstance().getPersManager().getRecords();
             strs = new String[recs.size()];
             int i = 0, id = record != null ? record.getPerson().getID() : 0;
+            Person p = null;
             for (Record rec : recs) {
                 try {
-                    Person p = (Person) rec;
+                    p = (Person) rec;
                     map.put(i, p.getID());
                     strs[i] = p.toString();
                     if (p.getID() == id) {

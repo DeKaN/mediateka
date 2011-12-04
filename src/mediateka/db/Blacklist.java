@@ -53,7 +53,7 @@ public class Blacklist extends Table {
             return null;
         }
         if (rec.getID() > 0) {
-            map.put("filmID", Integer.toString(rec.getID()));
+            map.put("recordID", Integer.toString(rec.getID()));
         } else {
             if (rec.getPerson() != null) {
                 map.put("personID", Integer.toString(rec.getPerson().getID()));

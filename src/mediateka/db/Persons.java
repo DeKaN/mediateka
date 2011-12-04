@@ -28,8 +28,8 @@ public class Persons extends Table {
                 DefaultElement elem = (DefaultElement) it.next();
                 recordsList.add(new Person(
                         Integer.parseInt(elem.attribute("personID").getValue()),
-                        elem.node(0).getText(),
                         elem.node(1).getText(),
+                        elem.node(0).getText(),
                         elem.node(2).getText(),
                         elem.node(3).getText(),
                         elem.node(4).getText()));
