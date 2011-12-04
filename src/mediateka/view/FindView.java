@@ -1,6 +1,22 @@
 package mediateka.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.AbstractButton;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import mediateka.datamanagers.Managers;
+import mediateka.db.Disc;
+import mediateka.db.Film;
+import mediateka.db.Person;
+import mediateka.db.Record;
 
 /**
  *
@@ -8,14 +24,99 @@ import java.util.HashMap;
  */
 public class FindView extends javax.swing.JDialog {
 
-    private HashMap<Integer, Integer> personsMap = null;
-    String[] personsStrs = null;
-    int personsIndex = 0;
+    private HashMap<Integer, Integer> personsMap = null, discMap = null;
+    String[] personsStrs = null, discsStrs = null, columnNames = new String[]{"ID", "Русское название"}, formats = null, genres = new String[]{"", "Анимационный", "Аниме", "Биография", "Боевик", "Вестерн", "Военный", "Детектив", "Детский", "Для взрослых", "Документальный", "Драма", "Игра", "Исторический", "История", "Комедия", "Концерт", "Короткометражка", "Криминал", "Любовный роман", "Мелодрама", "Мистика", "Музыка", "Мультфильм", "Мюзикл", "Отечественный", "Пародия", "Приключения", "Реальное ТВ", "Романтика", "Семейный", "Спорт", "Триллер", "Ужасы", "Фантастика", "Фильм-нуар", "Фэнтези"}, countries = new String[]{"", "Австралия", "Австрия", "Азербайджан", "Албания", "Алжир", "Американское Самоа", "Ангилья", "Ангола", "Андорра", "Антигуа и Барбуда", "Аргентина", "Армения", "Аруба", "Афганистан", "Багамы", "Бангладеш", "Барбадос", "Бахрейн", "Беларусь,Белиз", "Бельгия", "Бенин", "Бермуды", "Болгария", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней-Даруссалам", "Буркина-Фасо", "Бурунди", "Бутан", "Вануату", "Великобритания", "Венгрия", "Венесуэла", "Виргинские острова, Британские", "Виргинские острова, США", "Восточный Тимор", "Вьетнам", "Габон", "Гаити", "Гайана", "Гамбия", "Гана", "Гваделупа", "Гватемала", "Гвинея", "Гвинея-Бисау", "Германия", "Гибралтар", "Гондурас", "Гонконг", "Гренада", "Гренландия", "Греция", "Грузия", "Гуам", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Египет", "Замбия", "Западная Сахара", "Зимбабве", "Израиль", "Индия", "Индонезия", "Иордания", "Ирак", "Иран", "Ирландия", "Исландия", "Испания", "Италия", "Йемен", "Кабо-Верде", "Казахстан", "Камбоджа", "Камерун", "Канада", "Катар", "Кения", "Кипр", "Кирибати", "Китай", "Колумбия", "Коморы", "Конго", "Конго, демократическая республика", "Коста-Рика", "Кот д`Ивуар", "Куба", "Кувейт", "Кыргызстан", "Лаос", "Латвия", "Лесото", "Либерия", "Ливан", "Ливийская Арабская Джамахирия", "Литва", "Лихтенштейн", "Люксембург", "Маврикий", "Мавритания", "Мадагаскар", "Макао", "Македония", "Малави", "Малайзия", "Мали", "Мальдивы", "Мальта", "Марокко", "Мартиника", "Маршалловы Острова", "Мексика", "Микронезия, федеративные штаты", "Мозамбик", "Молдова", "Монако", "Монголия", "Монтсеррат", "Мьянма", "Намибия", "Науру", "Непал", "Нигер", "Нигерия", "Нидерландские Антилы", "Нидерланды", "Никарагуа", "Ниуэ", "Новая Зеландия", "Новая Каледония", "Норвегия", "Объединенные Арабские Эмираты", "Оман", "Остров Мэн", "Остров Норфолк", "Острова Кайман", "Острова Кука", "Острова Теркс и Кайкос", "Пакистан", "Палау", "Палестинская автономия", "Панама", "Папуа - Новая Гвинея", "Парагвай", "Перу", "Питкерн", "Польша", "Португалия", "Пуэрто-Рико", "Реюньон", "Россия", "Руанда", "Румыния", "США", "Сальвадор", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Свазиленд", "Святая Елена", "Северная Корея", "Северные Марианские острова", "Сейшелы", "Сенегал", "Сент-Винсент", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Пьер и Микелон", "Сербия", "Сингапур", "Сирийская Арабская Республика", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Судан", "Суринам", "Сьерра-Леоне", "Таджикистан", "Таиланд", "Тайвань", "Танзания", "Того", "Токелау", "Тонга", "Тринидад и Тобаго", "Тувалу", "Тунис", "Туркмения", "Турция", "Уганда", "Узбекистан", "Украина", "Уоллис и Футуна", "Уругвай", "Фарерские острова", "Фиджи", "Филиппины", "Финляндия", "Фолклендские острова", "Франция", "Французская Гвиана", "Французская Полинезия", "Хорватия", "Центрально-Африканская Республика", "Чад", "Черногория", "Чехия", "Чили", "Швейцария", "Швеция", "Шпицберген и Ян Майен", "Шри-Ланка", "Эквадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эфиопия", "Южная Корея", "Южно-Африканская Республика", "Ямайка", "Япония"}, languages = new String[]{"", "английский", "арабский", "болгарский", "венгерский", "вьетнамский", "голландский", "греческий", "датский", "иврит", "индонезийский", "испанский (Испания)", "испанский (Латинская Америка)", "итальянский", "каталанский", "китайский (Традиционная китайская)", "китайский (Упрощенная китайская)", "корейский", "латышский", "литовский", "малайский", "немецкий", "норвежский", "персидский", "польский", "португальский (Бразилия)", "португальский (Португалия)", "румынский", "русский", "сербский", "словацкий", "словенский", "тайский", "турецкий", "украинский", "филиппинский", "финский", "французский", "хинди", "хорватский", "чешский", "шведский", "эстонский", "японский"};
+    int _rating = 0;
+    private ActionListener ratingListener = new ActionListener() {
+
+        public void actionPerformed(ActionEvent e) {
+            String temp = ((AbstractButton) (e.getSource())).getText();
+            _rating = Integer.parseInt(temp);
+        }
+    };
 
     /** Creates new form FindView */
     public FindView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        List<Record> recs;
         initComponents();
+        try {
+            //films
+            jComboBox1.setModel(new DefaultComboBoxModel(genres));
+            jComboBox2.setModel(new DefaultComboBoxModel(genres));
+            jComboBox3.setModel(new DefaultComboBoxModel(genres));
+            jComboBox4.setModel(new DefaultComboBoxModel(countries));
+            jComboBox5.setModel(new DefaultComboBoxModel(countries));
+            jComboBox6.setModel(new DefaultComboBoxModel(countries));
+            jComboBox7.setModel(new DefaultComboBoxModel(languages));
+            jComboBox8.setModel(new DefaultComboBoxModel(languages));
+            jComboBox9.setModel(new DefaultComboBoxModel(languages));
+            jComboBox10.setModel(new DefaultComboBoxModel(languages));
+            jComboBox11.setModel(new DefaultComboBoxModel(languages));
+            jComboBox12.setModel(new DefaultComboBoxModel(languages));
+            //discs
+            formats = Disc.getFormats();
+            jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(formats));
+            jComboBox13.setSelectedItem("DVD");
+            ListSelectionModel selModel1 = jTable1.getSelectionModel();
+            selModel1.addListSelectionListener(new ListSelectionListener() {
+
+                public void valueChanged(ListSelectionEvent e) {
+                    delButton.setEnabled((jTable1.getSelectedRow() != -1) && (jTable1.getRowCount() != 0));
+                }
+            });
+
+            ListSelectionModel selModel2 = jTable2.getSelectionModel();
+            selModel2.addListSelectionListener(new ListSelectionListener() {
+
+                public void valueChanged(ListSelectionEvent e) {
+                    addButton.setEnabled((jTable2.getSelectedRow() != -1) && (jTable2.getRowCount() != 0));
+                }
+            });
+            recs = Managers.getInstance().getFilmsManager().getRecords();
+            Object[][] data2 = new Object[recs.size()][];
+            for (int i = 0; i < recs.size(); i++) {
+                Record rec = recs.get(i);
+                data2[i][0] = rec.getID();
+                data2[i][1] = ((Film) rec).getRussianTitle();
+            }
+            jTable2.setModel(new DefaultTableModel(new Object[0][0], columnNames));
+            jTable2.setModel(new DefaultTableModel(data2, columnNames));
+            //blacklist
+            recs = Managers.getInstance().getPersManager().getRecords();
+            personsMap = new HashMap<Integer, Integer>();
+            personsStrs = new String[recs.size()];
+            int i = 0;
+            Person p = null;
+            for (Record rec : recs) {
+                try {
+                    p = (Person) rec;
+                    personsMap.put(i, p.getID());
+                    personsStrs[i] = p.toString();
+                    i++;
+                } catch (Exception e) {
+                }
+            }
+            jComboBox14.setModel(new javax.swing.DefaultComboBoxModel(personsStrs));
+            //history
+            jComboBox15.setModel(new javax.swing.DefaultComboBoxModel(personsStrs));
+            recs = Managers.getInstance().getDiscsManager().getRecords();
+            discMap = new HashMap<Integer, Integer>();
+            discsStrs = new String[recs.size()];
+            i = 0;
+            for (Record rec : recs) {
+                try {
+                    Disc d = (Disc) rec;
+                    discMap.put(i, d.getID());
+                    discsStrs[i] = d.toString();
+                    i++;
+                } catch (Exception e) {
+                }
+            }
+            jComboBox16.setModel(new javax.swing.DefaultComboBoxModel(discsStrs));
+        } catch (Exception ex) {
+            Logger.getLogger(FindView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /** This method is called from within the constructor to
@@ -912,7 +1013,6 @@ public class FindView extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JPanel blPanel;

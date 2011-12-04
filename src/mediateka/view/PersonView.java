@@ -3,9 +3,6 @@ package mediateka.view;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import mediateka.datamanagers.Managers;
 import mediateka.db.ChangeDataException;
 import mediateka.db.Person;
@@ -16,9 +13,8 @@ import org.jdesktop.application.Action;
  * @author DeKaN
  */
 public class PersonView extends javax.swing.JDialog {
-    
+
     Person pers = null;
-    boolean flag = true;
 
     /** Creates new form PersonView */
     public PersonView(java.awt.Frame parent, boolean modal, Person person) {
@@ -216,7 +212,7 @@ public class PersonView extends javax.swing.JDialog {
             evt.consume();
         }
     }//GEN-LAST:event_jTextFieldKeyTyped
-    
+
     private void jTextField4jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4jTextFieldKeyTyped
         if (jTextField4.getText().length() == 20) {
             evt.consume();
@@ -225,7 +221,7 @@ public class PersonView extends javax.swing.JDialog {
             evt.consume();
         }
     }//GEN-LAST:event_jTextField4jTextFieldKeyTyped
-    
+
     @Action
     public void save() {
         if ((jTextField1.getText().length() <= 0) && (jTextField2.getText().length() <= 0)) {
@@ -255,7 +251,7 @@ public class PersonView extends javax.swing.JDialog {
             }
         }
     }
-    
+
     @Action
     public void close() {
         this.dispose();
