@@ -164,6 +164,7 @@ public class DiscView extends javax.swing.JDialog {
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N
 
+        jTextField1.setFont(resourceMap.getFont("jTextField1.font")); // NOI18N
         jTextField1.setText(resourceMap.getString("jTextField1.text")); // NOI18N
         jTextField1.setName("jTextField1"); // NOI18N
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -190,12 +191,10 @@ public class DiscView extends javax.swing.JDialog {
 
         jButton3.setAction(actionMap.get("addButton")); // NOI18N
         jButton3.setText(resourceMap.getString("jButton3.text")); // NOI18N
-        jButton3.setEnabled(false);
         jButton3.setName("jButton3"); // NOI18N
 
         jButton4.setAction(actionMap.get("removeButton")); // NOI18N
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
-        jButton4.setEnabled(false);
         jButton4.setName("jButton4"); // NOI18N
 
         jScrollPane2.setName("jScrollPane2"); // NOI18N

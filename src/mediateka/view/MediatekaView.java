@@ -10,6 +10,7 @@ import org.jdesktop.application.Action;
 import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JDialog;
@@ -33,6 +34,7 @@ public class MediatekaView extends FrameView {
     private static final String[] columnNamesFilms = new String[]{"ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"};
     private static final String[] columnNamesPersons = new String[]{"ID", "Фамилия", "Имя", "Отчество", "Телефон", "Комментарий"};
     private static final String[] columnNamesBLRecords = new String[]{"ID", "ФИО", "Комментарий"};
+    private static final String[] columnNamesHistoty = new String[]{"ID", "Диск", "Человек", "Дата выдачи", "Обещанная дата", "Дата возврата", "Комментарий"};
 
     private void updateFilmInfo(Film film) {
         if (film != null) {
@@ -222,7 +224,7 @@ public class MediatekaView extends FrameView {
             Object[] row = null;
             for (Record rec : recs) {
                 film = (Film) rec;
-                row = new Object[8];
+                row = new Object[columnNamesFilms.length];
                 row[0] = rec.getID();
                 row[1] = film.getRussianTitle();
                 row[2] = (film.getGenres() != null) ? stringArrayToString(film.getGenres()) : "-";
@@ -330,7 +332,7 @@ public class MediatekaView extends FrameView {
             Object[] row = null;
             for (Record rec : recs) {
                 blRecord = (BlackListRecord) rec;
-                row = new Object[3];
+                row = new Object[columnNamesBLRecords.length];
                 row[0] = rec.getID();
                 row[1] = blRecord.getPerson().toString();
                 row[2] = (blRecord.getComment().isEmpty()) ? "-" : blRecord.getComment();
@@ -364,6 +366,61 @@ public class MediatekaView extends FrameView {
             jTable3.getColumnModel().getColumn(1).setMinWidth(250);
             jTable3.getColumnModel().getColumn(1).setPreferredWidth(350);
             jTable3.getColumnModel().getColumn(1).setMaxWidth(650);
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void updateTableHistory() {
+        try {
+            List<Record> recs = Managers.getInstance().getHistManager().getRecords();
+            ArrayList<Object[]> listOfRows = new ArrayList<Object[]>();
+            HistoryRecord historyRecord = null;
+            Object[] row = null;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            for (Record rec : recs) {
+                historyRecord = (HistoryRecord) rec;
+                row = new Object[columnNamesHistoty.length];
+                row[0] = rec.getID();
+                row[1] = historyRecord.getDisc().toString();
+                row[2] = historyRecord.getPerson().toString();
+                row[3] = formatter.format(historyRecord.getGiveDate());
+                row[4] = formatter.format(historyRecord.getPromisedDate());
+                row[5] = formatter.format(historyRecord.getReturnDate());
+                row[6] = historyRecord.getComment().toString();
+                listOfRows.add(row);
+            }
+            Object[][] data = new Object[listOfRows.size()][];
+            for (int i = 0; i < listOfRows.size(); i++) {
+                data[i] = listOfRows.get(i);
+            }
+
+            jTable4.setModel(new DefaultTableModel(data, columnNamesHistoty) {
+
+                Class[] types = new Class[]{
+                    java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                };
+                boolean[] canEdit = new boolean[]{
+                    false, false, false, false, false, false, false
+                };
+
+                public Class getColumnClass(int columnIndex) {
+                    return types[columnIndex];
+                }
+
+                public boolean isCellEditable(int rowIndex, int columnIndex) {
+                    return canEdit[columnIndex];
+                }
+            });
+            Integer[] widths = new Integer[]{40, 0, 0, 100, 100, 100};
+            for (int i = 0; i < widths.length; i++) {
+                if (i != 1 && i != 2) {
+                    jTable4.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                    jTable4.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                    jTable4.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+                }
+            }
+            jTable4.getColumnModel().getColumn(1).setPreferredWidth(150);
         } catch (Exception ex) {
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -558,7 +615,7 @@ public class MediatekaView extends FrameView {
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton1);
 
-        jButton2.setAction(actionMap.get("addFilm")); // NOI18N
+        jButton2.setAction(actionMap.get("showDiscView")); // NOI18N
         jButton2.setIcon(resourceMap.getIcon("jButton2.icon")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setFocusable(false);
@@ -1483,7 +1540,7 @@ public class MediatekaView extends FrameView {
                             .addComponent(jTextField22, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel32)))
                     .addComponent(jScrollPane8, 0, 0, Short.MAX_VALUE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         blackListPane.setBottomComponent(jPanel3);
@@ -1501,24 +1558,17 @@ public class MediatekaView extends FrameView {
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"1", "2012", "2012", "2009", "Согласно календарю индейцев Майя, в 2012 году планеты солнечной системы окажутся на одной линии друг с другом, что приведет к глобальным природным катаклизмам: сильнейшие землетрясения, цунами и извержения вулканов превратят страны и целые континенты в руины. Недавно ученые подтвердили, что этот миф может стать реальностью.", "фантастика, боевик, триллер, драма, приключения", "США", "Мой любимый фильм", "158 мин", "9/10", "нет", new Boolean(true)},
-                {"2", "От заката до рассвета", "fhj", "f", "jhg", null, null, null, null, null, null, null},
-                {"3", "Послезавтра", "cf", "f", "jhg", null, null, null, null, null, null, null},
-                {"4", "Война миров", "g", "hjgjh", "fg", null, null, null, null, null, null, null},
-                {"5", "Приключения шурика", "f", "jhg", "kg", null, null, null, null, null, null, null},
-                {"6", "Карты, деньги, два ствола", null, null, null, null, null, null, null, null, null, null},
-                {"7", "Матрица (1 часть)", null, null, null, null, null, null, null, null, null, null},
-                {"8", "Знамение", null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "ID", "Русское название", "Англ. название", "Год", "Описание", "Жанр", "Страна(ы)", "Комментарий", "Продолжительность", "Оценка", "Субтитры", "Просмотрен"
+                "ID", "Диск", "Человек", "Дата выдачи", "Обещанная дата", "Дата возврата", "Комментарий"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1546,24 +1596,20 @@ public class MediatekaView extends FrameView {
         jTable4.getColumnModel().getColumn(0).setMaxWidth(40);
         jTable4.getColumnModel().getColumn(1).setPreferredWidth(150);
         jTable4.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
-        jTable4.getColumnModel().getColumn(3).setMinWidth(50);
-        jTable4.getColumnModel().getColumn(3).setPreferredWidth(50);
-        jTable4.getColumnModel().getColumn(3).setMaxWidth(50);
+        jTable4.getColumnModel().getColumn(2).setHeaderValue(resourceMap.getString("jTable4.columnModel.title2")); // NOI18N
+        jTable4.getColumnModel().getColumn(3).setMinWidth(100);
+        jTable4.getColumnModel().getColumn(3).setPreferredWidth(100);
+        jTable4.getColumnModel().getColumn(3).setMaxWidth(100);
         jTable4.getColumnModel().getColumn(3).setHeaderValue(resourceMap.getString("jTable1.columnModel.title2")); // NOI18N
-        jTable4.getColumnModel().getColumn(5).setMinWidth(150);
-        jTable4.getColumnModel().getColumn(5).setPreferredWidth(220);
+        jTable4.getColumnModel().getColumn(4).setMinWidth(100);
+        jTable4.getColumnModel().getColumn(4).setPreferredWidth(100);
+        jTable4.getColumnModel().getColumn(4).setMaxWidth(100);
+        jTable4.getColumnModel().getColumn(4).setHeaderValue(resourceMap.getString("jTable4.columnModel.title4")); // NOI18N
+        jTable4.getColumnModel().getColumn(5).setMinWidth(100);
+        jTable4.getColumnModel().getColumn(5).setPreferredWidth(100);
+        jTable4.getColumnModel().getColumn(5).setMaxWidth(100);
         jTable4.getColumnModel().getColumn(5).setHeaderValue(resourceMap.getString("jTable1.columnModel.title4")); // NOI18N
-        jTable4.getColumnModel().getColumn(8).setMinWidth(115);
-        jTable4.getColumnModel().getColumn(8).setPreferredWidth(115);
-        jTable4.getColumnModel().getColumn(8).setMaxWidth(115);
-        jTable4.getColumnModel().getColumn(9).setMinWidth(40);
-        jTable4.getColumnModel().getColumn(9).setPreferredWidth(40);
-        jTable4.getColumnModel().getColumn(9).setMaxWidth(40);
-        jTable4.getColumnModel().getColumn(10).setMinWidth(150);
-        jTable4.getColumnModel().getColumn(10).setPreferredWidth(200);
-        jTable4.getColumnModel().getColumn(11).setMinWidth(80);
-        jTable4.getColumnModel().getColumn(11).setPreferredWidth(80);
-        jTable4.getColumnModel().getColumn(11).setMaxWidth(80);
+        jTable4.getColumnModel().getColumn(6).setHeaderValue(resourceMap.getString("jTable4.columnModel.title7")); // NOI18N
 
         historyPane.setLeftComponent(jScrollPane4);
 
@@ -1792,7 +1838,7 @@ public class MediatekaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1949,6 +1995,19 @@ public class MediatekaView extends FrameView {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
 	private void jTable4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable4MouseClicked
+            if (evt.getClickCount() == 2) {
+                try {
+                    int row = jTable4.rowAtPoint(evt.getPoint());
+                    int histID = (Integer) jTable4.getValueAt(row, 0);
+                    HistoryRecord hist = (HistoryRecord) (Managers.getInstance().getHistManager().find(histID));
+                    HistoryRecordView hv = new HistoryRecordView(null, true, hist);
+                    hv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
+                    MediatekaApp.getApplication().show(hv);
+                    updateTableHistory();
+                } catch (Exception ex) {
+                    Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
 	}//GEN-LAST:event_jTable4MouseClicked
 
 	private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
@@ -2024,6 +2083,7 @@ public class MediatekaView extends FrameView {
         updateTableFilms();
         updateTablePersons();
         updateTableBlackList();
+        updateTableHistory();
     }
 
     @Action

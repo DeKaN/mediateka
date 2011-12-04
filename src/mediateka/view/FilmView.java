@@ -181,21 +181,10 @@ public class FilmView extends javax.swing.JDialog {
 
     private static void comboBoxPrepare(String[] tmp, JComboBox cb1, JComboBox cb2, JComboBox cb3) {
         if (tmp != null) {
-            for (int i = 0; ((i < tmp.length) && (i < 3)); i++) {
-                switch (i) {
-                    case 0:
-                        cb1.setSelectedItem((Object) tmp[i]);
-                        break;
-                    case 1:
-                        cb2.setSelectedItem((Object) tmp[i]);
-                        break;
-                    case 2:
-                        cb3.setSelectedItem((Object) tmp[i]);
-                        break;
-                    default:
-                        break;
-                }
-            }
+            cb1.setSelectedItem(tmp[0]);
+            cb2.setSelectedItem((tmp.length > 1) ? tmp[1] : "");
+            cb3.setSelectedItem((tmp.length > 2) ? tmp[2] : "");
+
         }
     }
 
@@ -716,7 +705,7 @@ public class FilmView extends javax.swing.JDialog {
                     }
                 } catch (Exception e) {
                 }
-                byte[] _cover = new byte[]{'n','o','n','e'};
+                byte[] _cover = new byte[]{'n', 'o', 'n', 'e'};
                 boolean _isSeen = (jRadioButton8.isSelected());
                 String _comment = jTextField5.getText().trim();
                 String _description = jTextArea1.getText().trim();

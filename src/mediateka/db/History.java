@@ -28,10 +28,10 @@ public class History extends Table {
                         Integer.parseInt(elem.attribute("recordID").getValue()),
                         (Disc) Managers.getInstance().getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
                         (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(1).getText())),
-                        format.parse(elem.node(2).getText()),
                         format.parse(elem.node(3).getText()),
                         format.parse(elem.node(4).getText()),
-                        elem.node(5).getText()));
+                        format.parse(elem.node(5).getText()),
+                        elem.node(2).getText()));
             }
             return true;
         } catch (Exception ex) {
@@ -49,7 +49,7 @@ public class History extends Table {
             return null;
         }
         if (rec.getID() > 0) {
-            map.put("personID", Integer.toString(rec.getID()));
+            map.put("recordID", Integer.toString(rec.getID()));
         } else {
             if (rec.getDisc() != null) {
                 map.put("discID", Integer.toString(rec.getDisc().getID()));
@@ -77,9 +77,9 @@ public class History extends Table {
                 retVal.add(historyRecord);
             }
         }
-        return retVal;
+        return retVal.size() > 0 ? retVal : null;
     }
-    
+
     protected Record createRecord(int id) {
         return new HistoryRecord(id);
     }

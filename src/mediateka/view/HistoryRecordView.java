@@ -1,5 +1,7 @@
 package mediateka.view;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +34,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
             List<Record> recs = Managers.getInstance().getPersManager().getRecords();
             persons = new String[recs.size()];
             int i = 0, id = history != null ? history.getPerson().getID() : 0;
+            personIds = new HashMap<Integer, Integer>();
             for (Record rec : recs) {
                 try {
                     Person p = (Person) rec;
@@ -42,12 +45,14 @@ public class HistoryRecordView extends javax.swing.JDialog {
                     }
                     i++;
                 } catch (Exception e) {
+                    Logger.getLogger(HistoryRecordView.class.getName()).log(Level.SEVERE, null, e);
                 }
             }
             recs = Managers.getInstance().getDiscsManager().getRecords();
             discs = new String[recs.size()];
             i = 0;
             id = history != null ? history.getDisc().getID() : 0;
+            discIds = new HashMap<Integer, Integer>();
             for (Record rec : recs) {
                 try {
                     Disc d = (Disc) rec;
@@ -121,6 +126,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(HistoryRecordView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
+        setResizable(false);
 
         jLabel1.setText(resourceMap.getString("jLabel1.text")); // NOI18N
         jLabel1.setName("jLabel1"); // NOI18N
@@ -144,13 +150,17 @@ public class HistoryRecordView extends javax.swing.JDialog {
 
         jComboBox2.setName("jComboBox2"); // NOI18N
 
+        jDateChooser1.setBackground(resourceMap.getColor("jDateChooser1.background")); // NOI18N
         jDateChooser1.setName("jDateChooser1"); // NOI18N
         jDateChooser1.getDateEditor().setEnabled(false);
 
+        jDateChooser2.setBackground(resourceMap.getColor("jDateChooser1.background")); // NOI18N
         jDateChooser2.setName("jDateChooser2"); // NOI18N
         jDateChooser2.getDateEditor().setEnabled(false);
 
+        jDateChooser3.setBackground(resourceMap.getColor("jDateChooser1.background")); // NOI18N
         jDateChooser3.setEnabled(false);
+        jDateChooser3.getDateEditor().setEnabled(false);
         jDateChooser3.setName("jDateChooser3"); // NOI18N
 
         jCheckBox1.setSelected(true);
@@ -165,6 +175,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         jTextArea1.setColumns(20);
+        jTextArea1.setFont(resourceMap.getFont("jTextArea1.font")); // NOI18N
         jTextArea1.setRows(5);
         jTextArea1.setName("jTextArea1"); // NOI18N
         jScrollPane1.setViewportView(jTextArea1);
@@ -201,9 +212,9 @@ public class HistoryRecordView extends javax.swing.JDialog {
                     .addComponent(jComboBox2, 0, 285, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(jDateChooser3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooser3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jCheckBox1))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
@@ -252,7 +263,8 @@ public class HistoryRecordView extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jCheckBox1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jCheckBox1StateChanged
-        jDateChooser1.setEnabled(!jCheckBox1.isSelected());
+        jDateChooser3.setEnabled(!jCheckBox1.isSelected());
+        jDateChooser3.getDateEditor().setEnabled(false);        
     }//GEN-LAST:event_jCheckBox1StateChanged
 
     @Action
