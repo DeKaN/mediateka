@@ -104,7 +104,7 @@ public class BlackListRecord implements Record {
      */
     public Element toXmlElement() {
         Element elem = new DefaultElement("record");
-        elem.addAttribute("recordID", Integer.toString(this.recordID));
+        elem.addAttribute("id", Integer.toString(this.recordID));
         elem.addElement("personID").addText(Integer.toString(this.person.getID()));
         elem.addElement("comment").addText(this.comment);
         return elem;

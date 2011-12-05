@@ -335,7 +335,7 @@ public final class Film implements Record {
     public Element toXmlElement() {
         Element elem = new DefaultElement("film");
         Element tempElem;
-        elem.addAttribute("filmID", Integer.toString(filmID));
+        elem.addAttribute("id", Integer.toString(filmID));
         elem.addElement("russianTitle").addText(russianTitle);
         elem.addElement("englishTitle").addText(englishTitle);
         elem.addElement("year").addText(Integer.toString(year));

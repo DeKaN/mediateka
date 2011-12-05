@@ -6,6 +6,7 @@ package mediateka.datamanagers;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import mediateka.db.Record;
 import org.apache.commons.lang3.StringUtils;
@@ -35,26 +36,46 @@ public class Condition {
     public boolean isEquals(Record rec) {
         Element elem = rec.toXmlElement();
         Set<String> keys = conds.keySet();
-        boolean retVal = true, needFullMatch = false;
+        boolean retVal = true, isAttr = false;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
-            String key = it.next();
-            needFullMatch = key.contains("ID");
-            String val = elem.attributeValue(key, "");
-            if (val.isEmpty()) {
-                return false;
-            }
-            key = conds.get(key);
-            String[] ids = StringUtils.split(val, ',');
-            if (ids.length > 1) {
-                for (String str : ids) {
-                    if ((needFullMatch && str.equals(key)) || (!needFullMatch && str.contains(key))) break;
-                    retVal = false;
-                }                
+            String key = it.next(), key2, val = "";
+            List<Element> elems;
+            isAttr = key.contains("id");
+            key2 = conds.get(key);
+            if (isAttr) {
+                val = elem.attributeValue(key, "");
+                if (val.isEmpty() || !check(val, key2)) {
+                    return false;
+                }
             } else {
-                if ((needFullMatch && !val.equals(key)) || (!needFullMatch && !val.contains(key))) {
+                elems = elem.elements(key);
+                if (elems == null) {
+                    return false;
+                }
+                for (Element element : elems) {
+                    if (check(element.getText(), key2)) {
+                        break;
+                    }
                     retVal = false;
+                }
+            }
+        }
+        return retVal;
+    }
+
+    private boolean check(String val, String searchVals) {
+        boolean retVal = true;
+        String[] ids = StringUtils.split(searchVals, ',');
+        if (ids.length > 1) {
+            for (String str : ids) {
+                if (val.contains(str)) {
                     break;
                 }
+                retVal = false;
+            }
+        } else {
+            if (!val.contains(searchVals)) {
+                retVal = false;
             }
         }
         return retVal;

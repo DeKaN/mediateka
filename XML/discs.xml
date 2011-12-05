@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <discs xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mediateka discs.xsd" autoIndex="4">
-  <disc discID="1">
+  <disc id="1">
     <ownerID>0</ownerID>
     <format>DVD</format>
     <regionCode>0</regionCode>
     <isPresent>false</isPresent>
     <films>
-           <filmID>1</filmID>
+      <filmID>1</filmID>
     </films>
   </disc>
-  <disc discID="2">
+  <disc id="2">
     <ownerID>0</ownerID>
     <format>BD</format>
     <regionCode>0</regionCode>
     <isPresent>true</isPresent>
     <films>
-           <filmID>1</filmID>
-           <filmID>2</filmID>
-    </films>
-  </disc>
-  <disc discID="3">
-    <ownerID>0</ownerID>
-    <format>DVD</format>
-    <regionCode>2</regionCode>
-    <isPresent>true</isPresent>
-    <films>
-           <filmID>3</filmID>
+      <filmID>1</filmID>
+      <filmID>2</filmID>
     </films>
   </disc>
 </discs>

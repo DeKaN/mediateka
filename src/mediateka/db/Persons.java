@@ -29,7 +29,7 @@ public class Persons extends Table {
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DefaultElement elem = (DefaultElement) it.next();
                 recordsList.add(new Person(
-                        Integer.parseInt(elem.attribute("personID").getValue()),
+                        Integer.parseInt(elem.attribute("id").getValue()),
                         elem.node(1).getText(),
                         elem.node(0).getText(),
                         elem.node(2).getText(),
@@ -57,7 +57,7 @@ public class Persons extends Table {
             return null;
         }
         if (pers.getID() > 0) {
-            map.put("personID", Integer.toString(pers.getID()));
+            map.put("id", Integer.toString(pers.getID()));
         } else {
             if (!pers.getFirstName().equals("")) {
                 map.put("firstName", pers.getFirstName());

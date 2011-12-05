@@ -5,8 +5,8 @@ package mediateka.view;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
@@ -232,33 +233,17 @@ public class MediatekaView extends FrameView {
     public MediatekaView(SingleFrameApplication app) {
         super(app);
         initComponents();
-        getFrame().addWindowListener(new WindowListener() {
+        getFrame().addWindowListener(new WindowAdapter() {
 
-            public void windowOpened(WindowEvent e) {
-            }
-
+            @Override
             public void windowClosing(WindowEvent e) {
-                if (JOptionPane.showConfirmDialog(getFrame(), "Вы действительно хотите выйти?", "Выход", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
-                    if (JOptionPane.showConfirmDialog(getFrame(), "Сохранить изменения?", "Сохранение", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
-                        //TODO проверить
-                        Managers.getInstance().saveDB();
-                    }
+                if (JOptionPane.showConfirmDialog(getFrame(), "Сохранить изменения?", "Выход", JOptionPane.YES_NO_OPTION) == 0) {
+                    Managers.getInstance().saveDB();
                 }
             }
 
             public void windowClosed(WindowEvent e) {
-            }
-
-            public void windowIconified(WindowEvent e) {
-            }
-
-            public void windowDeiconified(WindowEvent e) {
-            }
-
-            public void windowActivated(WindowEvent e) {
-            }
-
-            public void windowDeactivated(WindowEvent e) {
+                getFrame().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             }
         });
         createComponentMap();
@@ -287,8 +272,8 @@ public class MediatekaView extends FrameView {
                     if (rowIndex >= 0) {
                         int discID = (Integer) jTable2.getValueAt(rowIndex, 0);
                         disc = (Disc) (Managers.getInstance().getDiscsManager().find(discID));
+                        updateDiscInfo(disc);
                     }
-                    updateDiscInfo(disc);
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -464,7 +449,7 @@ public class MediatekaView extends FrameView {
                 row[0] = rec.getID();
                 List<Record> films = disc.getFilms().toList();
                 String tmp = "";
-                if (films.size() != 0) {
+                if (!films.isEmpty()) {
                     tmp += ((Film) films.get(0)).toString();
                 }
                 for (int i = 1; i < films.size(); i++) {
@@ -2098,7 +2083,7 @@ public class MediatekaView extends FrameView {
                     manager = Managers.getInstance().getHistManager();
                     break;
             }
-            if (JOptionPane.showConfirmDialog(getFrame(), String.format("Вы действительно хотите удалить {0}?", types[type]), "Удалить запись", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
+            if (JOptionPane.showConfirmDialog(getFrame(), String.format("Вы действительно хотите удалить %s?", types[type]), "Удалить запись", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
                 manager.delete(id);
                 return true;
             } else {

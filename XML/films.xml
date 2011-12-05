@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <films xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mediateka films.xsd" autoIndex="4">
-  <film filmID="1">
+  <film id="1">
     <russianTitle>Начало</russianTitle>
     <englishTitle>Inception</englishTitle>
     <year>2010</year>
@@ -28,7 +28,7 @@
     </soundLanguages>
     <isSeen>true</isSeen>
   </film>
-  <film filmID="2">
+  <film id="2">
     <russianTitle>Зеленая миля</russianTitle>
     <englishTitle>The Green Mile</englishTitle>
     <year>2009</year>
@@ -51,29 +51,6 @@
     <cover></cover>
     <soundLanguages>
       <soundLanguage>русский</soundLanguage>
-    </soundLanguages>
-    <isSeen>false</isSeen>
-  </film>
-  <film filmID="3">
-    <russianTitle>пнгшщ</russianTitle>
-    <englishTitle></englishTitle>
-    <year>0</year>
-    <description></description>
-    <genres>
-      <genre/>
-    </genres>
-    <countries>
-      <country/>
-    </countries>
-    <comment></comment>
-    <length>0</length>
-    <rating>0</rating>
-    <subtitles>
-      <subtitle/>
-    </subtitles>
-    <cover>bm9uZQ==</cover>
-    <soundLanguages>
-      <soundLanguage/>
     </soundLanguages>
     <isSeen>false</isSeen>
   </film>

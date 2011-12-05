@@ -34,11 +34,11 @@ public class Managers {
             fFile = dir + "films.xml",
             hFile = dir + "history.xml",
             pFile = dir + "persons.xml";
-    ManagerInfo blInfo = new ManagerInfo(blFile, "1af05a1e6032f60e51dcb81661de3ddb"),
-            dInfo = new ManagerInfo(dFile, "b22bccb075b5a73231007d3c6adbe20b"),
-            fInfo = new ManagerInfo(fFile, "010cccf3947386369d938f0f514226fc"),
-            hInfo = new ManagerInfo(hFile, "e0723e6d32d83f3b293d03c262432e48"),
-            pInfo = new ManagerInfo(pFile, "1aa533d2d9c64cb0c8458a956e647316");
+    ManagerInfo blInfo = new ManagerInfo(blFile, "acc28d63dabca748ea2730597b670db6"),
+            dInfo = new ManagerInfo(dFile, "c4b575848b3b9715f3c77db765bc2473"),
+            fInfo = new ManagerInfo(fFile, "f6d3bf3547e56c103ac47e1cef4adfd2"),
+            hInfo = new ManagerInfo(hFile, "273f6a8d2807f3c804f64d3feeb75280"),
+            pInfo = new ManagerInfo(pFile, "92505c3022991679c172dc9da4f59b90");
     private static Managers instance = null;
 
     /**

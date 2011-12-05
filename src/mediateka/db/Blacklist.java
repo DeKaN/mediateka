@@ -28,7 +28,7 @@ public class Blacklist extends Table {
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DefaultElement elem = (DefaultElement) it.next();
                 recordsList.add(new BlackListRecord(
-                        Integer.parseInt(elem.attribute("recordID").getValue()),
+                        Integer.parseInt(elem.attribute("id").getValue()),
                         (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(0).getText())),
                         elem.node(1).getText()));
             }
@@ -53,7 +53,7 @@ public class Blacklist extends Table {
             return null;
         }
         if (rec.getID() > 0) {
-            map.put("recordID", Integer.toString(rec.getID()));
+            map.put("id", Integer.toString(rec.getID()));
         } else {
             if (rec.getPerson() != null) {
                 map.put("personID", Integer.toString(rec.getPerson().getID()));

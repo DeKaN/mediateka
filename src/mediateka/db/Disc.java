@@ -190,7 +190,7 @@ public class Disc implements Record {
      */
     public Element toXmlElement() {
         Element elem = new DefaultElement("disc");
-        elem.addAttribute("discID", Integer.toString(this.discID));
+        elem.addAttribute("id", Integer.toString(this.discID));
         elem.addElement("ownerID").addText(Integer.toString(this.ownerID));
         elem.addElement("format").addText(this.format.toString());
         elem.addElement("regionCode").addText(Integer.toString(regionCode));

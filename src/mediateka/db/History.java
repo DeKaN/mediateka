@@ -25,7 +25,7 @@ public class History extends Table {
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DefaultElement elem = (DefaultElement) it.next();
                 recordsList.add(new HistoryRecord(
-                        Integer.parseInt(elem.attribute("recordID").getValue()),
+                        Integer.parseInt(elem.attribute("id").getValue()),
                         (Disc) Managers.getInstance().getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
                         (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(1).getText())),
                         format.parse(elem.node(3).getText()),
@@ -49,7 +49,7 @@ public class History extends Table {
             return null;
         }
         if (rec.getID() > 0) {
-            map.put("recordID", Integer.toString(rec.getID()));
+            map.put("id", Integer.toString(rec.getID()));
         } else {
             if (rec.getDisc() != null) {
                 map.put("discID", Integer.toString(rec.getDisc().getID()));

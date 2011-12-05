@@ -37,7 +37,7 @@ public class Discs extends Table {
                         films.add(Managers.getInstance().getFilmsManager().find(Integer.parseInt(node.getText())));
                     }
                     recordsList.add(new Disc(
-                            Integer.parseInt(elem.attribute("discID").getValue()),
+                            Integer.parseInt(elem.attribute("id").getValue()),
                             films,
                             Integer.parseInt(elem.node(0).getText()),
                             Disc.Format.valueOf(elem.node(1).getText()),
@@ -67,7 +67,7 @@ public class Discs extends Table {
             return null;
         }
         if (disc.getID() > 0) {
-            map.put("discID", Integer.toString(disc.getID()));
+            map.put("id", Integer.toString(disc.getID()));
         } else {
             Films filmsCollection = disc.getFilms();
             if (filmsCollection != null) {
@@ -81,7 +81,7 @@ public class Discs extends Table {
                         }
                     }
                 }
-                map.put("films", films);
+                map.put("filmID", films);
             }
             Disc.Format format = disc.getFormat();
             if (format != Disc.Format.None) {
@@ -113,7 +113,7 @@ public class Discs extends Table {
         }
         try {
             Manager histManager = Managers.getInstance().getHistManager();
-            Records recs = histManager.find(new HistoryRecord(null, (Person) record, null, null));
+            Records recs = histManager.find(new HistoryRecord((Disc) record, null, null, null));
             for (int i = 0; i < recs.size(); i++) {
                 histManager.delete(recs.getRecord(i).getID());
             }

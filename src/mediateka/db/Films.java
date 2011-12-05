@@ -64,7 +64,7 @@ public class Films extends Table {
                         soundLanguages[i] = node.getText();
                         i++;
                     }
-                    recordsList.add(new Film(Integer.parseInt(elem.attribute("filmID").getValue()),
+                    recordsList.add(new Film(Integer.parseInt(elem.attribute("id").getValue()),
                             elem.node(0).getText(),
                             elem.node(1).getText(),
                             Integer.parseInt(elem.node(2).getText()),
@@ -102,7 +102,7 @@ public class Films extends Table {
             return null;
         }
         if (rec.getID() > 0) {
-            map.put("filmID", Integer.toString(rec.getID()));
+            map.put("id", Integer.toString(rec.getID()));
         } else {
             if (!rec.getRussianTitle().equals("")) {
                 map.put("russianTitle", rec.getRussianTitle());
@@ -180,9 +180,7 @@ public class Films extends Table {
             for (int i = 0; i < recs.size(); i++) {
                 Disc d = (Disc) recs.getRecord(i);
                 Films f = d.getFilms();
-                if (!f.delete(record)) {
-                    return false;
-                }
+                f.delete(record);
                 if (f.size() > 0) {
                     d.setFilms(f);
                     discManager.edit(d);

@@ -18,7 +18,7 @@
                 <xs:element ref="phoneNumber"/>
                 <xs:element ref="comment"/>
             </xs:sequence>
-            <xs:attribute name="personID" type="xs:positiveInteger" use="required"/>
+            <xs:attribute name="id" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="firstName" type="xs:string"/>
