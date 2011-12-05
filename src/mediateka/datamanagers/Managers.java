@@ -38,7 +38,7 @@ public class Managers {
             pFile = dir + "persons.xml";
     ManagerInfo blInfo = new ManagerInfo(blFile, "1af05a1e6032f60e51dcb81661de3ddb"),
             dInfo = new ManagerInfo(dFile, "b22bccb075b5a73231007d3c6adbe20b"),
-            fInfo = new ManagerInfo(fFile, "b831cbb576a79477f1ac358ff93f9dca"),
+            fInfo = new ManagerInfo(fFile, "61197389612db42bd6b462f50f7b2c1e"),
             hInfo = new ManagerInfo(hFile, "e0723e6d32d83f3b293d03c262432e48"),
             pInfo = new ManagerInfo(pFile, "1aa533d2d9c64cb0c8458a956e647316");
     private static Managers instance = null;

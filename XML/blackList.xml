@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<blackList xmlns="mediateka"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="mediateka blackList.xsd" autoIndex="3">
-    <record recordID="1">
-        <personID>1</personID>
-        <comment>Просрочил диск</comment>
-    </record>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<blackList xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mediateka blackList.xsd" autoIndex="4">
+  <record xmlns="" recordID="1">
+    <personID>1</personID>
+    <comment>Просрочил диск</comment>
+  </record>
+  <record xmlns="" recordID="3">
+    <personID>3</personID>
+    <comment>цуу</comment>
+  </record>
 </blackList>

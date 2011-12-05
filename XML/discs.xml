@@ -1,28 +1,131 @@
-<?xml version="1.0" encoding="utf-8"?>
-<discs xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="mediateka discs.xsd" autoIndex="3">
-    <disc discID="1">
-        <ownerID>0</ownerID>
-        <format>DVD</format>
-        <regionCode>0</regionCode>
-        <isPresent>false</isPresent>
-        <films>
-            <filmID>1</filmID>
-        </films>
-    </disc>
-    <disc discID="2">
-        <ownerID>0</ownerID>
-        <format>BD</format>
-        <regionCode>0</regionCode>
-        <isPresent>true</isPresent>
-        <films>
-            <filmID>1</filmID>
-            <filmID>2</filmID>
-        </films>
-    </disc>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<discs xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mediateka discs.xsd" autoIndex="4">
+  <disc xmlns="" discID="1">
+    <ownerID>0</ownerID>
+    <format>DVD</format>
+    <regionCode>0</regionCode>
+    <isPresent>false</isPresent>
+    <films>
+      <film filmID="1">
+        <russianTitle>Начало</russianTitle>
+        <englishTitle>Inception</englishTitle>
+        <year>2010</year>
+        <description>Кобб — талантливый вор, лучший из лучших в опасном искусстве извлечения: он крадет ценные секреты из глубин подсознания во время сна, когда человеческий разум наиболее уязвим. Редкие способности Кобба сделали его ценным игроком в привычном к предательству мире промышленного шпионажа, но они же превратили его в извечного беглеца и лишили всего, что он когда-либо любил. И вот у Кобба появляется шанс исправить ошибки. Его последнее дело может вернуть все назад, но для этого ему нужно совершить невозможное — инициацию. Вместо идеальной кражи Кобб и его команда спецов должны будут провернуть обратное. Теперь их задача — не украсть идею, а внедрить ее. Если у них получится, это и станет идеальным преступлением. Но никакое планирование или мастерство не могут подготовить команду к встрече с опасным противником, который, кажется, предугадывает каждый их ход. Врагом, увидеть которого мог бы лишь Кобб.</description>
+        <genres>
+          <genre>Фантастика</genre>
+          <genre>Боевик</genre>
+          <genre>Триллер</genre>
+          <genre>Драма</genre>
+          <genre>Детектив</genre>
+        </genres>
+        <countries>
+          <country>Russia</country>
+        </countries>
+        <comment></comment>
+        <length>148</length>
+        <rating>5</rating>
+        <subtitles>
+          <subtitle>английский</subtitle>
+        </subtitles>
+        <cover></cover>
+        <soundLanguages>
+          <soundLanguage>русский</soundLanguage>
+        </soundLanguages>
+        <isSeen>true</isSeen>
+      </film>
+    </films>
+  </disc>
+  <disc xmlns="" discID="2">
+    <ownerID>0</ownerID>
+    <format>BD</format>
+    <regionCode>0</regionCode>
+    <isPresent>true</isPresent>
+    <films>
+      <film filmID="1">
+        <russianTitle>Начало</russianTitle>
+        <englishTitle>Inception</englishTitle>
+        <year>2010</year>
+        <description>Кобб — талантливый вор, лучший из лучших в опасном искусстве извлечения: он крадет ценные секреты из глубин подсознания во время сна, когда человеческий разум наиболее уязвим. Редкие способности Кобба сделали его ценным игроком в привычном к предательству мире промышленного шпионажа, но они же превратили его в извечного беглеца и лишили всего, что он когда-либо любил. И вот у Кобба появляется шанс исправить ошибки. Его последнее дело может вернуть все назад, но для этого ему нужно совершить невозможное — инициацию. Вместо идеальной кражи Кобб и его команда спецов должны будут провернуть обратное. Теперь их задача — не украсть идею, а внедрить ее. Если у них получится, это и станет идеальным преступлением. Но никакое планирование или мастерство не могут подготовить команду к встрече с опасным противником, который, кажется, предугадывает каждый их ход. Врагом, увидеть которого мог бы лишь Кобб.</description>
+        <genres>
+          <genre>Фантастика</genre>
+          <genre>Боевик</genre>
+          <genre>Триллер</genre>
+          <genre>Драма</genre>
+          <genre>Детектив</genre>
+        </genres>
+        <countries>
+          <country>Russia</country>
+        </countries>
+        <comment></comment>
+        <length>148</length>
+        <rating>5</rating>
+        <subtitles>
+          <subtitle>английский</subtitle>
+        </subtitles>
+        <cover></cover>
+        <soundLanguages>
+          <soundLanguage>русский</soundLanguage>
+        </soundLanguages>
+        <isSeen>true</isSeen>
+      </film>
+      <film filmID="2">
+        <russianTitle>Зеленая миля</russianTitle>
+        <englishTitle>The Green Mile</englishTitle>
+        <year>2009</year>
+        <description>Обвиненный в страшном преступлении, Джон Коффи оказывается в блоке смертников тюрьмы «Холодная гора». Вновь прибывший обладал поразительным ростом и был пугающе спокоен, что, впрочем, никак не влияло на отношение к нему начальника блока Пола Эджкомба, привыкшего исполнять приговор. Гигант удивил всех позже, когда выяснилось, что он обладает невероятной магической силой…</description>
+        <genres>
+          <genre>Фантастика</genre>
+          <genre>Триллер</genre>
+          <genre>Драма</genre>
+          <genre>Детектив</genre>
+        </genres>
+        <countries>
+          <country>США</country>
+        </countries>
+        <comment></comment>
+        <length>189</length>
+        <rating>4</rating>
+        <subtitles>
+          <subtitle>английский</subtitle>
+        </subtitles>
+        <cover></cover>
+        <soundLanguages>
+          <soundLanguage>русский</soundLanguage>
+        </soundLanguages>
+        <isSeen>false</isSeen>
+      </film>
+    </films>
+  </disc>
+  <disc xmlns="" discID="3">
+    <ownerID>0</ownerID>
+    <format>DVD</format>
+    <regionCode>2</regionCode>
+    <isPresent>true</isPresent>
+    <films>
+      <film filmID="3">
+        <russianTitle>пнгшщ</russianTitle>
+        <englishTitle></englishTitle>
+        <year>0</year>
+        <description></description>
+        <genres>
+          <genre/>
+        </genres>
+        <countries>
+          <country/>
+        </countries>
+        <comment></comment>
+        <length>0</length>
+        <rating>0</rating>
+        <subtitles>
+          <subtitle/>
+        </subtitles>
+        <cover>bm9uZQ==</cover>
+        <soundLanguages>
+          <soundLanguage/>
+        </soundLanguages>
+        <isSeen>false</isSeen>
+      </film>
+    </films>
+  </disc>
 </discs>
-
-
-
-
-

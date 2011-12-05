@@ -1,16 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<history xmlns="mediateka"
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:schemaLocation="mediateka history.xsd" autoIndex="2">
-    <record recordID="1">
-        <discID>1</discID>
-        <personID>1</personID>
-        <comment/>
-        <dateOfIssue>2011-12-01</dateOfIssue>
-        <dateOfReturn>1970-01-01</dateOfReturn>
-        <promisingDate>2011-12-15</promisingDate>
-    </record>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<history xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mediateka history.xsd" autoIndex="3">
+  <record xmlns="" recordID="1">
+    <discID>1</discID>
+    <personID>1</personID>
+    <comment></comment>
+    <dateOfIssue>2011-12-01</dateOfIssue>
+    <dateOfReturn>1970-01-01</dateOfReturn>
+    <promisingDate>2011-12-15</promisingDate>
+  </record>
+  <record xmlns="" recordID="2">
+    <discID>3</discID>
+    <personID>3</personID>
+    <comment></comment>
+    <dateOfIssue>2011-12-01</dateOfIssue>
+    <dateOfReturn></dateOfReturn>
+    <promisingDate>2011-12-06</promisingDate>
+  </record>
 </history>
-
-
-

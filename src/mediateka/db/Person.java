@@ -1,7 +1,7 @@
 package mediateka.db;
 
 import org.dom4j.Element;
-import org.dom4j.dom.DOMElement;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий персональные данные человека
@@ -159,7 +159,7 @@ public class Person implements Record {
      * @return Строка с записью, сериализованной в XML element
      */
     public Element toXmlElement() {
-        Element elem = new DOMElement("person");
+        Element elem = new DefaultElement("person");
         elem.addAttribute("personID", Integer.toString(this.personID));
         elem.addElement("firstfirstName").addText(this.firstName);
         elem.addElement("lastName").addText(this.lastName);

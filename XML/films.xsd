@@ -26,6 +26,7 @@
                 <xs:element ref="soundLanguages"/>
                 <xs:element ref="isSeen"/>
             </xs:sequence>
+			<xs:attribute name="xmlns" type="xs:string"/>
             <xs:attribute name="filmID" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>

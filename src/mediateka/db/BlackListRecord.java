@@ -1,7 +1,7 @@
 package mediateka.db;
 
 import org.dom4j.Element;
-import org.dom4j.dom.DOMElement;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий запись в таблице "Черный список"
@@ -103,7 +103,7 @@ public class BlackListRecord implements Record {
      * @return Строка с записью, сериализованной в XML element
      */
     public Element toXmlElement() {
-        Element elem = new DOMElement("record");
+        Element elem = new DefaultElement("record");
         elem.addAttribute("recordID", Integer.toString(this.recordID));
         elem.addElement("personID").addText(Integer.toString(this.person.getID()));
         elem.addElement("comment").addText(this.comment);

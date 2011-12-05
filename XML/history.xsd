@@ -19,6 +19,7 @@
                 <xs:element ref="dateOfReturn"/>
                 <xs:element ref="promisingDate"/>
             </xs:sequence>
+			<xs:attribute name="xmlns" type="xs:string"/>
             <xs:attribute name="recordID" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>

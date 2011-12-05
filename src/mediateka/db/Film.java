@@ -2,7 +2,7 @@ package mediateka.db;
 
 import biz.source_code.base64Coder.Base64Coder;
 import org.dom4j.Element;
-import org.dom4j.dom.DOMElement;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий фильм
@@ -333,14 +333,14 @@ public final class Film implements Record {
      * @return Строка с фильмом, сериализованным в XML element
      */
     public Element toXmlElement() {
-        Element elem = new DOMElement("film");
+        Element elem = new DefaultElement("film");
         Element tempElem;
         elem.addAttribute("filmID", Integer.toString(filmID));
         elem.addElement("russianTitle").addText(russianTitle);
         elem.addElement("englishTitle").addText(englishTitle);
         elem.addElement("year").addText(Integer.toString(year));
         elem.addElement("description").addText(description);
-        tempElem = new DOMElement("genres");
+        tempElem = new DefaultElement("genres");
         if (genres == null || genres.length == 0) {
             tempElem.addElement("genre");
         } else {
@@ -349,7 +349,7 @@ public final class Film implements Record {
             }
         }
         elem.add(tempElem);
-        tempElem = new DOMElement("countries");
+        tempElem = new DefaultElement("countries");
         if (countries == null || countries.length == 0) {
             tempElem.addElement("country");
         } else {
@@ -361,7 +361,7 @@ public final class Film implements Record {
         elem.addElement("comment").addText(comment);
         elem.addElement("length").addText(Integer.toString(length));
         elem.addElement("rating").addText(Integer.toString(rating));
-        tempElem = new DOMElement("subtitles");
+        tempElem = new DefaultElement("subtitles");
         if (subtitles == null || subtitles.length == 0) {
             tempElem.addElement("subtitle");
         } else {
@@ -371,7 +371,7 @@ public final class Film implements Record {
         }
         elem.add(tempElem);
         elem.addElement("cover").addText(Base64Coder.encodeLines(cover));
-        tempElem = new DOMElement("soundLanguages");
+        tempElem = new DefaultElement("soundLanguages");
         if (soundLanguages == null || soundLanguages.length == 0) {
             tempElem.addElement("soundLanguage");
         } else {

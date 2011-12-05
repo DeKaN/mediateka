@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
-import org.dom4j.dom.DOMElement;
+import org.dom4j.tree.DefaultElement;
 
 /**
  * Класс, представляющий диск с набором фильмов
@@ -189,13 +189,13 @@ public class Disc implements Record {
      * @return Строка с диском, сериализованным в XML element
      */
     public Element toXmlElement() {
-        Element elem = new DOMElement("disc");
+        Element elem = new DefaultElement("disc");
         elem.addAttribute("discID", Integer.toString(this.discID));
         elem.addElement("ownerID").addText(Integer.toString(this.ownerID));
         elem.addElement("format").addText(this.format.toString());
         elem.addElement("regionCode").addText(Integer.toString(regionCode));
         elem.addElement("isPresent").addText(Boolean.toString(presented));
-        Element temp = new DOMElement("films");
+        Element temp = new DefaultElement("films");
         for (Iterator<Record> it = films.toList().iterator(); it.hasNext();) {
             Record record = it.next();
             temp.add(record.toXmlElement());

@@ -15,7 +15,6 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Namespace;
-import org.dom4j.dom.DOMElement;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.SAXReader;
 import org.dom4j.io.XMLWriter;
@@ -120,7 +119,7 @@ public abstract class Table implements Records {
     }
 
     public Element toXmlElement() {
-        Element elem = new DOMElement(tableName, Namespace.get("mediateka"));
+        Element elem = new DefaultElement(tableName, Namespace.get("mediateka"));
         elem.addNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         elem.addAttribute("xsi:schemaLocation", "mediateka " + tableName + ".xsd");
         elem.addAttribute("autoIndex", Integer.toString(autoIndex));
