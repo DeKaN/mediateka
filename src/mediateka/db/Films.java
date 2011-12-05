@@ -1,6 +1,5 @@
 package mediateka.db;
 
-import biz.source_code.base64Coder.Base64Coder;
 import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.datamanagers.Condition;
@@ -75,10 +74,10 @@ public class Films extends Table {
                             Integer.parseInt(elem.node(7).getText()),
                             Integer.parseInt(elem.node(8).getText()),
                             subtitles,
-                            Base64Coder.decodeLines(elem.node(10).getText()),
                             soundLanguages,
-                            elem.node(12).getText().equals("true")));
+                            elem.node(11).getText().equals("true")));
                 } catch (Exception exc) {
+                    System.out.print(exc.getStackTrace().toString());
                 }
             }
             return true;

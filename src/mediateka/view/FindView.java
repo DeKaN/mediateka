@@ -2,21 +2,29 @@ package mediateka.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mediateka.datamanagers.Managers;
 import mediateka.db.Disc;
+import mediateka.db.Disc.Format;
 import mediateka.db.Film;
+import mediateka.db.Films;
+import mediateka.db.HistoryRecord;
 import mediateka.db.Person;
 import mediateka.db.Record;
+import mediateka.db.Records;
 import org.jdesktop.application.Action;
 
 /**
@@ -35,6 +43,8 @@ public class FindView extends javax.swing.JDialog {
             _rating = Integer.parseInt(temp);
         }
     };
+    private List<Record> filmRecords = null;
+    private HashMap<Record, Boolean> filmsMap = null;
 
     /** Creates new form FindView */
     public FindView(java.awt.Frame parent, boolean modal) {
@@ -62,6 +72,10 @@ public class FindView extends javax.swing.JDialog {
             jRadioButton5.addActionListener(ratingListener);
             jRadioButton6.addActionListener(ratingListener);
             //discs
+            filmsMap = new HashMap<Record, Boolean>();
+            filmRecords = Managers.getInstance().getFilmsManager().getRecords();
+            ArrayList<Integer> ids = new ArrayList<Integer>();
+            updateTables(jTable1, jTable2);
             formats = Disc.getFormats();
             jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(formats));
             jComboBox13.setSelectedItem("DVD");
@@ -840,7 +854,7 @@ public class FindView extends javax.swing.JDialog {
                         .addComponent(jLabel23)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(769, Short.MAX_VALUE))
+                .addContainerGap(386, Short.MAX_VALUE))
         );
         blPanelLayout.setVerticalGroup(
             blPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1026,17 +1040,17 @@ public class FindView extends javax.swing.JDialog {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1159, Short.MAX_VALUE)
-                    .addComponent(findButton, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addContainerGap())
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(findButton)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 776, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(findButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1045,16 +1059,16 @@ public class FindView extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(383, 383, 383))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -1101,18 +1115,202 @@ public class FindView extends javax.swing.JDialog {
 
     @Action
     public void find() {
-        switch(jTabbedPane1.getSelectedIndex()){
-            case 0:
+        switch (jTabbedPane1.getSelectedIndex()) {
+            case 0: { // Фильмы
+                try {
+                    String _russianTitle = jTextField1.getText().trim();
+                    String _englishTitle = jTextField2.getText().trim();
+                    int _year = 0;
+                    String tmpStr = jTextField3.getText();
+                    try {
+                        if (jTextField3.getText().length() != 0) {
+                            _year = Integer.parseInt(tmpStr);
+                        }
+                    } catch (Exception e) {
+                    }
+                    int _length = 0;
+                    tmpStr = jTextField4.getText();
+                    try {
+                        if (jTextField4.getText().length() != 0) {
+                            _length = Integer.parseInt(tmpStr);
+                        }
+                    } catch (Exception e) {
+                    }
+                    boolean _isSeen = (jRadioButton8.isSelected());
+                    String _comment = jTextField5.getText().trim();
+                    String _description = jTextArea1.getText().trim();
+
+                    String[] _genres = getDataFromComboboxsAsStrings(jComboBox1, jComboBox2, jComboBox3);
+                    String[] _countries = getDataFromComboboxsAsStrings(jComboBox4, jComboBox5, jComboBox6);
+                    String[] _subtitles = getDataFromComboboxsAsStrings(jComboBox7, jComboBox8, jComboBox9);
+                    String[] _soundLanguages = getDataFromComboboxsAsStrings(jComboBox10, jComboBox11, jComboBox12);
+
+                    Film film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
+                            _comment, _length, _rating, _subtitles, _soundLanguages, _isSeen);
+
+                    Records records = Managers.getInstance().getFilmsManager().find(film);
+
+                    if (records.size() > 0) {
+                        // your code here
+
+                        jTabbedPane1.setSelectedIndex(5);
+                    }
+                } catch (Exception ex) {
+                }
+
                 break;
-            case 1:
+            }
+            case 1: { // Диски
+                try {
+                    Films films = new Films();
+                    for (Record rec : filmRecords) {
+                        if (filmsMap.get(rec)) {
+                            films.add(rec);
+                        }
+                    }
+                    Format format = Format.valueOf((String) jComboBox13.getSelectedItem());
+                    String s = jTextField6.getText();
+                    int region = (s.isEmpty()) ? 0 : Integer.parseInt(s);
+                    boolean isPresented = jCheckBox1.isSelected();
+
+                    Records records = Managers.getInstance().getDiscsManager().find(new Disc(films, -1, format, region, isPresented));
+
+                    if (records.size() > 0) {
+                        // your code here
+
+                        jTabbedPane1.setSelectedIndex(5);
+                    }
+                } catch (Exception ex) {
+                }
                 break;
-            case 2:
+            }
+            case 2: { // Люди
+                try {
+                    String lastName = jTextField7.getText();
+                    String firstName = jTextField8.getText();
+                    String secondName = jTextField9.getText();
+                    String phone = jTextField10.getText();
+                    String comment = jTextArea5.getText();
+
+                    Records records = Managers.getInstance().getPersManager().find(new Person(lastName, firstName, secondName, phone, comment));
+
+                    if (records.size() > 0) {
+                        // your code here
+
+                        jTabbedPane1.setSelectedIndex(5);
+                    }
+                } catch (Exception ex) {
+                }
                 break;
-            case 3:
+            }
+            case 3: { // Блэклист
+                try {
+                    Record record = Managers.getInstance().getBlListManager().find(personsMap.get(jComboBox14.getSelectedIndex()));
+
+                    if (record != null) {
+                        // your code here
+
+                        jTabbedPane1.setSelectedIndex(5);
+                    }
+                } catch (Exception ex) {
+                }
+
                 break;
-            case 4:
+            }
+            case 4: { // Журнал
+                try {
+                    Disc disc = new Disc(discMap.get(jComboBox16.getSelectedIndex()));
+                    Person person = new Person(personsMap.get(jComboBox15.getSelectedIndex()));
+                    Date date1 = jDateChooser1.getDate();
+                    Date date2 = jDateChooser2.getDate();
+                    Date date3 = jDateChooser3.getDate();
+                    String comment = jTextArea4.getText();
+
+                    Records records = Managers.getInstance().getHistManager().find(new HistoryRecord(disc, person, date1, date2, date3, comment));
+
+                    if (records.size() > 0) {
+                        // your code here
+
+                        jTabbedPane1.setSelectedIndex(5);
+                    }
+                } catch (Exception ex) {
+                }
+
                 break;
+            }
         }
+    }
+
+    @Action
+    public void addButton() {
+        try {
+            changeMap(jTable2, true);
+            updateTables(jTable1, jTable2);
+        } catch (Exception ex) {
+            Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Action
+    public void removeButton() {
+        try {
+            changeMap(jTable1, false);
+            updateTables(jTable1, jTable2);
+        } catch (Exception ex) {
+            Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void changeMap(JTable table, boolean flag) {
+        int id = (Integer) table.getValueAt(table.getSelectedRow(), 0);
+        for (Record rec : filmRecords) {
+            if (rec.getID() == id) {
+                filmsMap.put(rec, flag);
+            }
+        }
+    }
+
+    private String[] getDataFromComboboxsAsStrings(JComboBox cb1, JComboBox cb2, JComboBox cb3) {
+        ArrayList<String> list = new ArrayList<String>();
+        if ((cb1.getSelectedIndex() != 0) && (!list.contains((String) cb1.getSelectedItem()))) {
+            list.add((String) (cb1.getSelectedItem()));
+        }
+        if ((cb2.getSelectedIndex() != 0) && (!list.contains((String) cb2.getSelectedItem()))) {
+            list.add((String) (cb2.getSelectedItem()));
+        }
+        if ((cb3.getSelectedIndex() != 0) && (!list.contains((String) cb3.getSelectedItem()))) {
+            list.add((String) (cb3.getSelectedItem()));
+        }
+        return (list.isEmpty()) ? null : list.toArray(new String[1]);
+    }
+
+    private void updateTables(JTable table1, JTable table2) {
+        DefaultTableModel model;
+        ArrayList<Object[]> list1 = new ArrayList<Object[]>();
+        ArrayList<Object[]> list2 = new ArrayList<Object[]>();
+        Object[] row = null;
+        for (Record rec : filmRecords) {
+            row = new Object[2];
+            row[0] = rec.getID();
+            row[1] = ((Film) rec).getRussianTitle();
+            if (filmsMap.get(rec)) {
+                list1.add(row);
+            } else {
+                list2.add(row);
+            }
+        }
+        Object[][] data1 = new Object[list1.size()][];
+        Object[][] data2 = new Object[list2.size()][];
+        for (int i = 0; i < list1.size(); i++) {
+            data1[i] = list1.get(i);
+        }
+        for (int i = 0; i < list2.size(); i++) {
+            data2[i] = list2.get(i);
+        }
+        model = new DefaultTableModel(data1, columnNames);
+        table1.setModel(model);
+        model = new DefaultTableModel(data2, columnNames);
+        table2.setModel(model);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

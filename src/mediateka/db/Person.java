@@ -150,7 +150,7 @@ public class Person implements Record {
      * Внутренний конструктор
      * @param personID ID человека
      */
-    Person(int personID) {
+    public Person(int personID) {
         this.personID = personID;
     }
 
