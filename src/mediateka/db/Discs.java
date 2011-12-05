@@ -110,8 +110,10 @@ public class Discs extends Table {
         try {
             Manager histManager = Managers.getInstance().getHistManager();
             Records recs = histManager.find(new HistoryRecord((Disc) record, null, null, null));
-            for (int i = 0; i < recs.size(); i++) {
-                histManager.delete(recs.getRecord(i).getID());
+            if (recs != null) {
+                for (int i = 0; i < recs.size(); i++) {
+                    histManager.delete(recs.getRecord(i).getID());
+                }
             }
         } catch (Exception ex) {
             return false;

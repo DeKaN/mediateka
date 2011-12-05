@@ -171,6 +171,7 @@ public class Films extends Table {
     }
 
     private boolean del(Records recs, Record record) {
+        if (recs == null) return false;
         try {
             Manager discManager = Managers.getInstance().getDiscsManager();
             for (int i = 0; i < recs.size(); i++) {
