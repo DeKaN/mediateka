@@ -22,7 +22,6 @@
                 <xs:element ref="length"/>
                 <xs:element ref="rating"/>
                 <xs:element ref="subtitles"/>
-                <xs:element ref="cover"/>
                 <xs:element ref="soundLanguages"/>
                 <xs:element ref="isSeen"/>
             </xs:sequence>
@@ -60,7 +59,6 @@
         </xs:complexType>
     </xs:element>
     <xs:element name="subtitle" type="xs:string"/>
-    <xs:element name="cover" type="xs:base64Binary"/>
     <xs:element name="soundLanguages">
         <xs:complexType>
             <xs:sequence>

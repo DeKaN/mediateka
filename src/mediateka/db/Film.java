@@ -1,6 +1,5 @@
 package mediateka.db;
 
-import biz.source_code.base64Coder.Base64Coder;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -21,7 +20,6 @@ public final class Film implements Record {
     private int length = 0;
     private int rating = 0;
     private String[] subtitles = null;
-    private byte[] cover = null;
     private String[] soundLanguages = null;
     private boolean seen = false;
 
@@ -202,22 +200,6 @@ public final class Film implements Record {
     }
 
     /**
-     * Получить обложку
-     * @return обложка
-     */
-    public byte[] getCover() {
-        return this.cover;
-    }
-
-    /**
-     * Установить обложку
-     * @param cover Устанавливаемая обложка
-     */
-    public void setCover(byte[] cover) {
-        this.cover = cover;
-    }
-
-    /**
      * Получить список языков озвучки
      * @return список языков озвучки
      */
@@ -270,11 +252,10 @@ public final class Film implements Record {
      * @param length Длительность
      * @param rating Оценка
      * @param subtitles Субтитры
-     * @param cover Обложка
      * @param soundLanguages Языки озвучки
      * @param isSeen Факт просмотра
      */
-    public Film(int filmId, String russianTitle, String englishTitle, int year, String description, String[] genres, String[] countries, String comment, int length, int rating, String[] subtitles, byte[] cover, String[] soundLanguages, boolean isSeen) {
+    public Film(int filmId, String russianTitle, String englishTitle, int year, String description, String[] genres, String[] countries, String comment, int length, int rating, String[] subtitles, String[] soundLanguages, boolean isSeen) {
         this.filmID = filmId;
         this.russianTitle = russianTitle;
         this.englishTitle = englishTitle;
@@ -286,7 +267,6 @@ public final class Film implements Record {
         this.length = length;
         this.rating = rating;
         this.subtitles = subtitles;
-        this.cover = cover;
         this.soundLanguages = soundLanguages;
         this.seen = isSeen;
     }
@@ -297,7 +277,7 @@ public final class Film implements Record {
      * @param russianTitle Русское название фильма
      */
     public Film(int filmId, String russianTitle) {
-        this(filmId, russianTitle, "", 0, "", null, null, "", 0, 0, null, null, null, false);
+        this(filmId, russianTitle, "", 0, "", null, null, "", 0, 0, null, null, false);
     }
 
     /**
@@ -312,12 +292,11 @@ public final class Film implements Record {
      * @param length Длительность
      * @param rating Оценка
      * @param subtitles Субтитры
-     * @param cover Обложка
      * @param soundLanguages Языки озвучки
      * @param isSeen Факт просмотра
      */
-    public Film(String russianTitle, String englishTitle, int year, String description, String[] genres, String[] countries, String comment, int length, int rating, String[] subtitles, byte[] cover, String[] soundLanguages, boolean isSeen) {
-        this(0, russianTitle, englishTitle, year, description, genres, countries, comment, length, rating, subtitles, cover, soundLanguages, isSeen);
+    public Film(String russianTitle, String englishTitle, int year, String description, String[] genres, String[] countries, String comment, int length, int rating, String[] subtitles, String[] soundLanguages, boolean isSeen) {
+        this(0, russianTitle, englishTitle, year, description, genres, countries, comment, length, rating, subtitles, soundLanguages, isSeen);
     }
 
     /**
@@ -370,7 +349,6 @@ public final class Film implements Record {
             }
         }
         elem.add(tempElem);
-        elem.addElement("cover").addText(Base64Coder.encodeLines(cover));
         tempElem = new DefaultElement("soundLanguages");
         if (soundLanguages == null || soundLanguages.length == 0) {
             tempElem.addElement("soundLanguage");

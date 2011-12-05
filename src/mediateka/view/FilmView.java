@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
@@ -653,7 +652,6 @@ public class FilmView extends javax.swing.JDialog {
                     }
                 } catch (Exception e) {
                 }
-                byte[] _cover = new byte[]{'n', 'o', 'n', 'e'};
                 boolean _isSeen = (jRadioButton8.isSelected());
                 String _comment = jTextField5.getText().trim();
                 String _description = jTextArea1.getText().trim();
@@ -675,7 +673,6 @@ public class FilmView extends javax.swing.JDialog {
                     film.setLength(_length);
                     film.setRating(_rating);
                     film.setSubtitles(_subtitles);
-                    film.setCover(_cover);
                     film.setSoundLanguages(_soundLanguages);
                     film.setSeen(_isSeen);
                     if (!Managers.getInstance().getFilmsManager().edit(film)) {
@@ -684,7 +681,7 @@ public class FilmView extends javax.swing.JDialog {
 
                 } else {
                     film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
-                            _comment, _length, _rating, _subtitles, _cover, _soundLanguages, _isSeen);
+                            _comment, _length, _rating, _subtitles, _soundLanguages, _isSeen);
                     if (!Managers.getInstance().getFilmsManager().add(film)) {
                         throw new ChangeDataException("Ошибка при добавлении");
                     }
@@ -708,7 +705,7 @@ public class FilmView extends javax.swing.JDialog {
         if ((cb3.getSelectedIndex() != 0) && (!list.contains((String) cb3.getSelectedItem()))) {
             list.add((String) (cb3.getSelectedItem()));
         }
-        return (list.size() == 0) ? null : list.toArray(new String[1]);
+        return (list.isEmpty()) ? null : list.toArray(new String[1]);
 
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

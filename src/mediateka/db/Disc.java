@@ -162,7 +162,7 @@ public class Disc implements Record {
      * Внутренний конструктор
      * @param discID ID диска
      */
-    Disc(int discID) {
+    public Disc(int discID) {
         this.discID = discID;
     }
 

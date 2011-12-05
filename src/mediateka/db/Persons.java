@@ -90,17 +90,23 @@ public class Persons extends Table {
 
     @Override
     public boolean delete(Record record) {
-        if (!super.delete(record)) return false;
+        if (!super.delete(record)) {
+            return false;
+        }
         try {
             Manager blManager = Managers.getInstance().getBlListManager();
             Records recs = blManager.find(new BlackListRecord((Person) record));
-            for (int i = 0; i < recs.size(); i++) {
-                blManager.delete(recs.getRecord(i).getID());
+            if (recs != null) {
+                for (int i = 0; i < recs.size(); i++) {
+                    blManager.delete(recs.getRecord(i).getID());
+                }
             }
             Manager histManager = Managers.getInstance().getHistManager();
-            recs = histManager.find(new HistoryRecord(null, (Person)record, null, null));
-            for (int i = 0; i < recs.size(); i++) {
-                histManager.delete(recs.getRecord(i).getID());
+            recs = histManager.find(new HistoryRecord(null, (Person) record, null, null));
+            if (recs != null) {
+                for (int i = 0; i < recs.size(); i++) {
+                    histManager.delete(recs.getRecord(i).getID());
+                }
             }
         } catch (Exception ex) {
             return false;

@@ -94,7 +94,7 @@ public class DiscView extends javax.swing.JDialog {
             row = new Object[2];
             row[0] = rec.getID();
             row[1] = ((Film) rec).getRussianTitle();
-            if ((map != null) && map.get(rec)) {
+            if (map.get(rec)) {
                 list1.add(row);
             } else {
                 list2.add(row);
