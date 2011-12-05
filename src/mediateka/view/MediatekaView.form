@@ -17,7 +17,7 @@
                           <EmptySpace min="10" pref="10" max="10" attributes="0"/>
                           <Component id="jTabbedPane1" pref="1202" max="32767" attributes="0"/>
                       </Group>
-                      <Component id="standartToolBar" alignment="1" pref="1222" max="32767" attributes="0"/>
+                      <Component id="standartToolBar" alignment="1" pref="1212" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -28,7 +28,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Component id="standartToolBar" min="-2" pref="63" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jTabbedPane1" pref="575" max="32767" attributes="0"/>
+                  <Component id="jTabbedPane1" pref="565" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>

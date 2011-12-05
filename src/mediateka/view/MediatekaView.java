@@ -2010,13 +2010,21 @@ public class MediatekaView extends FrameView {
 
     @Action
     public void showDiscView() {
-        jTabbedPane1.setSelectedComponent(discPane);
-        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
-        discView = new DiscView(mainFrame, true, null);
-        discView.setLocationRelativeTo(mainFrame);
-        MediatekaApp.getApplication().show(discView);
-        updateTableDiscs();
-        updateTableHistory();
+        try {
+            if (Managers.getInstance().getFilmsManager().getRecords().isEmpty()) {
+                JOptionPane.showMessageDialog(getFrame(), "Необходимо существование как минимум одного фильма", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            } else {
+                jTabbedPane1.setSelectedComponent(discPane);
+                JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+                discView = new DiscView(mainFrame, true, null);
+                discView.setLocationRelativeTo(mainFrame);
+                MediatekaApp.getApplication().show(discView);
+                updateTableDiscs();
+                updateTableHistory();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Action
@@ -2031,25 +2039,37 @@ public class MediatekaView extends FrameView {
 
     @Action
     public void showBlackListRecordView() {
-        jTabbedPane1.setSelectedComponent(blackListPane);
-        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
-        blackListRecordView = new BlackListRecordView(mainFrame, true, null);
-        blackListRecordView.setLocationRelativeTo(mainFrame);
-        MediatekaApp.getApplication().show(blackListRecordView);
-        updateTableBlackList();
+        try {
+            if (Managers.getInstance().getPersManager().getRecords().isEmpty()) {
+                JOptionPane.showMessageDialog(getFrame(), "Необходимо существование как минимум одного человека", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            } else {
+                jTabbedPane1.setSelectedComponent(blackListPane);
+                JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+                blackListRecordView = new BlackListRecordView(mainFrame, true, null);
+                blackListRecordView.setLocationRelativeTo(mainFrame);
+                MediatekaApp.getApplication().show(blackListRecordView);
+                updateTableBlackList();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Action
     public void showHistoryView() {
         try {
-            jTabbedPane1.setSelectedComponent(historyPane);
-            JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
-            historyRecordView = new HistoryRecordView(mainFrame, true, null);
-            historyRecordView.setLocationRelativeTo(mainFrame);
-            MediatekaApp.getApplication().show(historyRecordView);
-            updateTableHistory();
+            if ((Managers.getInstance().getDiscsManager().getRecords().isEmpty()) || (Managers.getInstance().getPersManager().getRecords().isEmpty())) {
+                JOptionPane.showMessageDialog(getFrame(), "Необходимо существование как минимум одного диска и одного человека", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            } else {
+                jTabbedPane1.setSelectedComponent(historyPane);
+                JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+                historyRecordView = new HistoryRecordView(mainFrame, true, null);
+                historyRecordView.setLocationRelativeTo(mainFrame);
+                MediatekaApp.getApplication().show(historyRecordView);
+                updateTableHistory();
+            }
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(getFrame(), "Необходимо добавить диск и человека", "Ошибка!", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -2142,11 +2162,6 @@ public class MediatekaView extends FrameView {
         if (deleteRecord(4, (Integer) jTable4.getValueAt(jTable4.getSelectedRow(), 0))) {
             updateTableHistory();
         }
-    }
-
-    @Action
-    public void exit() {
-        getFrame().dispose();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane blackListPane;

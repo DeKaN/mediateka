@@ -27,7 +27,7 @@ public class HistoryRecordView extends javax.swing.JDialog {
     int dIndex = 0, pIndex = 0;
 
     /** Creates new form HistoryRecordView */
-    public HistoryRecordView(java.awt.Frame parent, boolean modal, HistoryRecord histRec) throws Exception {
+    public HistoryRecordView(java.awt.Frame parent, boolean modal, HistoryRecord histRec) {
         super(parent, modal);
         try {
             history = histRec;
@@ -66,14 +66,6 @@ public class HistoryRecordView extends javax.swing.JDialog {
                 }
             }
             initComponents();
-        } catch (Exception ex) {
-            Logger.getLogger(HistoryRecordView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if ((discs.length == 0) || (persons.length == 0)) {
-            throw new Exception();
-        }
-        try {
             jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(discs));
             jComboBox1.setSelectedIndex(dIndex);
             jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(persons));
