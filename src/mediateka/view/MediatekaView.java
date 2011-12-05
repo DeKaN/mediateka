@@ -2041,12 +2041,16 @@ public class MediatekaView extends FrameView {
 
     @Action
     public void showHistoryView() {
-        jTabbedPane1.setSelectedComponent(historyPane);
-        JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
-        historyRecordView = new HistoryRecordView(mainFrame, true, null);
-        historyRecordView.setLocationRelativeTo(mainFrame);
-        MediatekaApp.getApplication().show(historyRecordView);
-        updateTableHistory();
+        try {
+            jTabbedPane1.setSelectedComponent(historyPane);
+            JFrame mainFrame = MediatekaApp.getApplication().getMainFrame();
+            historyRecordView = new HistoryRecordView(mainFrame, true, null);
+            historyRecordView.setLocationRelativeTo(mainFrame);
+            MediatekaApp.getApplication().show(historyRecordView);
+            updateTableHistory();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(getFrame(), "Необходимо добавить диск и человека", "Ошибка!", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     @Action
@@ -2083,7 +2087,7 @@ public class MediatekaView extends FrameView {
                     manager = Managers.getInstance().getHistManager();
                     break;
             }
-            if (JOptionPane.showConfirmDialog(getFrame(), String.format("Вы действительно хотите удалить %s?", types[type]), "Удалить запись", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
+            if (JOptionPane.showConfirmDialog(getFrame(), String.format("Вы действительно хотите удалить %s?", types[type]), "Удалить запись", JOptionPane.YES_NO_OPTION) == 0) {
                 manager.delete(id);
                 return true;
             } else {
@@ -2092,6 +2096,10 @@ public class MediatekaView extends FrameView {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(getFrame(), "Удаление " + types[type] + " прошло неудачно", "Ошибка!", JOptionPane.ERROR_MESSAGE);
             Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+
+
+
+
             return false;
         }
     }
