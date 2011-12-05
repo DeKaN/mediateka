@@ -1,5 +1,7 @@
 package mediateka.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -274,20 +276,21 @@ public class HistoryRecordView extends javax.swing.JDialog {
     public void save() {
         try {
             Person p = (Person) Managers.getInstance().getPersManager().find(personIds.get(jComboBox2.getSelectedIndex()));
-            Disc d = (Disc) Managers.getInstance().getDiscsManager().find(personIds.get(jComboBox1.getSelectedIndex()));
+            Disc d = (Disc) Managers.getInstance().getDiscsManager().find(discIds.get(jComboBox1.getSelectedIndex()));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             if (history != null) {
                 history.setDisc(d);
                 history.setPerson(p);
                 history.setGiveDate(jDateChooser1.getDate());
                 history.setPromisedDate(jDateChooser2.getDate());
-                history.setReturnDate(jCheckBox1.isSelected() ? null : jDateChooser3.getDate());
+                history.setReturnDate(jCheckBox1.isSelected() ? formatter.parse("1970-01-01") : jDateChooser3.getDate());
                 history.setComment(jTextArea1.getText());
                 if (!Managers.getInstance().getHistManager().edit(history)) {
                     throw new ChangeDataException("Ошибка при сохранении");
                 }
             } else {
                 history = new HistoryRecord(d, p, jDateChooser1.getDate(), jDateChooser2.getDate(),
-                        jCheckBox1.isSelected() ? null : jDateChooser3.getDate(), jTextArea1.getText());
+                        jCheckBox1.isSelected() ? formatter.parse("1970-01-01") : jDateChooser3.getDate(), jTextArea1.getText());
                 if (!Managers.getInstance().getHistManager().add(history)) {
                     throw new ChangeDataException("Ошибка при добавлении");
                 }
