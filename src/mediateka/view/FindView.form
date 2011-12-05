@@ -309,11 +309,17 @@
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField3" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField4">
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField4" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField4KeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="jComboBox1">
                   <Properties>
@@ -703,6 +709,9 @@
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField6" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField6KeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel14">
                   <Properties>
@@ -914,9 +923,9 @@
                           </Group>
                           <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jTextField10" pref="327" max="32767" attributes="0"/>
                               <Component id="jScrollPane3" alignment="1" pref="327" max="32767" attributes="0"/>
                               <Component id="jTextField9" alignment="0" pref="327" max="32767" attributes="1"/>
-                              <Component id="jFormattedTextField1" alignment="0" pref="327" max="32767" attributes="1"/>
                               <Component id="jTextField8" alignment="0" pref="327" max="32767" attributes="1"/>
                               <Component id="jTextField7" alignment="0" pref="327" max="32767" attributes="1"/>
                           </Group>
@@ -944,7 +953,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jFormattedTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jTextField10" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -991,24 +1000,26 @@
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField7" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField8">
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField8" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField9">
                   <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="jTextField10.text"/>
                     <Property name="name" type="java.lang.String" value="jTextField9" noResource="true"/>
                   </Properties>
-                </Component>
-                <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1">
-                  <Properties>
-                    <Property name="name" type="java.lang.String" value="jFormattedTextField1" noResource="true"/>
-                  </Properties>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(java.text.NumberFormat.getNumberInstance())"/>
-                  </AuxValues>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextFieldKeyTyped"/>
+                  </Events>
                 </Component>
                 <Container class="javax.swing.JScrollPane" name="jScrollPane3">
                   <Properties>
@@ -1029,6 +1040,15 @@
                     </Component>
                   </SubComponents>
                 </Container>
+                <Component class="javax.swing.JTextField" name="jTextField10">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" resourceKey="jTextField10.text"/>
+                    <Property name="name" type="java.lang.String" value="jTextField10" noResource="true"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField10KeyTyped"/>
+                  </Events>
+                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="blPanel">
@@ -1274,6 +1294,9 @@
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jDateChooser3" noResource="true"/>
                   </Properties>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jDateChooser3.getDateEditor().setEnabled(false);"/>
+                  </AuxValues>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel27">
                   <Properties>
