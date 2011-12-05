@@ -3,6 +3,8 @@
  */
 package mediateka.view;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -11,9 +13,13 @@ import org.jdesktop.application.SingleFrameApplication;
 import org.jdesktop.application.FrameView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mediateka.MediatekaApp;
@@ -35,6 +41,22 @@ public class MediatekaView extends FrameView {
     private static final String[] columnNamesPersons = new String[]{"ID", "Фамилия", "Имя", "Отчество", "Телефон", "Комментарий"};
     private static final String[] columnNamesBLRecords = new String[]{"ID", "ФИО", "Комментарий"};
     private static final String[] columnNamesHistoty = new String[]{"ID", "Диск", "Человек", "Дата выдачи", "Обещанная дата", "Дата возврата", "Комментарий"};
+    private HashMap componentMap;
+
+    private void createComponentMap() {
+        componentMap = new HashMap<String, Component>();
+        addChildComponents(getFrame().getContentPane());
+    }
+
+    private void addChildComponents(Container panel) {
+        Component[] components = panel.getComponents();
+        for (int i = 0; i < components.length; i++) {
+            componentMap.put(components[i].getName(), components[i]);
+            if (components[i] instanceof Container) {
+                addChildComponents((Container) components[i]);
+            }
+        }
+    }
 
     private void updateFilmInfo(Film film) {
         if (film != null) {
@@ -206,6 +228,7 @@ public class MediatekaView extends FrameView {
     public MediatekaView(SingleFrameApplication app) {
         super(app);
         initComponents();
+        createComponentMap();
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
             public void valueChanged(ListSelectionEvent e) {
@@ -286,7 +309,56 @@ public class MediatekaView extends FrameView {
                 }
             }
         });
+        jTabbedPane1.addChangeListener(new ChangeListener() {
+
+            public void stateChanged(ChangeEvent evt) {
+                prepareView();
+            }
+        });
         update();
+        prepareView();
+
+    }
+
+    private void prepareView() {
+        int enabledIndex = -1;
+        switch (jTabbedPane1.getSelectedIndex()) {
+            case 0:
+                if (jTable1.getModel().getRowCount() > 0) {
+                    jTable1.setRowSelectionInterval(0, 0);
+                    enabledIndex = 1;
+                }
+                break;
+            case 1:
+                if (jTable2.getModel().getRowCount() > 0) {
+                    jTable2.setRowSelectionInterval(0, 0);
+                    enabledIndex = 2;
+                }
+                break;
+            case 2:
+                if (jTable5.getModel().getRowCount() > 0) {
+                    jTable5.setRowSelectionInterval(0, 0);
+                    enabledIndex = 3;
+                }
+                break;
+            case 3:
+                if (jTable3.getModel().getRowCount() > 0) {
+                    jTable3.setRowSelectionInterval(0, 0);
+                    enabledIndex = 4;
+                }
+                break;
+            case 4:
+                if (jTable4.getModel().getRowCount() > 0) {
+                    jTable4.setRowSelectionInterval(0, 0);
+                    enabledIndex = 5;
+                }
+                break;
+            default:
+                break;
+        }
+        for (int i = 1; i < 6; i++) {
+            ((JButton) (componentMap.get("jButton" + i * 2))).setEnabled(i == enabledIndex);
+        }
     }
 
     private void updateTableFilms() {
@@ -1801,7 +1873,7 @@ public class MediatekaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 559, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
