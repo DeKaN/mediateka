@@ -164,10 +164,22 @@ public class Films extends Table {
             Manager discManager = Managers.getInstance().getDiscsManager();
             Films f = new Films();
             f.add(record);
-            Records recs = discManager.find(new Disc(Disc.Format.CD, f));
+            Records recs = discManager.find(new Disc(Disc.Format.None, f)),
+                    recs2 = discManager.find(new Disc(f, 0, Disc.Format.None, 0, false));
+            del(recs, record);
+            del(recs2, record);
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean del(Records recs, Record record) {
+        try {
+            Manager discManager = Managers.getInstance().getDiscsManager();
             for (int i = 0; i < recs.size(); i++) {
                 Disc d = (Disc) recs.getRecord(i);
-                f = d.getFilms();
+                Films f = d.getFilms();
                 if (!f.delete(record)) {
                     return false;
                 }

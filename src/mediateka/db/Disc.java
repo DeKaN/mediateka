@@ -18,6 +18,7 @@ public class Disc implements Record {
      */
     public enum Format {
 
+        None,
         /**
          * CD диск
          */
@@ -217,7 +218,7 @@ public class Disc implements Record {
     public static String[] getFormats() {
         Format[] formats = Format.values();
         String[] retVal = new String[formats.length];
-        for (int i = 0; i < retVal.length; i++) {
+        for (int i = 1; i < retVal.length; i++) {
             retVal[i] = formats[i].name();
         }
         return retVal;

@@ -71,14 +71,20 @@ public class Discs extends Table {
         } else {
             Films filmsCollection = disc.getFilms();
             if (filmsCollection != null) {
-                int[] films = new int[filmsCollection.size()];
-                for (int i = 0; i < films.length; i++) {
-                    films[i] = filmsCollection.getRecord(i).getID();
+                String films = "";
+                int size = filmsCollection.size();
+                if (size > 0) {
+                    films += filmsCollection.getRecord(0).getID();
+                    if (size > 1) {
+                        for (int i = 1; i < size; i++) {
+                            films += "," + filmsCollection.getRecord(i).getID();
+                        }
+                    }
                 }
-                map.put("films", StringUtils.join(films, ','));
+                map.put("films", films);
             }
             Disc.Format format = disc.getFormat();
-            if (format != null) {
+            if (format != Disc.Format.None) {
                 map.put("format", format.toString());
             }
             int region = disc.getRegionCode();
@@ -95,17 +101,19 @@ public class Discs extends Table {
         }
         return retVal.size() > 0 ? retVal : null;
     }
-    
+
     protected Record createRecord(int id) {
         return new Disc(id);
     }
 
     @Override
     public boolean delete(Record record) {
-        if (!super.delete(record)) return false;
+        if (!super.delete(record)) {
+            return false;
+        }
         try {
             Manager histManager = Managers.getInstance().getHistManager();
-            Records recs = histManager.find(new HistoryRecord(null, (Person)record, null, null));
+            Records recs = histManager.find(new HistoryRecord(null, (Person) record, null, null));
             for (int i = 0; i < recs.size(); i++) {
                 histManager.delete(recs.getRecord(i).getID());
             }
@@ -114,6 +122,4 @@ public class Discs extends Table {
         }
         return true;
     }
-    
-    
 }

@@ -5,6 +5,8 @@ package mediateka.view;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.event.ListSelectionEvent;
@@ -18,11 +20,13 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mediateka.MediatekaApp;
+import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
 import mediateka.db.Disc;
@@ -228,6 +232,35 @@ public class MediatekaView extends FrameView {
     public MediatekaView(SingleFrameApplication app) {
         super(app);
         initComponents();
+        getFrame().addWindowListener(new WindowListener() {
+
+            public void windowOpened(WindowEvent e) {
+            }
+
+            public void windowClosing(WindowEvent e) {
+                if (JOptionPane.showConfirmDialog(getFrame(), "Вы действительно хотите выйти?", "Выход", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
+                    if (JOptionPane.showConfirmDialog(getFrame(), "Сохранить изменения?", "Сохранение", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
+                        //TODO проверить
+                        Managers.getInstance().save();
+                    }
+                }
+            }
+
+            public void windowClosed(WindowEvent e) {
+            }
+
+            public void windowIconified(WindowEvent e) {
+            }
+
+            public void windowDeiconified(WindowEvent e) {
+            }
+
+            public void windowActivated(WindowEvent e) {
+            }
+
+            public void windowDeactivated(WindowEvent e) {
+            }
+        });
         createComponentMap();
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
@@ -671,7 +704,6 @@ public class MediatekaView extends FrameView {
         jSeparator9 = new javax.swing.JToolBar.Separator();
         jButton11 = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(100, 0), new java.awt.Dimension(150, 32767));
-        jButton12 = new javax.swing.JButton();
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 0), new java.awt.Dimension(10, 32767));
         jTabbedPane1 = new javax.swing.JTabbedPane();
         filmPane = new javax.swing.JSplitPane();
@@ -781,6 +813,7 @@ public class MediatekaView extends FrameView {
         jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton1);
 
+        jButton2.setAction(actionMap.get("deleteFilm")); // NOI18N
         jButton2.setIcon(resourceMap.getIcon("jButton2.icon")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setFocusable(false);
@@ -801,6 +834,7 @@ public class MediatekaView extends FrameView {
         jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton3);
 
+        jButton4.setAction(actionMap.get("deleteDisc")); // NOI18N
         jButton4.setIcon(resourceMap.getIcon("jButton4.icon")); // NOI18N
         jButton4.setText(resourceMap.getString("jButton4.text")); // NOI18N
         jButton4.setFocusable(false);
@@ -821,6 +855,7 @@ public class MediatekaView extends FrameView {
         jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton5);
 
+        jButton6.setAction(actionMap.get("deletePerson")); // NOI18N
         jButton6.setIcon(resourceMap.getIcon("jButton6.icon")); // NOI18N
         jButton6.setText(resourceMap.getString("jButton6.text")); // NOI18N
         jButton6.setFocusable(false);
@@ -841,6 +876,7 @@ public class MediatekaView extends FrameView {
         jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton7);
 
+        jButton8.setAction(actionMap.get("deleteBlackListRecord")); // NOI18N
         jButton8.setIcon(resourceMap.getIcon("jButton8.icon")); // NOI18N
         jButton8.setText(resourceMap.getString("jButton8.text")); // NOI18N
         jButton8.setFocusable(false);
@@ -861,6 +897,7 @@ public class MediatekaView extends FrameView {
         jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         standartToolBar.add(jButton9);
 
+        jButton10.setAction(actionMap.get("deleteHistoryRecord")); // NOI18N
         jButton10.setIcon(resourceMap.getIcon("jButton10.icon")); // NOI18N
         jButton10.setText(resourceMap.getString("jButton10.text")); // NOI18N
         jButton10.setFocusable(false);
@@ -872,6 +909,7 @@ public class MediatekaView extends FrameView {
         jSeparator9.setName("jSeparator9"); // NOI18N
         standartToolBar.add(jSeparator9);
 
+        jButton11.setAction(actionMap.get("showFindView")); // NOI18N
         jButton11.setIcon(resourceMap.getIcon("jButton11.icon")); // NOI18N
         jButton11.setText(resourceMap.getString("jButton11.text")); // NOI18N
         jButton11.setFocusable(false);
@@ -882,15 +920,6 @@ public class MediatekaView extends FrameView {
 
         filler1.setName("filler1"); // NOI18N
         standartToolBar.add(filler1);
-
-        jButton12.setAction(actionMap.get("quit")); // NOI18N
-        jButton12.setIcon(resourceMap.getIcon("jButton12.icon")); // NOI18N
-        jButton12.setText(resourceMap.getString("jButton12.text")); // NOI18N
-        jButton12.setFocusable(false);
-        jButton12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton12.setName("jButton12"); // NOI18N
-        jButton12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        standartToolBar.add(jButton12);
 
         filler2.setName("filler2"); // NOI18N
         standartToolBar.add(filler2);
@@ -1865,7 +1894,7 @@ public class MediatekaView extends FrameView {
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1202, Short.MAX_VALUE))
-                    .addComponent(standartToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 1222, Short.MAX_VALUE))
+                    .addComponent(standartToolBar, javax.swing.GroupLayout.DEFAULT_SIZE, 1212, Short.MAX_VALUE))
                 .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
@@ -1873,7 +1902,7 @@ public class MediatekaView extends FrameView {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addComponent(standartToolBar, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -2037,6 +2066,91 @@ public class MediatekaView extends FrameView {
         fv.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
         MediatekaApp.getApplication().show(fv);
     }
+
+    private boolean deleteRecord(int type, int id) {
+        Manager manager = null;
+        String[] types = new String[]{
+            "фильм",
+            "диск",
+            "персональные данные",
+            "запись \"черного списка\"",
+            "запись истории"
+        };
+        try {
+            switch (type) {
+                case 0:
+                    manager = Managers.getInstance().getFilmsManager();
+                    break;
+                case 1:
+                    manager = Managers.getInstance().getDiscsManager();
+                    break;
+                case 2:
+                    manager = Managers.getInstance().getPersManager();
+                    break;
+                case 3:
+                    manager = Managers.getInstance().getBlListManager();
+                    break;
+                case 4:
+                    manager = Managers.getInstance().getHistManager();
+                    break;
+            }
+            if (JOptionPane.showConfirmDialog(getFrame(), String.format("Вы действительно хотите удалить {0}?", types[type]), "Удалить запись", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
+                manager.delete(id);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(getFrame(), "Удаление " + types[type] + " прошло неудачно", "Ошибка!", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    @Action
+    public void deleteFilm() {
+        if (deleteRecord(0, (Integer) jTable1.getValueAt(jTable1.getSelectedRow(), 0))) {
+            updateTableFilms();
+            updateTableDiscs();
+            updateTableHistory();
+        }
+    }
+
+    @Action
+    public void deleteDisc() {
+        if (deleteRecord(1, (Integer) jTable2.getValueAt(jTable2.getSelectedRow(), 0))) {
+            updateTableDiscs();
+            updateTableHistory();
+        }
+    }
+
+    @Action
+    public void deletePerson() {
+        if (deleteRecord(2, (Integer) jTable5.getValueAt(jTable5.getSelectedRow(), 0))) {
+            updateTablePersons();
+            updateTableBlackList();
+            updateTableHistory();
+        }
+    }
+
+    @Action
+    public void deleteBlackListRecord() {
+        if (deleteRecord(3, (Integer) jTable3.getValueAt(jTable3.getSelectedRow(), 0))) {
+            updateTableBlackList();
+        }
+    }
+
+    @Action
+    public void deleteHistoryRecord() {
+        if (deleteRecord(4, (Integer) jTable4.getValueAt(jTable4.getSelectedRow(), 0))) {
+            updateTableHistory();
+        }
+    }
+
+    @Action
+    public void exit() {
+        getFrame().dispose();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSplitPane blackListPane;
     private javax.swing.JSplitPane discPane;
@@ -2047,7 +2161,6 @@ public class MediatekaView extends FrameView {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
