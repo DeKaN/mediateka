@@ -29,8 +29,8 @@ public class History extends Table {
                         (Disc) Managers.getInstance().getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
                         (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(1).getText())),
                         format.parse(elem.node(3).getText()),
-                        format.parse(elem.node(4).getText()),
                         format.parse(elem.node(5).getText()),
+                        format.parse(elem.node(4).getText()),
                         elem.node(2).getText()));
             }
             return true;

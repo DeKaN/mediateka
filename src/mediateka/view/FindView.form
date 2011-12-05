@@ -309,17 +309,11 @@
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField3" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField3KeyTyped"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JTextField" name="jTextField4">
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField4" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField4KeyTyped"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JComboBox" name="jComboBox1">
                   <Properties>
@@ -709,9 +703,6 @@
                   <Properties>
                     <Property name="name" type="java.lang.String" value="jTextField6" noResource="true"/>
                   </Properties>
-                  <Events>
-                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextField6KeyTyped"/>
-                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel14">
                   <Properties>
@@ -1424,9 +1415,6 @@
                           <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                         </Property>
                       </Properties>
-                      <Events>
-                        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jTable3MouseClicked"/>
-                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1436,6 +1424,9 @@
         </Container>
         <Component class="javax.swing.JButton" name="findButton">
           <Properties>
+            <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.swingapp.ActionEditor">
+              <action class="mediateka.view.FindView" id="find" methodName="find"/>
+            </Property>
             <Property name="text" type="java.lang.String" resourceKey="findButton.text"/>
             <Property name="name" type="java.lang.String" value="findButton" noResource="true"/>
           </Properties>
