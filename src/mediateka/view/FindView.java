@@ -203,9 +203,9 @@ public class FindView extends javax.swing.JDialog {
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jTextField9 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField(java.text.NumberFormat.getNumberInstance());
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea5 = new javax.swing.JTextArea();
+        jTextField10 = new javax.swing.JTextField();
         blPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea3 = new javax.swing.JTextArea();
@@ -276,8 +276,18 @@ public class FindView extends javax.swing.JDialog {
         jTextField2.setName("jTextField2"); // NOI18N
 
         jTextField3.setName("jTextField3"); // NOI18N
+        jTextField3.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField3KeyTyped(evt);
+            }
+        });
 
         jTextField4.setName("jTextField4"); // NOI18N
+        jTextField4.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField4KeyTyped(evt);
+            }
+        });
 
         jComboBox1.setName("jComboBox1"); // NOI18N
 
@@ -550,6 +560,11 @@ public class FindView extends javax.swing.JDialog {
         jLabel13.setName("jLabel13"); // NOI18N
 
         jTextField6.setName("jTextField6"); // NOI18N
+        jTextField6.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField6KeyTyped(evt);
+            }
+        });
 
         jLabel14.setText(resourceMap.getString("jLabel14.text")); // NOI18N
         jLabel14.setName("jLabel14"); // NOI18N
@@ -705,12 +720,26 @@ public class FindView extends javax.swing.JDialog {
         jLabel22.setName("jLabel22"); // NOI18N
 
         jTextField7.setName("jTextField7"); // NOI18N
+        jTextField7.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldKeyTyped(evt);
+            }
+        });
 
         jTextField8.setName("jTextField8"); // NOI18N
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldKeyTyped(evt);
+            }
+        });
 
+        jTextField9.setText(resourceMap.getString("jTextField10.text")); // NOI18N
         jTextField9.setName("jTextField9"); // NOI18N
-
-        jFormattedTextField1.setName("jFormattedTextField1"); // NOI18N
+        jTextField9.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFieldKeyTyped(evt);
+            }
+        });
 
         jScrollPane3.setName("jScrollPane3"); // NOI18N
 
@@ -718,6 +747,14 @@ public class FindView extends javax.swing.JDialog {
         jTextArea5.setRows(5);
         jTextArea5.setName("jTextArea5"); // NOI18N
         jScrollPane3.setViewportView(jTextArea5);
+
+        jTextField10.setText(resourceMap.getString("jTextField10.text")); // NOI18N
+        jTextField10.setName("jTextField10"); // NOI18N
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextField10KeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout personPanelLayout = new javax.swing.GroupLayout(personPanel);
         personPanel.setLayout(personPanelLayout);
@@ -733,9 +770,9 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel22))
                 .addGap(6, 6, 6)
                 .addGroup(personPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                     .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                     .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
                     .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
                 .addGap(728, 728, 728))
@@ -757,7 +794,7 @@ public class FindView extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(personPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21)
-                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(personPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel22)
@@ -840,6 +877,7 @@ public class FindView extends javax.swing.JDialog {
         jLabel26.setName("jLabel26"); // NOI18N
 
         jDateChooser3.setName("jDateChooser3"); // NOI18N
+        jDateChooser3.getDateEditor().setEnabled(false);
 
         jLabel27.setText(resourceMap.getString("jLabel27.text")); // NOI18N
         jLabel27.setName("jLabel27"); // NOI18N
@@ -1022,6 +1060,45 @@ public class FindView extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jTextFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField7KeyTyped
+        if (!Character.isLetter(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField7KeyTyped
+
+    private void jTextField10KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyTyped
+        if (jTextField10.getText().length() == 20) {
+            evt.consume();
+        }
+        if (!Character.isDigit(evt.getKeyChar())) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_jTextField10KeyTyped
+
+    private void jTextField6KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyTyped
+        if ((jTextField1.getText().length() >= 2) || (!Character.isDigit(evt.getKeyChar()))) {
+            {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_jTextField6KeyTyped
+
+    private void jTextField3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField3KeyTyped
+        if ((jTextField3.getText().length() > 3) || (!Character.isDigit(evt.getKeyChar()))) {
+            {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_jTextField3KeyTyped
+
+    private void jTextField4KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField4KeyTyped
+        if ((jTextField4.getText().length() > 2) || (!Character.isDigit(evt.getKeyChar()))) {
+            {
+                evt.consume();
+            }
+        }
+    }//GEN-LAST:event_jTextField4KeyTyped
+
     @Action
     public void find() {
         switch(jTabbedPane1.getSelectedIndex()){
@@ -1065,7 +1142,6 @@ public class FindView extends javax.swing.JDialog {
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private com.toedter.calendar.JDateChooser jDateChooser3;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1122,6 +1198,7 @@ public class FindView extends javax.swing.JDialog {
     private javax.swing.JTextArea jTextArea4;
     private javax.swing.JTextArea jTextArea5;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

@@ -2,6 +2,8 @@ package mediateka.datamanagers;
 
 import java.io.FileInputStream;
 import java.security.MessageDigest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mediateka.db.Blacklist;
 import mediateka.db.Discs;
 import mediateka.db.Films;
@@ -125,6 +127,18 @@ public class Managers {
                 sb.append(Integer.toString((digBytes[i] & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString().equals(info.xsdHash);
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    public boolean saveDB() {
+        try {
+            return getBlListManager().save(blFile)
+                    && getDiscsManager().save(dFile)
+                    && getFilmsManager().save(fFile)
+                    && getHistManager().save(hFile)
+                    && getPersManager().save(pFile);
         } catch (Exception ex) {
             return false;
         }

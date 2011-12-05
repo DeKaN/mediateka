@@ -2,8 +2,6 @@ package mediateka.db;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mediateka.datamanagers.Condition;
 import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
