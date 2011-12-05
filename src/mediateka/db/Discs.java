@@ -3,6 +3,7 @@ package mediateka.db;
 import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
@@ -70,9 +71,9 @@ public class Discs extends Table {
         } else {
             Films filmsCollection = disc.getFilms();
             if (filmsCollection != null) {
-                String[] films = new String[filmsCollection.size()];
+                int[] films = new int[filmsCollection.size()];
                 for (int i = 0; i < films.length; i++) {
-                    films[i] = ((Film) filmsCollection.getRecord(i)).getRussianTitle();
+                    films[i] = filmsCollection.getRecord(i).getID();
                 }
                 map.put("films", StringUtils.join(films, ','));
             }
@@ -98,4 +99,21 @@ public class Discs extends Table {
     protected Record createRecord(int id) {
         return new Disc(id);
     }
+
+    @Override
+    public boolean delete(Record record) {
+        if (!super.delete(record)) return false;
+        try {
+            Manager histManager = Managers.getInstance().getHistManager();
+            Records recs = histManager.find(new HistoryRecord(null, (Person)record, null, null));
+            for (int i = 0; i < recs.size(); i++) {
+                histManager.delete(recs.getRecord(i).getID());
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

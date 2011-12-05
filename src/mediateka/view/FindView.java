@@ -17,6 +17,7 @@ import mediateka.db.Disc;
 import mediateka.db.Film;
 import mediateka.db.Person;
 import mediateka.db.Record;
+import org.jdesktop.application.Action;
 
 /**
  *
@@ -54,6 +55,12 @@ public class FindView extends javax.swing.JDialog {
             jComboBox10.setModel(new DefaultComboBoxModel(languages));
             jComboBox11.setModel(new DefaultComboBoxModel(languages));
             jComboBox12.setModel(new DefaultComboBoxModel(languages));
+            jRadioButton1.addActionListener(ratingListener);
+            jRadioButton2.addActionListener(ratingListener);
+            jRadioButton3.addActionListener(ratingListener);
+            jRadioButton4.addActionListener(ratingListener);
+            jRadioButton5.addActionListener(ratingListener);
+            jRadioButton6.addActionListener(ratingListener);
             //discs
             formats = Disc.getFormats();
             jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(formats));
@@ -971,6 +978,7 @@ public class FindView extends javax.swing.JDialog {
 
         jTabbedPane1.addTab(resourceMap.getString("resultsPanel.TabConstraints.tabTitle"), resultsPanel); // NOI18N
 
+        findButton.setAction(actionMap.get("find")); // NOI18N
         findButton.setText(resourceMap.getString("findButton.text")); // NOI18N
         findButton.setName("findButton"); // NOI18N
 
@@ -1013,6 +1021,22 @@ public class FindView extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    @Action
+    public void find() {
+        switch(jTabbedPane1.getSelectedIndex()){
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;
     private javax.swing.JPanel blPanel;

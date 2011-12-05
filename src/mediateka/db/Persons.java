@@ -2,7 +2,11 @@ package mediateka.db;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Manager;
+import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -81,8 +85,28 @@ public class Persons extends Table {
         }
         return retVal.size() > 0 ? retVal : null;
     }
-    
+
     protected Record createRecord(int id) {
         return new Person(id);
+    }
+
+    @Override
+    public boolean delete(Record record) {
+        if (!super.delete(record)) return false;
+        try {
+            Manager blManager = Managers.getInstance().getBlListManager();
+            Records recs = blManager.find(new BlackListRecord((Person) record));
+            for (int i = 0; i < recs.size(); i++) {
+                blManager.delete(recs.getRecord(i).getID());
+            }
+            Manager histManager = Managers.getInstance().getHistManager();
+            recs = histManager.find(new HistoryRecord(null, (Person)record, null, null));
+            for (int i = 0; i < recs.size(); i++) {
+                histManager.delete(recs.getRecord(i).getID());
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
 }

@@ -4,6 +4,8 @@ import biz.source_code.base64Coder.Base64Coder;
 import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Manager;
+import mediateka.datamanagers.Managers;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -148,8 +150,37 @@ public class Films extends Table {
         }
         return retVal.size() > 0 ? retVal : null;
     }
-    
+
     protected Record createRecord(int id) {
         return new Film(id);
+    }
+
+    @Override
+    public boolean delete(Record record) {
+        if (!super.delete(record)) {
+            return false;
+        }
+        try {
+            Manager discManager = Managers.getInstance().getDiscsManager();
+            Films f = new Films();
+            f.add(record);
+            Records recs = discManager.find(new Disc(Disc.Format.CD, f));
+            for (int i = 0; i < recs.size(); i++) {
+                Disc d = (Disc) recs.getRecord(i);
+                f = d.getFilms();
+                if (!f.delete(record)) {
+                    return false;
+                }
+                if (f.size() > 0) {
+                    d.setFilms(f);
+                    discManager.edit(d);
+                } else {
+                    discManager.delete(d.getID());
+                }
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+        return true;
     }
 }
