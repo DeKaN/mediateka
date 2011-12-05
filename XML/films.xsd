@@ -26,13 +26,12 @@
                 <xs:element ref="soundLanguages"/>
                 <xs:element ref="isSeen"/>
             </xs:sequence>
-			<xs:attribute name="xmlns" type="xs:string"/>
             <xs:attribute name="filmID" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>
     <xs:element name="russianTitle" type="xs:string"/>
     <xs:element name="englishTitle" type="xs:string"/>
-    <xs:element name="year" type="xs:positiveInteger"/>
+    <xs:element name="year" type="xs:nonNegativeInteger"/>
     <xs:element name="description" type="xs:string"/>
     <xs:element name="genres">
         <xs:complexType>
@@ -51,8 +50,8 @@
     </xs:element>
     <xs:element name="country" type="xs:string"/>
     <xs:element name="comment" type="xs:string"/>
-    <xs:element name="length" type="xs:positiveInteger"/>
-    <xs:element name="rating" type="xs:positiveInteger"/>
+    <xs:element name="length" type="xs:nonNegativeInteger"/>
+    <xs:element name="rating" type="xs:nonNegativeInteger"/>
     <xs:element name="subtitles">
         <xs:complexType>
             <xs:sequence>

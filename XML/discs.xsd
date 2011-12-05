@@ -18,7 +18,6 @@
                 <xs:element ref="isPresent"/>
                 <xs:element ref="films"/>
             </xs:sequence>
-			<xs:attribute name="xmlns" type="xs:string"/>
             <xs:attribute name="discID" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>

@@ -15,7 +15,6 @@
                 <xs:element ref="personID"/>
                 <xs:element ref="comment"/>
             </xs:sequence>
-			<xs:attribute name="xmlns" type="xs:string"/>
             <xs:attribute name="recordID" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>

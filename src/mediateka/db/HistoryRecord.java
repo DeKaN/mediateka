@@ -196,7 +196,7 @@ public class HistoryRecord implements Record {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         elem.addElement("dateOfIssue").addText(formatter.format(this.giveDate));
         elem.addElement("dateOfReturn").addText(this.returnDate == null
-                ? "" : formatter.format(this.returnDate));
+                ? "1970-01-01" : formatter.format(this.returnDate));
         elem.addElement("promisingDate").addText(formatter.format(this.promisedDate));
         return elem;
     }

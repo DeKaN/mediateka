@@ -18,7 +18,6 @@
                 <xs:element ref="phoneNumber"/>
                 <xs:element ref="comment"/>
             </xs:sequence>
-			<xs:attribute name="xmlns" type="xs:string"/>
             <xs:attribute name="personID" type="xs:positiveInteger" use="required"/>
         </xs:complexType>
     </xs:element>

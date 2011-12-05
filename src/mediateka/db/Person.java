@@ -161,7 +161,7 @@ public class Person implements Record {
     public Element toXmlElement() {
         Element elem = new DefaultElement("person");
         elem.addAttribute("personID", Integer.toString(this.personID));
-        elem.addElement("firstfirstName").addText(this.firstName);
+        elem.addElement("firstName").addText(this.firstName);
         elem.addElement("lastName").addText(this.lastName);
         elem.addElement("secondName").addText(this.secondName);
         elem.addElement("phoneNumber").addText(this.phone);

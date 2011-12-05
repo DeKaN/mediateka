@@ -198,7 +198,7 @@ public class Disc implements Record {
         Element temp = new DefaultElement("films");
         for (Iterator<Record> it = films.toList().iterator(); it.hasNext();) {
             Record record = it.next();
-            temp.add(record.toXmlElement());
+            temp.addElement("filmID").addText(Integer.toString(record.getID()));
         }
         elem.add(temp);
         return elem;

@@ -6,6 +6,8 @@ package mediateka.db;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -81,12 +83,14 @@ public abstract class Table implements Records {
     public boolean save(String fileName) {
         try {
             Document doc = DocumentHelper.createDocument(this.toXmlElement());
-            FileOutputStream fos = new FileOutputStream(fileName);
+            StringWriter sw = new StringWriter();
             OutputFormat format = OutputFormat.createPrettyPrint();
-            XMLWriter writer = new XMLWriter(fos, format);
+            XMLWriter writer = new XMLWriter(sw, format);
             writer.write(doc);
             writer.flush();
-            fos.close();
+            PrintStream ps = new PrintStream(fileName);
+            ps.print(sw.toString().replace(" xmlns=\"\"", ""));
+            ps.close();
             return true;
         } catch (Exception ex) {
             return false;

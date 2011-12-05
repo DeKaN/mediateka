@@ -116,7 +116,7 @@ public class MediatekaView extends FrameView {
     private void updateDiscInfo(Disc disc) {
         List<Record> films = disc.getFilms().toList();
         String tmp = "";
-        if (films.size() != 0) {
+        if (!films.isEmpty()) {
             tmp += ((Film) films.get(0)).toString();
         }
         for (int i = 1; i < films.size(); i++) {
@@ -193,13 +193,13 @@ public class MediatekaView extends FrameView {
             jTextField30.setText((result.length() == 0) ? "-" : result);
             jTextField30.setCaretPosition(0);
             result = formatter.format(historyRecord.getGiveDate());
-            jTextField31.setText((result.length() == 0) ? "-" : result);
+            jTextField31.setText((result.equals("1970-01-01")) ? "-" : result);
             jTextField31.setCaretPosition(0);
             result = formatter.format(historyRecord.getPromisedDate());
-            jTextField32.setText((result.length() == 0) ? "-" : result);
+            jTextField32.setText((result.equals("1970-01-01")) ? "-" : result);
             jTextField32.setCaretPosition(0);
             result = formatter.format(historyRecord.getReturnDate());
-            jTextField29.setText((result.length() == 0) ? "-" : result);
+            jTextField29.setText((result.equals("1970-01-01")) ? "-" : result);
             jTextField29.setCaretPosition(0);
             result = historyRecord.getComment();
             jTextArea4.setText((result.length() == 0) ? "-" : result);
@@ -615,15 +615,19 @@ public class MediatekaView extends FrameView {
             HistoryRecord historyRecord = null;
             Object[] row = null;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            String temp;
             for (Record rec : recs) {
                 historyRecord = (HistoryRecord) rec;
                 row = new Object[columnNamesHistoty.length];
                 row[0] = rec.getID();
                 row[1] = historyRecord.getDisc().toString();
                 row[2] = historyRecord.getPerson().toString();
-                row[3] = (historyRecord.getGiveDate() != null) ? formatter.format(historyRecord.getGiveDate()) : "-";
-                row[4] = (historyRecord.getPromisedDate() != null) ? formatter.format(historyRecord.getPromisedDate()) : "-";
-                row[5] = (historyRecord.getReturnDate() != null) ? formatter.format(historyRecord.getReturnDate()) : "-";
+                temp = formatter.format(historyRecord.getGiveDate());
+                row[3] = (!temp.equals("1970-01-01")) ? temp : "-";
+                temp = formatter.format(historyRecord.getPromisedDate());
+                row[4] = (!temp.equals("1970-01-01")) ? temp : "-";
+                temp = formatter.format(historyRecord.getReturnDate());
+                row[5] = (!temp.equals("1970-01-01")) ? temp : "-";
                 row[6] = historyRecord.getComment().toString();
                 listOfRows.add(row);
             }

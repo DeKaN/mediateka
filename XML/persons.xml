@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <persons xmlns="mediateka" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="mediateka persons.xsd" autoIndex="4">
-  <person xmlns="" personID="1">
-    <firstfirstName>Иван</firstfirstName>
+  <person personID="1">
+    <firstName>Иван</firstName>
     <lastName>Иванов</lastName>
     <secondName>Иванович</secondName>
     <phoneNumber>2702702</phoneNumber>
     <comment></comment>
   </person>
-  <person xmlns="" personID="2">
-    <firstfirstName>Петр</firstfirstName>
+  <person personID="2">
+    <firstName>Петр</firstName>
     <lastName>Петров</lastName>
     <secondName>Петрович</secondName>
     <phoneNumber>2562562</phoneNumber>
     <comment></comment>
   </person>
-  <person xmlns="" personID="3">
-    <firstfirstName>йцу</firstfirstName>
+  <person personID="3">
+    <firstName>йцу</firstName>
     <lastName>йцу</lastName>
     <secondName>йцу</secondName>
     <phoneNumber>123</phoneNumber>

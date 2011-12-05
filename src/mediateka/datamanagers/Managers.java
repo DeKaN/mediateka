@@ -2,8 +2,6 @@ package mediateka.datamanagers;
 
 import java.io.FileInputStream;
 import java.security.MessageDigest;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mediateka.db.Blacklist;
 import mediateka.db.Discs;
 import mediateka.db.Films;
@@ -38,7 +36,7 @@ public class Managers {
             pFile = dir + "persons.xml";
     ManagerInfo blInfo = new ManagerInfo(blFile, "1af05a1e6032f60e51dcb81661de3ddb"),
             dInfo = new ManagerInfo(dFile, "b22bccb075b5a73231007d3c6adbe20b"),
-            fInfo = new ManagerInfo(fFile, "61197389612db42bd6b462f50f7b2c1e"),
+            fInfo = new ManagerInfo(fFile, "010cccf3947386369d938f0f514226fc"),
             hInfo = new ManagerInfo(hFile, "e0723e6d32d83f3b293d03c262432e48"),
             pInfo = new ManagerInfo(pFile, "1aa533d2d9c64cb0c8458a956e647316");
     private static Managers instance = null;
