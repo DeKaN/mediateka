@@ -77,7 +77,6 @@ public class Films extends Table {
                             soundLanguages,
                             elem.node(11).getText().equals("true")));
                 } catch (Exception exc) {
-                    System.out.print(exc.getStackTrace().toString());
                 }
             }
             return true;

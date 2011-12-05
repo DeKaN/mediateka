@@ -60,7 +60,8 @@ public class Managers {
             if (!validateSchema(blInfo)) {
                 throw new LoadException("Схема черного списка повреждена!");
             }
-            blListManager = new Manager(new Blacklist(), blFile);
+            blListManager = new Manager(new Blacklist());
+            blListManager.load(blFile);
         }
         return blListManager;
     }
@@ -71,7 +72,8 @@ public class Managers {
             if (!validateSchema(dInfo)) {
                 throw new LoadException("Схема дисков повреждена!");
             }
-            discsManager = new Manager(new Discs(), dFile);
+            discsManager = new Manager(new Discs());
+            discsManager.load(dFile);
         }
         return discsManager;
     }
@@ -81,7 +83,8 @@ public class Managers {
             if (!validateSchema(fInfo)) {
                 throw new LoadException("Схема фильмов повреждена!");
             }
-            filmsManager = new Manager(new Films(), fFile);
+            filmsManager = new Manager(new Films());
+            filmsManager.load(fFile);
         }
         return filmsManager;
     }
@@ -93,7 +96,8 @@ public class Managers {
             if (!validateSchema(hInfo)) {
                 throw new LoadException("Схема истории повреждена!");
             }
-            histManager = new Manager(new History(), hFile);
+            histManager = new Manager(new History());
+            histManager.load(hFile);
         }
         return histManager;
     }
@@ -103,7 +107,8 @@ public class Managers {
             if (!validateSchema(pInfo)) {
                 throw new LoadException("Схема персональных данных повреждена!");
             }
-            persManager = new Manager(new Persons(), pFile);
+            persManager = new Manager(new Persons());
+            persManager.load(pFile);
         }
         return persManager;
     }
