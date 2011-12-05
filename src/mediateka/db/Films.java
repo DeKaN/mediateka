@@ -117,10 +117,10 @@ public class Films extends Table {
                 map.put("description", rec.getDescription());
             }
             if (rec.getGenres() != null) {
-                map.put("genre", StringUtils.join(rec.getGenres(), ','));
+                map.put("genres/genre", StringUtils.join(rec.getGenres(), '\uFFFC'));
             }
             if (rec.getCountries() != null) {
-                map.put("country", StringUtils.join(rec.getCountries(), ','));
+                map.put("countries/country", StringUtils.join(rec.getCountries(), '\uFFFC'));
             }
             if (!rec.getComment().equals("")) {
                 map.put("comment", rec.getComment());
@@ -132,13 +132,10 @@ public class Films extends Table {
                 map.put("rating", Integer.toString(rec.getRating()));
             }
             if (rec.getSubtitles() != null) {
-                map.put("subtitle", StringUtils.join(rec.getSubtitles(), ','));
-            }
-            if (rec.getCover() != null) {
-                map.put("cover", Base64Coder.encodeLines(rec.getCover()));
+                map.put("subtitles/subtitle", StringUtils.join(rec.getSubtitles(), '\uFFFC'));
             }
             if (rec.getSoundLanguages() != null) {
-                map.put("soundLanguage", StringUtils.join(rec.getSoundLanguages(), ','));
+                map.put("soundLanguages/soundLanguage", StringUtils.join(rec.getSoundLanguages(), '\uFFFC'));
             }
             map.put("isSeen", Boolean.toString(rec.isSeen()));
         }

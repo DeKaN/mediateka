@@ -5,7 +5,6 @@ import java.util.Iterator;
 import mediateka.datamanagers.Condition;
 import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
-import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.dom4j.tree.DefaultElement;
@@ -71,17 +70,14 @@ public class Discs extends Table {
         } else {
             Films filmsCollection = disc.getFilms();
             if (filmsCollection != null) {
-                String films = "";
-                int size = filmsCollection.size();
-                if (size > 0) {
-                    films += filmsCollection.getRecord(0).getID();
-                    if (size > 1) {
-                        for (int i = 1; i < size; i++) {
-                            films += "," + filmsCollection.getRecord(i).getID();
-                        }
+                StringBuilder films = new StringBuilder();
+                for (int i = 0; i < filmsCollection.size(); i++) {
+                    if (i > 0) {
+                        films.append('\uFFFC');
                     }
+                    films.append(filmsCollection.getRecord(i).getID());
                 }
-                map.put("filmID", films);
+                map.put("films/filmID", films.toString());
             }
             Disc.Format format = disc.getFormat();
             if (format != Disc.Format.None) {

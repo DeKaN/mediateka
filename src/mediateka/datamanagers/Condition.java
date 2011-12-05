@@ -20,11 +20,6 @@ public class Condition {
 
     HashMap<String, String> conds;
 
-    enum CombineMode {
-
-        AND, OR
-    };
-
     public Condition(HashMap<String, String> conds) {
         if (conds == null) {
             throw new NullPointerException();
@@ -32,9 +27,8 @@ public class Condition {
         this.conds = conds;
     }
 
-    //TODO необходимо протестить работу
     public boolean isEquals(Record rec) {
-        Element elem = rec.toXmlElement();
+        Element elem = rec.toXmlElement(), elem2 = elem;
         Set<String> keys = conds.keySet();
         boolean retVal = true, isAttr = false;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
@@ -42,13 +36,18 @@ public class Condition {
             List<Element> elems;
             isAttr = key.contains("id");
             key2 = conds.get(key);
+            String[] elemNames = StringUtils.split(key, "/");
+            for (int i = 0; i < elemNames.length - 1; i++) {
+                elem2 = elem2.element(elemNames[i]);
+                key = elemNames[i + 1];
+            }
             if (isAttr) {
-                val = elem.attributeValue(key, "");
+                val = elem2.attributeValue(key, "");
                 if (val.isEmpty() || !check(val, key2)) {
                     return false;
                 }
             } else {
-                elems = elem.elements(key);
+                elems = elem2.elements(key);
                 if (elems == null) {
                     return false;
                 }
@@ -65,7 +64,7 @@ public class Condition {
 
     private boolean check(String val, String searchVals) {
         boolean retVal = true;
-        String[] ids = StringUtils.split(searchVals, ',');
+        String[] ids = StringUtils.split(searchVals, '\uFFFC');
         if (ids.length > 1) {
             for (String str : ids) {
                 if (val.contains(str)) {
