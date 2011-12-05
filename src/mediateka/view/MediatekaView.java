@@ -241,7 +241,7 @@ public class MediatekaView extends FrameView {
                 if (JOptionPane.showConfirmDialog(getFrame(), "Вы действительно хотите выйти?", "Выход", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
                     if (JOptionPane.showConfirmDialog(getFrame(), "Сохранить изменения?", "Сохранение", JOptionPane.YES_NO_CANCEL_OPTION) == 0) {
                         //TODO проверить
-                        Managers.getInstance().save();
+                        Managers.getInstance().saveDB();
                     }
                 }
             }
