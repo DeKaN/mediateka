@@ -71,7 +71,7 @@ public class History extends Table {
                 map.put("promisingDate", formatter.format(rec.getPromisedDate()));
             }
         }
-        Condition cond = new Condition(map, Managers.mode);
+        Condition cond = new Condition(map);
         for (Record historyRecord : recordsList) {
             if (cond.isEquals(historyRecord)) {
                 retVal.add(historyRecord);
