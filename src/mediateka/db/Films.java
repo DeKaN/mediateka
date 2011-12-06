@@ -1,5 +1,6 @@
 package mediateka.db;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.datamanagers.Condition;
@@ -136,7 +137,7 @@ public class Films extends Table {
             if (rec.getSoundLanguages() != null) {
                 map.put("soundLanguages/soundLanguage", StringUtils.join(rec.getSoundLanguages(), '\uFFFC'));
             }
-            map.put("isSeen", Boolean.toString(rec.isSeen()));
+            //map.put("isSeen", Boolean.toString(rec.isSeen()));
         }
         Condition cond = new Condition(map);
         for (Record film : recordsList) {
@@ -171,7 +172,9 @@ public class Films extends Table {
     }
 
     private boolean del(Records recs, Record record) {
-        if (recs == null) return false;
+        if (recs == null) {
+            return false;
+        }
         try {
             Manager discManager = Managers.getInstance().getDiscsManager();
             for (int i = 0; i < recs.size(); i++) {
@@ -189,5 +192,13 @@ public class Films extends Table {
             return false;
         }
         return true;
+    }
+
+    public ArrayList<Integer> getListOfFilmIDs() {
+        ArrayList<Integer> retVal = new ArrayList<Integer>();
+        for (int i = 0; i < recordsList.size(); i++) {
+            retVal.add(recordsList.get(i).getID());
+        }
+        return retVal;
     }
 }

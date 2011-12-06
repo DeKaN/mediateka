@@ -227,6 +227,7 @@
               <action class="mediateka.view.DiscView" id="addButton" methodName="addButton"/>
             </Property>
             <Property name="text" type="java.lang.String" resourceKey="jButton3.text"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="jButton3" noResource="true"/>
           </Properties>
         </Component>
@@ -236,6 +237,7 @@
               <action class="mediateka.view.DiscView" id="removeButton" methodName="removeButton"/>
             </Property>
             <Property name="text" type="java.lang.String" resourceKey="jButton4.text"/>
+            <Property name="enabled" type="boolean" value="false"/>
             <Property name="name" type="java.lang.String" value="jButton4" noResource="true"/>
           </Properties>
         </Component>

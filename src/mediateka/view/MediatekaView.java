@@ -1956,13 +1956,15 @@ public class MediatekaView extends FrameView {
 	private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
             if (evt.getClickCount() == 2) {
                 try {
-                    int row = jTable1.rowAtPoint(evt.getPoint());
+                    //int row = jTable1.rowAtPoint(evt.getPoint());
+                    int row = jTable1.getSelectedRow();
                     int discID = (Integer) jTable1.getValueAt(row, 0);
                     Disc disc = (Disc) (Managers.getInstance().getDiscsManager().find(discID));
                     discView = new DiscView(null, true, disc);
                     discView.setLocationRelativeTo(MediatekaApp.getApplication().getMainFrame());
                     MediatekaApp.getApplication().show(discView);
                     updateTableDiscs();
+                    jTable2.setModel(jTable2.getModel());
                     updateTableHistory();
                 } catch (Exception ex) {
                     Logger.getLogger(MediatekaView.class.getName()).log(Level.SEVERE, null, ex);

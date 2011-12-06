@@ -2,6 +2,7 @@ package mediateka.view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,12 +12,14 @@ import java.util.logging.Logger;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mediateka.datamanagers.Managers;
+import mediateka.db.BlackListRecord;
 import mediateka.db.Disc;
 import mediateka.db.Disc.Format;
 import mediateka.db.Film;
@@ -33,6 +36,11 @@ import org.jdesktop.application.Action;
  */
 public class FindView extends javax.swing.JDialog {
 
+    private static final String[] columnNamesFilms = new String[]{"ID", "Русское название", "Жанр", "Продолжительность", "Год", "Субтитры", "Оценка", "Просмотрен"};
+    private static final String[] columnNamesDiscs = new String[]{"ID", "Список фильмов", "Формат", "Регион", "В наличии"};
+    private static final String[] columnNamesPersons = new String[]{"ID", "Фамилия", "Имя", "Отчество", "Телефон", "Комментарий"};
+    private static final String[] columnNamesBLRecords = new String[]{"ID", "ФИО", "Комментарий"};
+    private static final String[] columnNamesHistoty = new String[]{"ID", "Диск", "Человек", "Дата выдачи", "Обещанная дата", "Дата возврата", "Комментарий"};
     private HashMap<Integer, Integer> personsMap = null, discMap = null;
     String[] personsStrs = null, discsStrs = null, columnNames = new String[]{"ID", "Русское название"}, formats = null, genres = new String[]{"", "Анимационный", "Аниме", "Биография", "Боевик", "Вестерн", "Военный", "Детектив", "Детский", "Для взрослых", "Документальный", "Драма", "Игра", "Исторический", "История", "Комедия", "Концерт", "Короткометражка", "Криминал", "Любовный роман", "Мелодрама", "Мистика", "Музыка", "Мультфильм", "Мюзикл", "Отечественный", "Пародия", "Приключения", "Реальное ТВ", "Романтика", "Семейный", "Спорт", "Триллер", "Ужасы", "Фантастика", "Фильм-нуар", "Фэнтези"}, countries = new String[]{"", "Австралия", "Австрия", "Азербайджан", "Албания", "Алжир", "Американское Самоа", "Ангилья", "Ангола", "Андорра", "Антигуа и Барбуда", "Аргентина", "Армения", "Аруба", "Афганистан", "Багамы", "Бангладеш", "Барбадос", "Бахрейн", "Беларусь,Белиз", "Бельгия", "Бенин", "Бермуды", "Болгария", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней-Даруссалам", "Буркина-Фасо", "Бурунди", "Бутан", "Вануату", "Великобритания", "Венгрия", "Венесуэла", "Виргинские острова, Британские", "Виргинские острова, США", "Восточный Тимор", "Вьетнам", "Габон", "Гаити", "Гайана", "Гамбия", "Гана", "Гваделупа", "Гватемала", "Гвинея", "Гвинея-Бисау", "Германия", "Гибралтар", "Гондурас", "Гонконг", "Гренада", "Гренландия", "Греция", "Грузия", "Гуам", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Египет", "Замбия", "Западная Сахара", "Зимбабве", "Израиль", "Индия", "Индонезия", "Иордания", "Ирак", "Иран", "Ирландия", "Исландия", "Испания", "Италия", "Йемен", "Кабо-Верде", "Казахстан", "Камбоджа", "Камерун", "Канада", "Катар", "Кения", "Кипр", "Кирибати", "Китай", "Колумбия", "Коморы", "Конго", "Конго, демократическая республика", "Коста-Рика", "Кот д`Ивуар", "Куба", "Кувейт", "Кыргызстан", "Лаос", "Латвия", "Лесото", "Либерия", "Ливан", "Ливийская Арабская Джамахирия", "Литва", "Лихтенштейн", "Люксембург", "Маврикий", "Мавритания", "Мадагаскар", "Макао", "Македония", "Малави", "Малайзия", "Мали", "Мальдивы", "Мальта", "Марокко", "Мартиника", "Маршалловы Острова", "Мексика", "Микронезия, федеративные штаты", "Мозамбик", "Молдова", "Монако", "Монголия", "Монтсеррат", "Мьянма", "Намибия", "Науру", "Непал", "Нигер", "Нигерия", "Нидерландские Антилы", "Нидерланды", "Никарагуа", "Ниуэ", "Новая Зеландия", "Новая Каледония", "Норвегия", "Объединенные Арабские Эмираты", "Оман", "Остров Мэн", "Остров Норфолк", "Острова Кайман", "Острова Кука", "Острова Теркс и Кайкос", "Пакистан", "Палау", "Палестинская автономия", "Панама", "Папуа - Новая Гвинея", "Парагвай", "Перу", "Питкерн", "Польша", "Португалия", "Пуэрто-Рико", "Реюньон", "Россия", "Руанда", "Румыния", "США", "Сальвадор", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Свазиленд", "Святая Елена", "Северная Корея", "Северные Марианские острова", "Сейшелы", "Сенегал", "Сент-Винсент", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Пьер и Микелон", "Сербия", "Сингапур", "Сирийская Арабская Республика", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Судан", "Суринам", "Сьерра-Леоне", "Таджикистан", "Таиланд", "Тайвань", "Танзания", "Того", "Токелау", "Тонга", "Тринидад и Тобаго", "Тувалу", "Тунис", "Туркмения", "Турция", "Уганда", "Узбекистан", "Украина", "Уоллис и Футуна", "Уругвай", "Фарерские острова", "Фиджи", "Филиппины", "Финляндия", "Фолклендские острова", "Франция", "Французская Гвиана", "Французская Полинезия", "Хорватия", "Центрально-Африканская Республика", "Чад", "Черногория", "Чехия", "Чили", "Швейцария", "Швеция", "Шпицберген и Ян Майен", "Шри-Ланка", "Эквадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эфиопия", "Южная Корея", "Южно-Африканская Республика", "Ямайка", "Япония"}, languages = new String[]{"", "английский", "арабский", "болгарский", "венгерский", "вьетнамский", "голландский", "греческий", "датский", "иврит", "индонезийский", "испанский (Испания)", "испанский (Латинская Америка)", "итальянский", "каталанский", "китайский (Традиционная китайская)", "китайский (Упрощенная китайская)", "корейский", "латышский", "литовский", "малайский", "немецкий", "норвежский", "персидский", "польский", "португальский (Бразилия)", "португальский (Португалия)", "румынский", "русский", "сербский", "словацкий", "словенский", "тайский", "турецкий", "украинский", "филиппинский", "финский", "французский", "хинди", "хорватский", "чешский", "шведский", "эстонский", "японский"};
     int _rating = 0;
@@ -46,6 +54,15 @@ public class FindView extends javax.swing.JDialog {
     private List<Record> filmRecords = null;
     private HashMap<Record, Boolean> filmsMap = null;
 
+    private ArrayList<Integer> getListOfFilmIDs(List<Record> films)
+    {
+        ArrayList<Integer> retVal = new ArrayList<Integer>();
+        for (int i = 0; i < films.size(); i++) {
+            retVal.add(films.get(i).getID());
+        }
+        return retVal;
+    }
+    
     /** Creates new form FindView */
     public FindView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -73,8 +90,16 @@ public class FindView extends javax.swing.JDialog {
             jRadioButton6.addActionListener(ratingListener);
             //discs
             filmsMap = new HashMap<Record, Boolean>();
-            filmRecords = Managers.getInstance().getFilmsManager().getRecords();
             ArrayList<Integer> ids = new ArrayList<Integer>();
+            List<Record> films = Managers.getInstance().getFilmsManager().getRecords();
+            if (films != null) {
+                ids = getListOfFilmIDs(films);
+            }
+            filmsMap = new HashMap<Record, Boolean>();
+            for (Record rec : films) {
+                filmsMap.put(rec, false);
+            }
+            filmRecords = Managers.getInstance().getFilmsManager().getRecords();
             updateTables(jTable1, jTable2);
             formats = Disc.getFormats();
             jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(formats));
@@ -150,6 +175,7 @@ public class FindView extends javax.swing.JDialog {
     private void initComponents() {
 
         mainPanel = new javax.swing.JPanel();
+        findButton = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         filmPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -178,8 +204,6 @@ public class FindView extends javax.swing.JDialog {
         jComboBox12 = new javax.swing.JComboBox();
         jPanel8 = new javax.swing.JPanel();
         jTextField5 = new javax.swing.JTextField();
-        jRadioButton8 = new javax.swing.JRadioButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -188,15 +212,12 @@ public class FindView extends javax.swing.JDialog {
         jRadioButton4 = new javax.swing.JRadioButton();
         jRadioButton6 = new javax.swing.JRadioButton();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
         discPanel = new javax.swing.JPanel();
-        jCheckBox1 = new javax.swing.JCheckBox();
         jLabel13 = new javax.swing.JLabel();
         jTextField6 = new javax.swing.JTextField();
-        jLabel14 = new javax.swing.JLabel();
         jComboBox13 = new javax.swing.JComboBox();
         jLabel15 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -243,7 +264,6 @@ public class FindView extends javax.swing.JDialog {
         resultsPanel = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        findButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
@@ -251,6 +271,11 @@ public class FindView extends javax.swing.JDialog {
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(FindView.class);
         mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
         mainPanel.setName("mainPanel"); // NOI18N
+
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(FindView.class, this);
+        findButton.setAction(actionMap.get("find")); // NOI18N
+        findButton.setText(resourceMap.getString("findButton.text")); // NOI18N
+        findButton.setName("findButton"); // NOI18N
 
         jTabbedPane1.setMaximumSize(new java.awt.Dimension(32767, 100));
         jTabbedPane1.setName("jTabbedPane1"); // NOI18N
@@ -331,13 +356,6 @@ public class FindView extends javax.swing.JDialog {
 
         jTextField5.setName("jTextField5"); // NOI18N
 
-        jRadioButton8.setSelected(true);
-        jRadioButton8.setText(resourceMap.getString("jRadioButton8.text")); // NOI18N
-        jRadioButton8.setName("jRadioButton8"); // NOI18N
-
-        jRadioButton7.setText(resourceMap.getString("jRadioButton7.text")); // NOI18N
-        jRadioButton7.setName("jRadioButton7"); // NOI18N
-
         jLabel9.setText(resourceMap.getString("jLabel9.text")); // NOI18N
         jLabel9.setName("jLabel9"); // NOI18N
 
@@ -364,9 +382,6 @@ public class FindView extends javax.swing.JDialog {
         jLabel11.setText(resourceMap.getString("jLabel11.text")); // NOI18N
         jLabel11.setName("jLabel11"); // NOI18N
 
-        jLabel12.setText(resourceMap.getString("jLabel12.text")); // NOI18N
-        jLabel12.setName("jLabel12"); // NOI18N
-
         jRadioButton1.setSelected(true);
         jRadioButton1.setText(resourceMap.getString("jRadioButton1.text")); // NOI18N
         jRadioButton1.setName("jRadioButton1"); // NOI18N
@@ -383,37 +398,29 @@ public class FindView extends javax.swing.JDialog {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel12)
                     .addComponent(jLabel11)
                     .addComponent(jLabel10)
                     .addComponent(jLabel9))
                 .addGap(39, 39, 39)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jTextField5, javax.swing.GroupLayout.DEFAULT_SIZE, 405, Short.MAX_VALUE)
-                                .addGap(24, 24, 24))
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jRadioButton7))
+                        .addComponent(jRadioButton1)
+                        .addGap(30, 30, 30)
+                        .addComponent(jRadioButton2)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel8Layout.createSequentialGroup()
-                                .addComponent(jRadioButton2)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton3)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton4)
-                                .addGap(18, 18, 18)
-                                .addComponent(jRadioButton5))
-                            .addComponent(jRadioButton8))
+                        .addComponent(jRadioButton3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton5)
                         .addGap(18, 18, 18)
                         .addComponent(jRadioButton6)
-                        .addContainerGap(161, Short.MAX_VALUE))))
+                        .addContainerGap(161, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+                        .addGap(20, 20, 20))))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,23 +437,15 @@ public class FindView extends javax.swing.JDialog {
                         .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton1)
-                            .addComponent(jLabel11))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton7)
-                            .addComponent(jLabel12)))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jRadioButton2)
-                            .addComponent(jRadioButton3)
-                            .addComponent(jRadioButton4)
-                            .addComponent(jRadioButton5)
-                            .addComponent(jRadioButton6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioButton8)))
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton1)
+                        .addComponent(jLabel11))
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jRadioButton2)
+                        .addComponent(jRadioButton3)
+                        .addComponent(jRadioButton4)
+                        .addComponent(jRadioButton5)
+                        .addComponent(jRadioButton6)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -457,55 +456,59 @@ public class FindView extends javax.swing.JDialog {
             .addGroup(filmPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(filmPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(61, 61, 61)
-                        .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(filmPanelLayout.createSequentialGroup()
                         .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)))
-                    .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel8)
-                            .addGap(24, 24, 24)
-                            .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addGap(12, 12, 12)
-                            .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(filmPanelLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
-                    .addGroup(filmPanelLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
-                    .addGroup(filmPanelLayout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jComboBox6, 0, 200, Short.MAX_VALUE)
-                            .addComponent(jComboBox9, 0, 200, Short.MAX_VALUE)
-                            .addComponent(jComboBox3, 0, 200, Short.MAX_VALUE)
-                            .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(392, 392, 392))
+                            .addGroup(filmPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(61, 61, 61)
+                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(filmPanelLayout.createSequentialGroup()
+                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel1)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)))
+                            .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addGap(24, 24, 24)
+                                    .addComponent(jComboBox10, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jComboBox11, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addGap(12, 12, 12)
+                                    .addComponent(jComboBox7, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(filmPanelLayout.createSequentialGroup()
+                                .addGap(104, 104, 104)
+                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+                            .addGroup(filmPanelLayout.createSequentialGroup()
+                                .addGap(104, 104, 104)
+                                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
+                            .addGroup(filmPanelLayout.createSequentialGroup()
+                                .addGap(104, 104, 104)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jComboBox6, 0, 200, Short.MAX_VALUE)
+                                    .addComponent(jComboBox9, 0, 200, Short.MAX_VALUE)
+                                    .addComponent(jComboBox3, 0, 200, Short.MAX_VALUE)
+                                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(392, 392, 392))))
         );
         filmPanelLayout.setVerticalGroup(
             filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -556,8 +559,7 @@ public class FindView extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(45, 45, 45))
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("filmPanel.TabConstraints.tabTitle"), filmPanel); // NOI18N
@@ -568,8 +570,6 @@ public class FindView extends javax.swing.JDialog {
         discPanel.setName("discPanel"); // NOI18N
         discPanel.setPreferredSize(new java.awt.Dimension(1157, 160));
 
-        jCheckBox1.setName("jCheckBox1"); // NOI18N
-
         jLabel13.setText(resourceMap.getString("jLabel13.text")); // NOI18N
         jLabel13.setName("jLabel13"); // NOI18N
 
@@ -579,9 +579,6 @@ public class FindView extends javax.swing.JDialog {
                 jTextField6KeyTyped(evt);
             }
         });
-
-        jLabel14.setText(resourceMap.getString("jLabel14.text")); // NOI18N
-        jLabel14.setName("jLabel14"); // NOI18N
 
         jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox13.setName("jComboBox13"); // NOI18N
@@ -599,19 +596,40 @@ public class FindView extends javax.swing.JDialog {
 
             },
             new String [] {
-
+                "ID", "Название"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable1.setName("jTable1"); // NOI18N
         jScrollPane4.setViewportView(jTable1);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(40);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(40);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(40);
+        jTable1.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable1.columnModel.title0")); // NOI18N
+        jTable1.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable1.columnModel.title1")); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(FindView.class, this);
         addButton.setAction(actionMap.get("addButton")); // NOI18N
         addButton.setText(resourceMap.getString("addButton.text")); // NOI18N
+        addButton.setEnabled(false);
         addButton.setName("addButton"); // NOI18N
 
         delButton.setAction(actionMap.get("removeButton")); // NOI18N
         delButton.setText(resourceMap.getString("delButton.text")); // NOI18N
+        delButton.setEnabled(false);
         delButton.setName("delButton"); // NOI18N
 
         jScrollPane5.setName("jScrollPane5"); // NOI18N
@@ -621,11 +639,31 @@ public class FindView extends javax.swing.JDialog {
 
             },
             new String [] {
-
+                "ID", "Название"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTable2.setName("jTable2"); // NOI18N
         jScrollPane5.setViewportView(jTable2);
+        jTable2.getColumnModel().getColumn(0).setMinWidth(40);
+        jTable2.getColumnModel().getColumn(0).setPreferredWidth(40);
+        jTable2.getColumnModel().getColumn(0).setMaxWidth(40);
+        jTable2.getColumnModel().getColumn(0).setHeaderValue(resourceMap.getString("jTable2.columnModel.title0")); // NOI18N
+        jTable2.getColumnModel().getColumn(1).setHeaderValue(resourceMap.getString("jTable2.columnModel.title1")); // NOI18N
 
         jLabel16.setText(resourceMap.getString("jLabel16.text")); // NOI18N
         jLabel16.setName("jLabel16"); // NOI18N
@@ -649,10 +687,13 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel16))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                    .addComponent(jLabel17))
-                .addContainerGap())
+                    .addComponent(jLabel17)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(78, Short.MAX_VALUE))
         );
+
+        jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane4, jScrollPane5});
+
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
@@ -678,8 +719,8 @@ public class FindView extends javax.swing.JDialog {
             discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(discPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
                     .addGroup(discPanelLayout.createSequentialGroup()
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -687,24 +728,17 @@ public class FindView extends javax.swing.JDialog {
                         .addGap(34, 34, 34)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCheckBox1)))
-                .addGap(620, 620, 620))
+                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         discPanelLayout.setVerticalGroup(
             discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(discPanelLayout.createSequentialGroup()
-                .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel13)
-                        .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel14)
-                        .addComponent(jLabel15)
-                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jCheckBox1))
+                .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15)
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(264, Short.MAX_VALUE))
@@ -784,11 +818,11 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel22))
                 .addGap(6, 6, 6)
                 .addGroup(personPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 327, Short.MAX_VALUE))
+                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
                 .addGap(728, 728, 728))
         );
         personPanelLayout.setVerticalGroup(
@@ -930,15 +964,15 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel25))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox16, 0, 285, Short.MAX_VALUE)
-                    .addComponent(jComboBox15, 0, 285, Short.MAX_VALUE)
+                    .addComponent(jComboBox16, 0, 126, Short.MAX_VALUE)
+                    .addComponent(jComboBox15, 0, 126, Short.MAX_VALUE)
                     .addGroup(historyPanelLayout.createSequentialGroup()
                         .addGroup(historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE)
-                            .addComponent(jDateChooser3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 186, Short.MAX_VALUE))
+                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
+                            .addComponent(jDateChooser3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
                         .addGap(99, 99, 99))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
                 .addGap(752, 752, 752))
         );
         historyPanelLayout.setVerticalGroup(
@@ -1030,10 +1064,6 @@ public class FindView extends javax.swing.JDialog {
 
         jTabbedPane1.addTab(resourceMap.getString("resultsPanel.TabConstraints.tabTitle"), resultsPanel); // NOI18N
 
-        findButton.setAction(actionMap.get("find")); // NOI18N
-        findButton.setText(resourceMap.getString("findButton.text")); // NOI18N
-        findButton.setName("findButton"); // NOI18N
-
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
@@ -1050,7 +1080,7 @@ public class FindView extends javax.swing.JDialog {
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(findButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1059,16 +1089,11 @@ public class FindView extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(383, 383, 383))
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -1113,8 +1138,246 @@ public class FindView extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jTextField4KeyTyped
 
+    private String stringArrayToString(String[] arr) {
+        String retStr = "";
+        if ((arr != null) && (arr.length != 0)) {
+            for (int i = 0; i < arr.length; i++) {
+                retStr += arr[i];
+                if (i + 1 != arr.length) {
+                    retStr += ", ";
+                }
+            }
+        } else {
+            retStr = "-";
+        }
+        return retStr;
+    }
+
+    private void writeResults(int type, Records records) {
+        List<Record> recs = records.toList();
+        ArrayList<Object[]> listOfRows = new ArrayList<Object[]>();
+        Film f = null;
+        Disc disc = null;
+        Person pers = null;
+        BlackListRecord blRecord = null;
+        HistoryRecord historyRecord = null;
+        Object[] row = null;
+        Integer[] widths = null;
+        String temp;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        for (Record rec : recs) {
+            switch (type) {
+                case 0: // фильм
+                    f = (Film) rec;
+                    row = new Object[columnNamesFilms.length];
+                    row[0] = rec.getID();
+                    row[1] = f.getRussianTitle();
+                    row[2] = (f.getGenres() != null) ? stringArrayToString(f.getGenres()) : "-";
+                    row[3] = (f.getLength() != 0) ? Integer.toString(f.getLength()) : "-";
+                    row[4] = (f.getYear() != 0) ? Integer.toString(f.getYear()) : "-";
+                    row[5] = (f.getSubtitles() != null) ? stringArrayToString(f.getSubtitles()) : "-";
+                    row[6] = (f.getRating() != 0) ? Integer.toString(f.getRating()) : "-";
+                    row[7] = (f.isSeen()) ? "да" : "нет";
+                    break;
+                case 1: // диск
+                    disc = (Disc) rec;
+                    row = new Object[columnNamesDiscs.length];
+                    row[0] = rec.getID();
+                    List<Record> films = disc.getFilms().toList();
+                    String tmp = "";
+                    if (!films.isEmpty()) {
+                        tmp += ((Film) films.get(0)).toString();
+                    }
+                    for (int i = 1; i < films.size(); i++) {
+                        tmp += ", " + ((Film) films.get(i)).toString();
+                    }
+                    row[1] = tmp;
+                    row[2] = disc.getFormat().toString();
+                    row[3] = (disc.getRegionCode() != 0) ? Integer.toString(disc.getRegionCode()) : "-";
+                    row[4] = (disc.isPresented()) ? "да" : "нет";
+                    break;
+                case 2: // человек
+                    pers = (Person) rec;
+                    row = new Object[6];
+                    row[0] = rec.getID();
+                    row[1] = (pers.getLastName().isEmpty()) ? "-" : pers.getLastName();
+                    row[2] = (pers.getFirstName().isEmpty()) ? "-" : pers.getFirstName();
+                    row[3] = (pers.getSecondName().isEmpty()) ? "-" : pers.getSecondName();
+                    row[4] = (pers.getPhone().isEmpty()) ? "-" : pers.getPhone();
+                    row[5] = (pers.getComment().isEmpty()) ? "-" : pers.getComment();
+                    break;
+                case 3: // черный список
+                    blRecord = (BlackListRecord) rec;
+                    row = new Object[columnNamesBLRecords.length];
+                    row[0] = rec.getID();
+                    row[1] = blRecord.getPerson().toString();
+                    row[2] = (blRecord.getComment().isEmpty()) ? "-" : blRecord.getComment();
+                    break;
+                case 4: // история
+                    historyRecord = (HistoryRecord) rec;
+                    row = new Object[columnNamesHistoty.length];
+                    row[0] = rec.getID();
+                    row[1] = historyRecord.getDisc().toString();
+                    row[2] = historyRecord.getPerson().toString();
+                    temp = formatter.format(historyRecord.getGiveDate());
+                    row[3] = (!temp.equals("1970-01-01")) ? temp : "-";
+                    temp = formatter.format(historyRecord.getPromisedDate());
+                    row[4] = (!temp.equals("1970-01-01")) ? temp : "-";
+                    temp = formatter.format(historyRecord.getReturnDate());
+                    row[5] = (!temp.equals("1970-01-01")) ? temp : "-";
+                    row[6] = historyRecord.getComment().toString();
+                    break;
+            }
+            listOfRows.add(row);
+        }
+        Object[][] data = new Object[listOfRows.size()][];
+        for (int i = 0; i < listOfRows.size(); i++) {
+            data[i] = listOfRows.get(i);
+        }
+        switch (type) {
+            case 0: // фильм
+                jTable3.setModel(new DefaultTableModel(data, columnNamesFilms) {
+
+                    Class[] types = new Class[]{
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, false, false, false, false, false, false
+                    };
+
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                widths = new Integer[]{40, 150, 350, 115, 50, 180, 60, 80};
+                for (int i = 0; i < widths.length; i++) {
+                    if (i != 1) {
+                        jTable3.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                        jTable3.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                        jTable3.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+                    }
+                }
+                jTable3.getColumnModel().getColumn(1).setPreferredWidth(150);
+                jTable3.getColumnModel().getColumn(2).setPreferredWidth(350);
+                jTable3.getColumnModel().getColumn(2).setMaxWidth(450);
+                break;
+            case 1: // диск
+                jTable3.setModel(new DefaultTableModel(data, columnNamesDiscs) {
+
+                    Class[] types = new Class[]{
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, false, false, false
+                    };
+
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                widths = new Integer[]{40, 0, 100, 75, 100};
+                for (int i = 0; i < widths.length; i++) {
+                    if (i != 1) {
+                        jTable3.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                        jTable3.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                        jTable3.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+                    }
+                }
+                break;
+            case 2: // человек
+                jTable3.setModel(new DefaultTableModel(data, columnNamesPersons) {
+
+                    Class[] types = new Class[]{
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, false, false, false, false
+                    };
+
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                widths = new Integer[]{40, 200, 200, 200, 150};
+                for (int i = 0; i < widths.length; i++) {
+                    jTable3.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                    jTable3.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                    jTable3.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+                }
+                break;
+            case 3: // черный список
+                jTable3.setModel(new DefaultTableModel(data, columnNamesBLRecords) {
+
+                    Class[] types = new Class[]{
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, false
+                    };
+
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                jTable3.getColumnModel().getColumn(0).setMinWidth(40);
+                jTable3.getColumnModel().getColumn(0).setPreferredWidth(40);
+                jTable3.getColumnModel().getColumn(0).setMaxWidth(40);
+                jTable3.getColumnModel().getColumn(1).setMinWidth(250);
+                jTable3.getColumnModel().getColumn(1).setPreferredWidth(350);
+                jTable3.getColumnModel().getColumn(1).setMaxWidth(650);
+                break;
+            case 4: // история
+                jTable3.setModel(new DefaultTableModel(data, columnNamesHistoty) {
+
+                    Class[] types = new Class[]{
+                        java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, false, false, false, false, false
+                    };
+
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                widths = new Integer[]{40, 200, 200, 100, 100, 100, 100};
+                for (int i = 0; i < widths.length; i++) {
+                    if (i != 1 && i != 2) {
+                        jTable3.getColumnModel().getColumn(i).setMinWidth(widths[i]);
+                        jTable3.getColumnModel().getColumn(i).setPreferredWidth(widths[i]);
+                        jTable3.getColumnModel().getColumn(i).setMaxWidth(widths[i]);
+                    }
+                }
+                jTable3.getColumnModel().getColumn(1).setMaxWidth(400);
+                jTable3.getColumnModel().getColumn(2).setMaxWidth(200);
+                jTable3.getColumnModel().getColumn(6).setMaxWidth(500);
+                break;
+        }
+    }
+
     @Action
     public void find() {
+        Records records = null;
         switch (jTabbedPane1.getSelectedIndex()) {
             case 0: { // Фильмы
                 try {
@@ -1136,7 +1399,6 @@ public class FindView extends javax.swing.JDialog {
                         }
                     } catch (Exception e) {
                     }
-                    boolean _isSeen = (jRadioButton8.isSelected());
                     String _comment = jTextField5.getText().trim();
                     String _description = jTextArea1.getText().trim();
 
@@ -1146,18 +1408,11 @@ public class FindView extends javax.swing.JDialog {
                     String[] _soundLanguages = getDataFromComboboxsAsStrings(jComboBox10, jComboBox11, jComboBox12);
 
                     Film film = new Film(_russianTitle, _englishTitle, _year, _description, _genres, _countries,
-                            _comment, _length, _rating, _subtitles, _soundLanguages, _isSeen);
+                            _comment, _length, _rating, _subtitles, _soundLanguages, true);
 
-                    Records records = Managers.getInstance().getFilmsManager().find(film);
-
-                    if (records.size() > 0) {
-                        // your code here
-
-                        jTabbedPane1.setSelectedIndex(5);
-                    }
+                    records = Managers.getInstance().getFilmsManager().find(film);
                 } catch (Exception ex) {
                 }
-
                 break;
             }
             case 1: { // Диски
@@ -1171,15 +1426,7 @@ public class FindView extends javax.swing.JDialog {
                     Format format = Format.valueOf((String) jComboBox13.getSelectedItem());
                     String s = jTextField6.getText();
                     int region = (s.isEmpty()) ? 0 : Integer.parseInt(s);
-                    boolean isPresented = jCheckBox1.isSelected();
-
-                    Records records = Managers.getInstance().getDiscsManager().find(new Disc(films, -1, format, region, isPresented));
-
-                    if (records.size() > 0) {
-                        // your code here
-
-                        jTabbedPane1.setSelectedIndex(5);
-                    }
+                    records = Managers.getInstance().getDiscsManager().find(new Disc(films, -1, format, region, true));
                 } catch (Exception ex) {
                 }
                 break;
@@ -1191,14 +1438,7 @@ public class FindView extends javax.swing.JDialog {
                     String secondName = jTextField9.getText();
                     String phone = jTextField10.getText();
                     String comment = jTextArea5.getText();
-
-                    Records records = Managers.getInstance().getPersManager().find(new Person(lastName, firstName, secondName, phone, comment));
-
-                    if (records.size() > 0) {
-                        // your code here
-
-                        jTabbedPane1.setSelectedIndex(5);
-                    }
+                    records = Managers.getInstance().getPersManager().find(new Person(lastName, firstName, secondName, phone, comment));
                 } catch (Exception ex) {
                 }
                 break;
@@ -1206,15 +1446,8 @@ public class FindView extends javax.swing.JDialog {
             case 3: { // Блэклист
                 try {
                     Record record = Managers.getInstance().getBlListManager().find(personsMap.get(jComboBox14.getSelectedIndex()));
-
-                    if (record != null) {
-                        // your code here
-
-                        jTabbedPane1.setSelectedIndex(5);
-                    }
                 } catch (Exception ex) {
                 }
-
                 break;
             }
             case 4: { // Журнал
@@ -1225,19 +1458,17 @@ public class FindView extends javax.swing.JDialog {
                     Date date2 = jDateChooser2.getDate();
                     Date date3 = jDateChooser3.getDate();
                     String comment = jTextArea4.getText();
-
-                    Records records = Managers.getInstance().getHistManager().find(new HistoryRecord(disc, person, date1, date2, date3, comment));
-
-                    if (records.size() > 0) {
-                        // your code here
-
-                        jTabbedPane1.setSelectedIndex(5);
-                    }
+                    records = Managers.getInstance().getHistManager().find(new HistoryRecord(disc, person, date1, date2, date3, comment));
                 } catch (Exception ex) {
                 }
-
                 break;
             }
+        }
+        if ((records != null) && (records.size() > 0)) {
+            writeResults(jTabbedPane1.getSelectedIndex(), records);
+            jTabbedPane1.setSelectedIndex(5);
+        } else {
+            JOptionPane.showMessageDialog(null, "Не найдено ни одной записи, удовлетворяющей условиям", "Результат поиска", JOptionPane.OK_OPTION);
         }
     }
 
@@ -1246,6 +1477,10 @@ public class FindView extends javax.swing.JDialog {
         try {
             changeMap(jTable2, true);
             updateTables(jTable1, jTable2);
+
+
+
+
         } catch (Exception ex) {
             Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1256,6 +1491,10 @@ public class FindView extends javax.swing.JDialog {
         try {
             changeMap(jTable1, false);
             updateTables(jTable1, jTable2);
+
+
+
+
         } catch (Exception ex) {
             Logger.getLogger(DiscView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1320,7 +1559,6 @@ public class FindView extends javax.swing.JDialog {
     private javax.swing.JPanel filmPanel;
     private javax.swing.JButton findButton;
     private javax.swing.JPanel historyPanel;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
@@ -1343,9 +1581,7 @@ public class FindView extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -1378,8 +1614,6 @@ public class FindView extends javax.swing.JDialog {
     private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

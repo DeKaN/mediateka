@@ -217,9 +217,9 @@ public class Disc implements Record {
 
     public static String[] getFormats() {
         Format[] formats = Format.values();
-        String[] retVal = new String[formats.length];
-        for (int i = 1; i < retVal.length; i++) {
-            retVal[i] = formats[i].name();
+        String[] retVal = new String[formats.length-1];
+        for (int i = 0; i < retVal.length; i++) {
+            retVal[i] = formats[i+1].name();
         }
         return retVal;
     }
