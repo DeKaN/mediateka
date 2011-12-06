@@ -68,6 +68,14 @@ public class Discs extends Table {
         if (disc.getID() > 0) {
             map.put("id", Integer.toString(disc.getID()));
         } else {
+            Disc.Format format = disc.getFormat();
+            if (format != Disc.Format.None) {
+                map.put("format", format.toString());
+            }
+            int region = disc.getRegionCode();
+            if (region != 0) {
+                map.put("regionCode", Integer.toString(region));
+            }
             Films filmsCollection = disc.getFilms();
             if (filmsCollection != null) {
                 StringBuilder films = new StringBuilder();
@@ -78,14 +86,6 @@ public class Discs extends Table {
                     films.append(filmsCollection.getRecord(i).getID());
                 }
                 map.put("films/filmID", films.toString());
-            }
-            Disc.Format format = disc.getFormat();
-            if (format != Disc.Format.None) {
-                map.put("format", format.toString());
-            }
-            int region = disc.getRegionCode();
-            if (region != 0) {
-                map.put("regionCode", Integer.toString(region));
             }
         }
         Condition cond = new Condition(map);

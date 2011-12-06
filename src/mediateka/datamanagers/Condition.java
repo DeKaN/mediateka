@@ -53,12 +53,15 @@ public class Condition {
                     return false;
                 }
                 int t = 0;
+                if (Managers.mode == Managers.CombineMode.AND && elems.size() != StringUtils.split(key2, '\uFFFC').length) {
+                    retVal = false;
+                }
                 for (Element element : elems) {
                     if (check(element.getText(), key2)) {
                         t++;
                     }
                 }
-                if (t != elems.size()) {
+                if ((t == 0 && Managers.mode == Managers.CombineMode.OR) || (t != elems.size() && Managers.mode == Managers.CombineMode.AND)) {
                     retVal = false;
                 }
             }

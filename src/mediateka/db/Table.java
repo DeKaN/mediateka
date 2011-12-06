@@ -53,9 +53,12 @@ public abstract class Table implements Records {
     }
 
     public boolean add(Record record) {
+        Managers.mode = Managers.CombineMode.AND;
         if (!isUnique(record)) {
+            Managers.mode = Managers.CombineMode.OR;
             return false;
         }
+        Managers.mode = Managers.CombineMode.OR;
         if (record.getID() == 0) {
             record.setID(autoIndex++);
         }
