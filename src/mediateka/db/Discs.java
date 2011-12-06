@@ -87,7 +87,6 @@ public class Discs extends Table {
             if (region != 0) {
                 map.put("regionCode", Integer.toString(region));
             }
-            map.put("isPresent", disc.isPresented() ? "true" : "false");
         }
         Condition cond = new Condition(map);
         for (Record d : recordsList) {
