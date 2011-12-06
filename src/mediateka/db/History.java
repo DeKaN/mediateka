@@ -51,11 +51,13 @@ public class History extends Table {
         if (rec.getID() > 0) {
             map.put("id", Integer.toString(rec.getID()));
         } else {
-            if (rec.getDisc() != null) {
-                map.put("discID", Integer.toString(rec.getDisc().getID()));
+            Disc d;
+            Person p;
+            if (((d = rec.getDisc()) != null) && (d.getID() > 0)) {
+                map.put("discID", Integer.toString(d.getID()));
             }
-            if (rec.getPerson() != null) {
-                map.put("personID", Integer.toString(rec.getPerson().getID()));
+            if (((p = rec.getPerson()) != null) && p.getID() > 0) {
+                map.put("personID", Integer.toString(p.getID()));
             }
             if (!rec.getComment().equals("")) {
                 map.put("comment", rec.getComment());

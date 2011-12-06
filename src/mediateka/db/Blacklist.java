@@ -55,8 +55,9 @@ public class Blacklist extends Table {
         if (rec.getID() > 0) {
             map.put("id", Integer.toString(rec.getID()));
         } else {
-            if (rec.getPerson() != null) {
-                map.put("personID", Integer.toString(rec.getPerson().getID()));
+            Person p;
+            if (((p = rec.getPerson()) != null) && (p.getID() > 0)) {
+                map.put("personID", Integer.toString(p.getID()));
             }
             if (!rec.getComment().equals("")) {
                 map.put("comment", rec.getComment());

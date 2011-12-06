@@ -71,7 +71,7 @@ public class Persons extends Table {
             if (!pers.getPhone().equals("")) {
                 map.put("phoneNumber", pers.getPhone());
             }
-            if (pers.getComment() != null) {
+            if (!pers.getComment().equals("")) {
                 map.put("comment", pers.getComment());
             }
         }

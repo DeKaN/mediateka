@@ -136,6 +136,10 @@ public class Films extends Table {
             if (rec.getSoundLanguages() != null) {
                 map.put("soundLanguages/soundLanguage", StringUtils.join(rec.getSoundLanguages(), '\uFFFC'));
             }
+<<<<<<< HEAD
+            //map.put("isSeen", Boolean.toString(rec.isSeen()));
+=======
+>>>>>>> 6fdbcd951d2fcc0abf5d58172d3725d9c5b69880
         }
         Condition cond = new Condition(map);
         for (Record film : recordsList) {
@@ -159,7 +163,7 @@ public class Films extends Table {
             Manager discManager = Managers.getInstance().getDiscsManager();
             Films f = new Films();
             f.add(record);
-            Records recs = discManager.find(new Disc(Disc.Format.любой, f));
+            Records recs = discManager.find(new Disc(Disc.Format.None, f));
             del(recs, record);
         } catch (Exception ex) {
             return false;

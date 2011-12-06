@@ -18,7 +18,7 @@ public class Disc implements Record {
      */
     public enum Format {
 
-        None,
+        любой,
         /**
          * CD диск
          */

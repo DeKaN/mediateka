@@ -69,7 +69,7 @@ public class Discs extends Table {
             map.put("id", Integer.toString(disc.getID()));
         } else {
             Disc.Format format = disc.getFormat();
-            if (format != Disc.Format.любой) {
+            if (format != Disc.Format.None) {
                 map.put("format", format.toString());
             }
             int region = disc.getRegionCode();
@@ -87,6 +87,18 @@ public class Discs extends Table {
                 }
                 map.put("films/filmID", films.toString());
             }
+<<<<<<< HEAD
+            Disc.Format format = disc.getFormat();
+            if (format != Disc.Format.None) {
+                map.put("format", format.toString());
+            }
+            int region = disc.getRegionCode();
+            if (region != 0) {
+                map.put("regionCode", Integer.toString(region));
+            }
+            //map.put("isPresent", disc.isPresented() ? "true" : "false");
+=======
+>>>>>>> 6fdbcd951d2fcc0abf5d58172d3725d9c5b69880
         }
         Condition cond = new Condition(map);
         for (Record d : recordsList) {

@@ -15,11 +15,14 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
+import mediateka.db.Blacklist;
 import mediateka.db.Disc;
 import mediateka.db.Disc.Format;
 import mediateka.db.Film;
@@ -54,20 +57,19 @@ public class FindView extends javax.swing.JDialog {
     private List<Record> filmRecords = null;
     private HashMap<Record, Boolean> filmsMap = null;
 
-    private ArrayList<Integer> getListOfFilmIDs(List<Record> films)
-    {
+    private ArrayList<Integer> getListOfFilmIDs(List<Record> films) {
         ArrayList<Integer> retVal = new ArrayList<Integer>();
         for (int i = 0; i < films.size(); i++) {
             retVal.add(films.get(i).getID());
         }
         return retVal;
     }
-    
+
     /** Creates new form FindView */
     public FindView(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         List<Record> recs;
-        initComponents();
+        initComponents();        
         try {
             //films
             jComboBox1.setModel(new DefaultComboBoxModel(genres));
@@ -101,9 +103,15 @@ public class FindView extends javax.swing.JDialog {
             }
             filmRecords = Managers.getInstance().getFilmsManager().getRecords();
             updateTables(jTable1, jTable2);
-            formats = Disc.getFormats();
+
+            Format[] discFormats = Format.values();
+            formats = new String[discFormats.length];
+            for (int i = 0; i < formats.length; i++) {
+                formats[i] = discFormats[i].name();
+            }
+
             jComboBox13.setModel(new javax.swing.DefaultComboBoxModel(formats));
-            jComboBox13.setSelectedItem("DVD");
+            jComboBox13.setSelectedItem("любой");
             ListSelectionModel selModel1 = jTable1.getSelectionModel();
             selModel1.addListSelectionListener(new ListSelectionListener() {
 
@@ -111,7 +119,12 @@ public class FindView extends javax.swing.JDialog {
                     delButton.setEnabled((jTable1.getSelectedRow() != -1) && (jTable1.getRowCount() != 0));
                 }
             });
+            jTabbedPane1.addChangeListener(new ChangeListener() {
 
+                public void stateChanged(ChangeEvent evt) {
+                    findButton.setVisible(jTabbedPane1.getSelectedIndex() != 5);
+                }
+            });
             ListSelectionModel selModel2 = jTable2.getSelectionModel();
             selModel2.addListSelectionListener(new ListSelectionListener() {
 
@@ -121,19 +134,22 @@ public class FindView extends javax.swing.JDialog {
             });
             recs = Managers.getInstance().getFilmsManager().getRecords();
             Object[][] data2 = new Object[recs.size()][];
+
             for (int i = 0; i < recs.size(); i++) {
+                data2[i] = new Object[2];
                 Record rec = recs.get(i);
                 data2[i][0] = rec.getID();
                 data2[i][1] = ((Film) rec).getRussianTitle();
             }
-            jTable2.setModel(new DefaultTableModel(new Object[0][0], columnNames));
             jTable2.setModel(new DefaultTableModel(data2, columnNames));
             //blacklist
             recs = Managers.getInstance().getPersManager().getRecords();
             personsMap = new HashMap<Integer, Integer>();
-            personsStrs = new String[recs.size()];
-            int i = 0;
+            personsStrs = new String[recs.size()+1];
+            int i = 1;
             Person p = null;
+            personsMap.put(0, 0);
+            personsStrs[0] = "-";
             for (Record rec : recs) {
                 try {
                     p = (Person) rec;
@@ -148,8 +164,10 @@ public class FindView extends javax.swing.JDialog {
             jComboBox15.setModel(new javax.swing.DefaultComboBoxModel(personsStrs));
             recs = Managers.getInstance().getDiscsManager().getRecords();
             discMap = new HashMap<Integer, Integer>();
-            discsStrs = new String[recs.size()];
-            i = 0;
+            discsStrs = new String[recs.size()+1];
+            i = 1;
+            discMap.put(0, 0);
+            discsStrs[0] = "-";
             for (Record rec : recs) {
                 try {
                     Disc d = (Disc) rec;
@@ -163,6 +181,7 @@ public class FindView extends javax.swing.JDialog {
         } catch (Exception ex) {
             Logger.getLogger(FindView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        jTabbedPane1.setSelectedIndex(0);
     }
 
     /** This method is called from within the constructor to
@@ -267,6 +286,7 @@ public class FindView extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("Form"); // NOI18N
+        setResizable(false);
 
         org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(FindView.class);
         mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
@@ -398,14 +418,14 @@ public class FindView extends javax.swing.JDialog {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
+                    .addComponent(jLabel9)
                     .addComponent(jLabel10)
-                    .addComponent(jLabel9))
-                .addGap(39, 39, 39)
+                    .addComponent(jLabel11))
+                .addGap(32, 32, 32)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jRadioButton1)
-                        .addGap(30, 30, 30)
+                        .addGap(18, 18, 18)
                         .addComponent(jRadioButton2)
                         .addGap(18, 18, 18)
                         .addComponent(jRadioButton3)
@@ -414,39 +434,40 @@ public class FindView extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(jRadioButton5)
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton6)
-                        .addContainerGap(161, Short.MAX_VALUE))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
-                        .addGap(20, 20, 20))))
+                        .addComponent(jRadioButton6))
+                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 638, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel8Layout.createSequentialGroup()
+                            .addComponent(jTextField5)
+                            .addGap(282, 282, 282))))
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(161, 161, 161)
-                        .addComponent(jLabel10))
-                    .addGroup(jPanel8Layout.createSequentialGroup()
-                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButton1)
-                        .addComponent(jLabel11))
-                    .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jRadioButton2)
-                        .addComponent(jRadioButton3)
-                        .addComponent(jRadioButton4)
-                        .addComponent(jRadioButton5)
-                        .addComponent(jRadioButton6)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel8Layout.createSequentialGroup()
+                                .addComponent(jLabel9)
+                                .addGap(175, 175, 175))
+                            .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel10))))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jLabel11)
+                    .addComponent(jRadioButton2)
+                    .addComponent(jRadioButton3)
+                    .addComponent(jRadioButton4)
+                    .addComponent(jRadioButton5)
+                    .addComponent(jRadioButton6))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout filmPanelLayout = new javax.swing.GroupLayout(filmPanel);
@@ -457,9 +478,6 @@ public class FindView extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(filmPanelLayout.createSequentialGroup()
-                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(filmPanelLayout.createSequentialGroup()
                         .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(filmPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel6)
@@ -467,17 +485,6 @@ public class FindView extends javax.swing.JDialog {
                                 .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(filmPanelLayout.createSequentialGroup()
-                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)))
                             .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
                                     .addComponent(jLabel8)
@@ -492,23 +499,38 @@ public class FindView extends javax.swing.JDialog {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                     .addComponent(jComboBox8, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(filmPanelLayout.createSequentialGroup()
-                                .addGap(104, 104, 104)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
-                            .addGroup(filmPanelLayout.createSequentialGroup()
-                                .addGap(104, 104, 104)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE))
-                            .addGroup(filmPanelLayout.createSequentialGroup()
-                                .addGap(104, 104, 104)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox6, 0, 200, Short.MAX_VALUE)
-                                    .addComponent(jComboBox9, 0, 200, Short.MAX_VALUE)
-                                    .addComponent(jComboBox3, 0, 200, Short.MAX_VALUE)
-                                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(392, 392, 392))))
+                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
+                                        .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel5))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)
+                                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 636, Short.MAX_VALUE)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
+                                        .addGap(104, 104, 104)
+                                        .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, filmPanelLayout.createSequentialGroup()
+                                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(jComboBox6, 0, 200, Short.MAX_VALUE)
+                                                    .addComponent(jComboBox9, 0, 200, Short.MAX_VALUE)
+                                                    .addComponent(jComboBox3, 0, 200, Short.MAX_VALUE)
+                                                    .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                .addGap(92, 92, 92)))
+                        .addGap(392, 392, 392))
+                    .addGroup(filmPanelLayout.createSequentialGroup()
+                        .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(473, Short.MAX_VALUE))))
         );
         filmPanelLayout.setVerticalGroup(
             filmPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -559,7 +581,8 @@ public class FindView extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab(resourceMap.getString("filmPanel.TabConstraints.tabTitle"), filmPanel); // NOI18N
@@ -624,12 +647,10 @@ public class FindView extends javax.swing.JDialog {
 
         addButton.setAction(actionMap.get("addButton")); // NOI18N
         addButton.setText(resourceMap.getString("addButton.text")); // NOI18N
-        addButton.setEnabled(false);
         addButton.setName("addButton"); // NOI18N
 
         delButton.setAction(actionMap.get("removeButton")); // NOI18N
         delButton.setText(resourceMap.getString("delButton.text")); // NOI18N
-        delButton.setEnabled(false);
         delButton.setName("delButton"); // NOI18N
 
         jScrollPane5.setName("jScrollPane5"); // NOI18N
@@ -689,7 +710,7 @@ public class FindView extends javax.swing.JDialog {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel7Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jScrollPane4, jScrollPane5});
@@ -720,25 +741,26 @@ public class FindView extends javax.swing.JDialog {
             .addGroup(discPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 739, Short.MAX_VALUE)
+                    .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(discPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
                         .addComponent(jLabel13)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
+                        .addGap(154, 154, 154)
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(553, Short.MAX_VALUE))
         );
         discPanelLayout.setVerticalGroup(
             discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(discPanelLayout.createSequentialGroup()
                 .addGroup(discPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel15)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(jComboBox13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(264, Short.MAX_VALUE))
@@ -818,12 +840,12 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel22))
                 .addGap(6, 6, 6)
                 .addGroup(personPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE))
-                .addGap(728, 728, 728))
+                    .addComponent(jTextField10, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(jTextField9, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 589, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(558, 558, 558))
         );
         personPanelLayout.setVerticalGroup(
             personPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -883,12 +905,12 @@ public class FindView extends javax.swing.JDialog {
                     .addGroup(blPanelLayout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addGap(27, 27, 27)
-                        .addComponent(jComboBox14, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jComboBox14, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(blPanelLayout.createSequentialGroup()
                         .addComponent(jLabel23)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(386, Short.MAX_VALUE))
+                        .addComponent(jScrollPane2)))
+                .addContainerGap(709, Short.MAX_VALUE))
         );
         blPanelLayout.setVerticalGroup(
             blPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -964,16 +986,13 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel25))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jComboBox16, 0, 126, Short.MAX_VALUE)
-                    .addComponent(jComboBox15, 0, 126, Short.MAX_VALUE)
-                    .addGroup(historyPanelLayout.createSequentialGroup()
-                        .addGroup(historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                            .addComponent(jDateChooser3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE))
-                        .addGap(99, 99, 99))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE))
-                .addGap(752, 752, 752))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                    .addComponent(jDateChooser3, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                    .addComponent(jComboBox15, javax.swing.GroupLayout.Alignment.TRAILING, 0, 427, Short.MAX_VALUE)
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+                    .addComponent(jComboBox16, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(702, 702, 702))
         );
         historyPanelLayout.setVerticalGroup(
             historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -986,12 +1005,12 @@ public class FindView extends javax.swing.JDialog {
                     .addComponent(jLabel29)
                     .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(historyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(historyPanelLayout.createSequentialGroup()
                         .addComponent(jLabel28)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                         .addComponent(jLabel27))
-                    .addGroup(historyPanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, historyPanelLayout.createSequentialGroup()
                         .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -1015,6 +1034,7 @@ public class FindView extends javax.swing.JDialog {
         resultsPanel.setPreferredSize(new java.awt.Dimension(1157, 160));
 
         jScrollPane7.setBackground(resourceMap.getColor("jScrollPane7.background")); // NOI18N
+        jScrollPane7.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
         jScrollPane7.setName("jScrollPane7"); // NOI18N
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
@@ -1052,8 +1072,8 @@ public class FindView extends javax.swing.JDialog {
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(resultsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 1214, Short.MAX_VALUE)
+                .addContainerGap())
         );
         resultsPanelLayout.setVerticalGroup(
             resultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1069,18 +1089,21 @@ public class FindView extends javax.swing.JDialog {
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(findButton)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 776, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addGap(723, 723, 723)
+                        .addComponent(findButton))
+                    .addGroup(mainPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1251, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(findButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -1089,11 +1112,13 @@ public class FindView extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -1384,17 +1409,17 @@ public class FindView extends javax.swing.JDialog {
                     String _russianTitle = jTextField1.getText().trim();
                     String _englishTitle = jTextField2.getText().trim();
                     int _year = 0;
-                    String tmpStr = jTextField3.getText();
+                    String tmpStr = jTextField3.getText().trim();
                     try {
-                        if (jTextField3.getText().length() != 0) {
+                        if (tmpStr.length() != 0) {
                             _year = Integer.parseInt(tmpStr);
                         }
                     } catch (Exception e) {
                     }
                     int _length = 0;
-                    tmpStr = jTextField4.getText();
+                    tmpStr = jTextField4.getText().trim();
                     try {
-                        if (jTextField4.getText().length() != 0) {
+                        if (tmpStr.length() != 0) {
                             _length = Integer.parseInt(tmpStr);
                         }
                     } catch (Exception e) {
@@ -1424,7 +1449,7 @@ public class FindView extends javax.swing.JDialog {
                         }
                     }
                     Format format = Format.valueOf((String) jComboBox13.getSelectedItem());
-                    String s = jTextField6.getText();
+                    String s = jTextField6.getText().trim();
                     int region = (s.isEmpty()) ? 0 : Integer.parseInt(s);
                     records = Managers.getInstance().getDiscsManager().find(new Disc(films, -1, format, region, true));
                 } catch (Exception ex) {
@@ -1433,11 +1458,11 @@ public class FindView extends javax.swing.JDialog {
             }
             case 2: { // Люди
                 try {
-                    String lastName = jTextField7.getText();
-                    String firstName = jTextField8.getText();
-                    String secondName = jTextField9.getText();
-                    String phone = jTextField10.getText();
-                    String comment = jTextArea5.getText();
+                    String lastName = jTextField7.getText().trim();
+                    String firstName = jTextField8.getText().trim();
+                    String secondName = jTextField9.getText().trim();
+                    String phone = jTextField10.getText().trim();
+                    String comment = jTextArea5.getText().trim();
                     records = Managers.getInstance().getPersManager().find(new Person(lastName, firstName, secondName, phone, comment));
                 } catch (Exception ex) {
                 }
@@ -1445,7 +1470,9 @@ public class FindView extends javax.swing.JDialog {
             }
             case 3: { // Блэклист
                 try {
-                    Record record = Managers.getInstance().getBlListManager().find(personsMap.get(jComboBox14.getSelectedIndex()));
+                    int id = personsMap.get(jComboBox14.getSelectedIndex());
+                    String comment = jTextArea3.getText().trim();
+                    records = Managers.getInstance().getBlListManager().find(new BlackListRecord(new Person(id), comment));
                 } catch (Exception ex) {
                 }
                 break;
@@ -1457,9 +1484,10 @@ public class FindView extends javax.swing.JDialog {
                     Date date1 = jDateChooser1.getDate();
                     Date date2 = jDateChooser2.getDate();
                     Date date3 = jDateChooser3.getDate();
-                    String comment = jTextArea4.getText();
+                    String comment = jTextArea4.getText().trim();
                     records = Managers.getInstance().getHistManager().find(new HistoryRecord(disc, person, date1, date2, date3, comment));
                 } catch (Exception ex) {
+                    System.out.print(ex.getStackTrace().toString());
                 }
                 break;
             }
@@ -1468,6 +1496,7 @@ public class FindView extends javax.swing.JDialog {
             writeResults(jTabbedPane1.getSelectedIndex(), records);
             jTabbedPane1.setSelectedIndex(5);
         } else {
+            jTable3.setModel(new DefaultTableModel(new Object[0][0], new Object[0]));
             JOptionPane.showMessageDialog(null, "Не найдено ни одной записи, удовлетворяющей условиям", "Результат поиска", JOptionPane.OK_OPTION);
         }
     }
