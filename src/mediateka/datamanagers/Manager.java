@@ -14,12 +14,11 @@ import mediateka.db.Table;
  * @author DeKaN
  */
 public class Manager {
-    
+
     private Table table;
-    
-    public Manager(Table t, String filename){
+
+    public Manager(Table t) {
         table = t;
-        table.load(filename);
     }
 
     /**
@@ -74,14 +73,22 @@ public class Manager {
     public List<Record> getRecords() {
         return table.toList();
     }
-    
+
     /**
      * Сохранение в XML
      * @param fileName Имя файла, в который будет сохранен XML
      * @return true, если сохранение успешно, иначе false
      */
-    public boolean save(String fileName){
+    public boolean save(String fileName) {
         return table.save(fileName);
     }
-    
+
+    /**
+     * Загрузить из XML
+     * @param fileName Имя файла, из которого будет загружен XML
+     * @return true, если загрузка успешна, иначе false
+     */
+    public boolean load(String fileName) {
+        return table.load(fileName);
+    }
 }

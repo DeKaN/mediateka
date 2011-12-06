@@ -27,6 +27,10 @@ public class Managers {
             xsdHash = hashXSD;
         }
     }
+    
+    public enum CombineMode {
+        AND, OR
+    }
     Manager blListManager = null, discsManager = null, filmsManager = null, histManager = null, persManager = null;
     private static final String dir = "XML\\",//TODO after debug change to %APPDATA%\mediateka
             blFile = dir + "blacklist.xml",
@@ -40,6 +44,7 @@ public class Managers {
             hInfo = new ManagerInfo(hFile, "273f6a8d2807f3c804f64d3feeb75280"),
             pInfo = new ManagerInfo(pFile, "92505c3022991679c172dc9da4f59b90");
     private static Managers instance = null;
+    public static CombineMode mode = CombineMode.OR;
 
     /**
      * Возвращает объект класса
@@ -60,7 +65,8 @@ public class Managers {
             if (!validateSchema(blInfo)) {
                 throw new LoadException("Схема черного списка повреждена!");
             }
-            blListManager = new Manager(new Blacklist(), blFile);
+            blListManager = new Manager(new Blacklist());
+            blListManager.load(blFile);
         }
         return blListManager;
     }
@@ -71,7 +77,8 @@ public class Managers {
             if (!validateSchema(dInfo)) {
                 throw new LoadException("Схема дисков повреждена!");
             }
-            discsManager = new Manager(new Discs(), dFile);
+            discsManager = new Manager(new Discs());
+            discsManager.load(dFile);
         }
         return discsManager;
     }
@@ -81,7 +88,8 @@ public class Managers {
             if (!validateSchema(fInfo)) {
                 throw new LoadException("Схема фильмов повреждена!");
             }
-            filmsManager = new Manager(new Films(), fFile);
+            filmsManager = new Manager(new Films());
+            filmsManager.load(fFile);
         }
         return filmsManager;
     }
@@ -93,7 +101,8 @@ public class Managers {
             if (!validateSchema(hInfo)) {
                 throw new LoadException("Схема истории повреждена!");
             }
-            histManager = new Manager(new History(), hFile);
+            histManager = new Manager(new History());
+            histManager.load(hFile);
         }
         return histManager;
     }
@@ -103,7 +112,8 @@ public class Managers {
             if (!validateSchema(pInfo)) {
                 throw new LoadException("Схема персональных данных повреждена!");
             }
-            persManager = new Manager(new Persons(), pFile);
+            persManager = new Manager(new Persons());
+            persManager.load(pFile);
         }
         return persManager;
     }

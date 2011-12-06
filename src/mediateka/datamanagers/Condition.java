@@ -28,11 +28,12 @@ public class Condition {
     }
 
     public boolean isEquals(Record rec) {
-        Element elem = rec.toXmlElement(), elem2 = elem;
+        Element elem = rec.toXmlElement();
         Set<String> keys = conds.keySet();
         boolean retVal = true, isAttr = false;
         for (Iterator<String> it = keys.iterator(); it.hasNext();) {
             String key = it.next(), key2, val = "";
+            Element elem2 = elem;
             List<Element> elems;
             isAttr = key.contains("id");
             key2 = conds.get(key);
@@ -51,10 +52,16 @@ public class Condition {
                 if (elems == null) {
                     return false;
                 }
+                int t = 0;
+                if (Managers.mode == Managers.CombineMode.AND && elems.size() != StringUtils.split(key2, '\uFFFC').length) {
+                    retVal = false;
+                }
                 for (Element element : elems) {
                     if (check(element.getText(), key2)) {
-                        break;
+                        t++;
                     }
+                }
+                if ((t == 0 && Managers.mode == Managers.CombineMode.OR) || (t != elems.size() && Managers.mode == Managers.CombineMode.AND)) {
                     retVal = false;
                 }
             }
@@ -64,12 +71,17 @@ public class Condition {
 
     private boolean check(String val, String searchVals) {
         boolean retVal = true;
+        val = val.toLowerCase();
+        searchVals = searchVals.toLowerCase();
         String[] ids = StringUtils.split(searchVals, '\uFFFC');
         if (ids.length > 1) {
+            int t = 0;
             for (String str : ids) {
                 if (val.contains(str)) {
-                    break;
+                    t++;
                 }
+            }
+            if (t == 0) {
                 retVal = false;
             }
         } else {

@@ -78,7 +78,6 @@ public class Films extends Table {
                             soundLanguages,
                             elem.node(11).getText().equals("true")));
                 } catch (Exception exc) {
-                    System.out.print(exc.getStackTrace().toString());
                 }
             }
             return true;
@@ -137,7 +136,6 @@ public class Films extends Table {
             if (rec.getSoundLanguages() != null) {
                 map.put("soundLanguages/soundLanguage", StringUtils.join(rec.getSoundLanguages(), '\uFFFC'));
             }
-            //map.put("isSeen", Boolean.toString(rec.isSeen()));
         }
         Condition cond = new Condition(map);
         for (Record film : recordsList) {
@@ -161,10 +159,8 @@ public class Films extends Table {
             Manager discManager = Managers.getInstance().getDiscsManager();
             Films f = new Films();
             f.add(record);
-            Records recs = discManager.find(new Disc(Disc.Format.None, f)),
-                    recs2 = discManager.find(new Disc(f, 0, Disc.Format.None, 0, false));
+            Records recs = discManager.find(new Disc(Disc.Format.None, f));
             del(recs, record);
-            del(recs2, record);
         } catch (Exception ex) {
             return false;
         }

@@ -12,6 +12,8 @@ import java.util.Iterator;
 import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import mediateka.datamanagers.Condition;
+import mediateka.datamanagers.Managers;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -51,9 +53,12 @@ public abstract class Table implements Records {
     }
 
     public boolean add(Record record) {
+        Managers.mode = Managers.CombineMode.AND;
         if (!isUnique(record)) {
+            Managers.mode = Managers.CombineMode.OR;
             return false;
         }
+        Managers.mode = Managers.CombineMode.OR;
         if (record.getID() == 0) {
             record.setID(autoIndex++);
         }
