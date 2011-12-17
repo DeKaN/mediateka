@@ -1,6 +1,8 @@
 package mediateka.db;
 
+import java.util.Iterator;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.tree.DefaultElement;
 
 /**
@@ -305,6 +307,60 @@ public final class Film implements Record {
      */
     public Film(String russianTitle) {
         this(0, russianTitle);
+    }
+
+    /**
+     * Конструктор фильма из XML element
+     * 
+     * @param elem
+     *            XML element
+     */
+    public Film(DefaultElement elem) {
+        DefaultElement elem2 = (DefaultElement) elem.element("genres");
+        String[] genres2 = new String[elem2.nodeCount()];
+        int i = 0;
+        for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+            Node node = it1.next();
+            genres2[i] = node.getText();
+            i++;
+        }
+        elem2 = (DefaultElement) elem.element("countries");
+        String[] countries2 = new String[elem2.nodeCount()];
+        i = 0;
+        for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+            Node node = it1.next();
+            countries2[i] = node.getText();
+            i++;
+        }
+        elem2 = (DefaultElement) elem.element("subtitles");
+        String[] subtitles2 = new String[elem2.nodeCount()];
+        i = 0;
+        for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+            Node node = it1.next();
+            subtitles2[i] = node.getText();
+            i++;
+        }
+        elem2 = (DefaultElement) elem.element("soundLanguages");
+        String[] soundLanguages2 = new String[elem2.nodeCount()];
+        i = 0;
+        for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+            Node node = it1.next();
+            soundLanguages2[i] = node.getText();
+            i++;
+        }
+        filmID = Integer.parseInt(elem.attribute("id").getValue());
+        russianTitle = elem.node(0).getText();
+        englishTitle = elem.node(1).getText();
+        year = Integer.parseInt(elem.node(2).getText());
+        description = elem.node(3).getText();
+        genres = genres2;
+        countries = countries2;
+        comment = elem.node(6).getText();
+        length = Integer.parseInt(elem.node(7).getText());
+        rating = Integer.parseInt(elem.node(8).getText());
+        subtitles = subtitles2;
+        soundLanguages = soundLanguages2;
+        seen = elem.node(11).getText().equals("true");
     }
 
     /**

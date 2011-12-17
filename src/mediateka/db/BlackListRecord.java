@@ -1,5 +1,6 @@
 package mediateka.db;
 
+import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -96,6 +97,23 @@ public class BlackListRecord implements Record {
      */
     BlackListRecord(int recordID) {
         this.recordID = recordID;
+    }
+
+    /**
+     * Конструктор записи из XML element
+     * 
+     * @param elem
+     *            XML element
+     */
+    public BlackListRecord(DefaultElement elem) {
+        this(0);
+        try {
+            recordID = Integer.parseInt(elem.attribute("id").getValue());
+            person = (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(0).getText()));
+            comment = elem.node(1).getText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -26,7 +26,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import mediateka.MediatekaApp;
+import mediateka.client.MediatekaApp;
 import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
 import mediateka.db.BlackListRecord;
@@ -784,7 +784,7 @@ public class MediatekaView extends FrameView {
         jScrollPane9 = new javax.swing.JScrollPane();
         jTextArea4 = new javax.swing.JTextArea();
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(MediatekaView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getResourceMap(MediatekaView.class);
         mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
         mainPanel.setName("mainPanel"); // NOI18N
 
@@ -792,7 +792,7 @@ public class MediatekaView extends FrameView {
         standartToolBar.setRollover(true);
         standartToolBar.setName("standartToolBar"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getActionMap(MediatekaView.class, this);
         jButton1.setAction(actionMap.get("showFilmView")); // NOI18N
         jButton1.setIcon(resourceMap.getIcon("jButton1.icon")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N

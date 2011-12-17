@@ -80,7 +80,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(BlackListRecordView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getResourceMap(BlackListRecordView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setName("Form"); // NOI18N
 
@@ -100,7 +100,7 @@ public class BlackListRecordView extends javax.swing.JDialog {
         jTextArea1.setName("jTextArea1"); // NOI18N
         jScrollPane1.setViewportView(jTextArea1);
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(BlackListRecordView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getActionMap(BlackListRecordView.class, this);
         jButton1.setAction(actionMap.get("save")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N

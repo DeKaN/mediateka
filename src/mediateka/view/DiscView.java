@@ -145,7 +145,7 @@ public class DiscView extends javax.swing.JDialog {
         setName("Form"); // NOI18N
         setResizable(false);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(DiscView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getResourceMap(DiscView.class);
         jLabel2.setText(resourceMap.getString("jLabel2.text")); // NOI18N
         jLabel2.setName("jLabel2"); // NOI18N
 
@@ -155,7 +155,7 @@ public class DiscView extends javax.swing.JDialog {
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jComboBox1.setName("jComboBox1"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(DiscView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getActionMap(DiscView.class, this);
         jButton1.setAction(actionMap.get("okButton")); // NOI18N
         jButton1.setText(resourceMap.getString("jButton1.text")); // NOI18N
         jButton1.setName("jButton1"); // NOI18N

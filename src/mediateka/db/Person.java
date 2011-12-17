@@ -155,6 +155,21 @@ public class Person implements Record {
     }
 
     /**
+     * Конструктор персональных данных из XML element
+     * 
+     * @param elem
+     *            XML element
+     */
+    public Person(DefaultElement elem) {
+        personID = Integer.parseInt(elem.attribute("id").getValue());
+        lastName = elem.node(1).getText();
+        firstName = elem.node(0).getText();
+        secondName = elem.node(2).getText();
+        phone = elem.node(3).getText();
+        comment = elem.node(4).getText();
+    }
+
+    /**
      * Сериализует запись с персональными данными в XML
      * @return Строка с записью, сериализованной в XML element
      */

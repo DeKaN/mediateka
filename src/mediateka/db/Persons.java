@@ -27,14 +27,7 @@ public class Persons extends Table {
         try {
             DefaultElement root = super.getRootElement(fileName);
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
-                DefaultElement elem = (DefaultElement) it.next();
-                recordsList.add(new Person(
-                        Integer.parseInt(elem.attribute("id").getValue()),
-                        elem.node(1).getText(),
-                        elem.node(0).getText(),
-                        elem.node(2).getText(),
-                        elem.node(3).getText(),
-                        elem.node(4).getText()));
+                recordsList.add(new Person((DefaultElement) it.next()));
             }
             return true;
         } catch (Exception ex) {

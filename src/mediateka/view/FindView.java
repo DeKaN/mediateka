@@ -288,11 +288,11 @@ public class FindView extends javax.swing.JDialog {
         setName("Form"); // NOI18N
         setResizable(false);
 
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(FindView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getResourceMap(FindView.class);
         mainPanel.setFont(resourceMap.getFont("mainPanel.font")); // NOI18N
         mainPanel.setName("mainPanel"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(FindView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getActionMap(FindView.class, this);
         findButton.setAction(actionMap.get("find")); // NOI18N
         findButton.setText(resourceMap.getString("findButton.text")); // NOI18N
         findButton.setName("findButton"); // NOI18N

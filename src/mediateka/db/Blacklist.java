@@ -27,10 +27,7 @@ public class Blacklist extends Table {
             DefaultElement root = super.getRootElement(fileName);
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 DefaultElement elem = (DefaultElement) it.next();
-                recordsList.add(new BlackListRecord(
-                        Integer.parseInt(elem.attribute("id").getValue()),
-                        (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(0).getText())),
-                        elem.node(1).getText()));
+                recordsList.add(new BlackListRecord(Integer.parseInt(elem.attribute("id").getValue()), (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(0).getText())), elem.node(1).getText()));
             }
             return true;
         } catch (Exception ex) {

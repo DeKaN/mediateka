@@ -65,7 +65,7 @@ public class PersonView extends javax.swing.JDialog {
         jTextField4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getResourceMap(PersonView.class);
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getResourceMap(PersonView.class);
         setTitle(resourceMap.getString("Form.title")); // NOI18N
         setMinimumSize(new java.awt.Dimension(461, 255));
         setName("Form"); // NOI18N
@@ -75,7 +75,7 @@ public class PersonView extends javax.swing.JDialog {
         jPanel2.setMinimumSize(new java.awt.Dimension(461, 255));
         jPanel2.setName("jPanel2"); // NOI18N
 
-        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.MediatekaApp.class).getContext().getActionMap(PersonView.class, this);
+        javax.swing.ActionMap actionMap = org.jdesktop.application.Application.getInstance(mediateka.client.MediatekaApp.class).getContext().getActionMap(PersonView.class, this);
         jButton2.setAction(actionMap.get("close")); // NOI18N
         jButton2.setText(resourceMap.getString("jButton2.text")); // NOI18N
         jButton2.setName("jButton2"); // NOI18N

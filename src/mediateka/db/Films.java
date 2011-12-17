@@ -8,7 +8,6 @@ import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.tree.DefaultElement;
 
 /**
@@ -31,52 +30,7 @@ public class Films extends Table {
             DefaultElement root = super.getRootElement(fileName);
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
-
-                    DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("genres");
-                    String[] genres = new String[elem2.nodeCount()];
-                    int i = 0;
-                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
-                        Node node = it1.next();
-                        genres[i] = node.getText();
-                        i++;
-                    }
-                    elem2 = (DefaultElement) elem.element("countries");
-                    String[] countries = new String[elem2.nodeCount()];
-                    i = 0;
-                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
-                        Node node = it1.next();
-                        countries[i] = node.getText();
-                        i++;
-                    }
-                    elem2 = (DefaultElement) elem.element("subtitles");
-                    String[] subtitles = new String[elem2.nodeCount()];
-                    i = 0;
-                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
-                        Node node = it1.next();
-                        subtitles[i] = node.getText();
-                        i++;
-                    }
-                    elem2 = (DefaultElement) elem.element("soundLanguages");
-                    String[] soundLanguages = new String[elem2.nodeCount()];
-                    i = 0;
-                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
-                        Node node = it1.next();
-                        soundLanguages[i] = node.getText();
-                        i++;
-                    }
-                    recordsList.add(new Film(Integer.parseInt(elem.attribute("id").getValue()),
-                            elem.node(0).getText(),
-                            elem.node(1).getText(),
-                            Integer.parseInt(elem.node(2).getText()),
-                            elem.node(3).getText(),
-                            genres,
-                            countries,
-                            elem.node(6).getText(),
-                            Integer.parseInt(elem.node(7).getText()),
-                            Integer.parseInt(elem.node(8).getText()),
-                            subtitles,
-                            soundLanguages,
-                            elem.node(11).getText().equals("true")));
+                    recordsList.add(new Film((DefaultElement) it.next()));
                 } catch (Exception exc) {
                 }
             }

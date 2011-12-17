@@ -3,8 +3,10 @@ package mediateka.db;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import mediateka.datamanagers.Managers;
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.tree.DefaultElement;
 
 /**
@@ -185,6 +187,31 @@ public class Disc implements Record {
     }
 
     /**
+     * Конструктор диска из XML element
+     * 
+     * @param elem
+     *            XML element
+     */
+    public Disc(DefaultElement elem) {
+        this(0);
+        try {
+            DefaultElement elem2 = (DefaultElement) elem.element("films");
+            Films films2 = new Films();
+            for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
+                Node node = it1.next();
+                films2.add(Managers.getInstance().getFilmsManager().find(Integer.parseInt(node.getText())));
+            }
+            discID = Integer.parseInt(elem.attribute("id").getValue());
+            films = films2;
+            ownerID = Integer.parseInt(elem.node(0).getText());
+            format = Disc.Format.valueOf(elem.node(1).getText());
+            regionCode = Integer.parseInt(elem.node(2).getText());
+            presented = elem.node(3).getText().equals("true");
+        } catch (Exception e) {
+        }
+    }
+
+    /**
      * Сериализует диск в XML
      * @return Строка с диском, сериализованным в XML element
      */
@@ -217,9 +244,9 @@ public class Disc implements Record {
 
     public static String[] getFormats() {
         Format[] formats = Format.values();
-        String[] retVal = new String[formats.length-1];
+        String[] retVal = new String[formats.length - 1];
         for (int i = 0; i < retVal.length; i++) {
-            retVal[i] = formats[i+1].name();
+            retVal[i] = formats[i + 1].name();
         }
         return retVal;
     }

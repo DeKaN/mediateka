@@ -2,6 +2,7 @@ package mediateka.db;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -26,7 +27,7 @@ public class HistoryRecord implements Record {
     public int getID() {
         return this.recordID;
     }
-    
+
     /**
      * Записать ID записи
      * @param value 
@@ -181,6 +182,27 @@ public class HistoryRecord implements Record {
      */
     HistoryRecord(int recordID) {
         this.recordID = recordID;
+    }
+
+    /**
+     * Конструктор записи из XML element
+     * 
+     * @param elem
+     *            XML element
+     */
+    public HistoryRecord(DefaultElement elem) {
+        this(0);
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            recordID = Integer.parseInt(elem.attribute("id").getValue());
+            disc = (Disc) Managers.getInstance().getDiscsManager().find(Integer.parseInt(elem.node(0).getText()));
+            person = (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(1).getText()));
+            giveDate = format.parse(elem.node(3).getText());
+            promisedDate = format.parse(elem.node(5).getText());
+            returnDate = format.parse(elem.node(4).getText());
+            comment = elem.node(2).getText();
+        } catch (Exception e) {
+        }
     }
 
     /**

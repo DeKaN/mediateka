@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import mediateka.datamanagers.Condition;
-import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
 import org.dom4j.tree.DefaultElement;
 
@@ -21,17 +20,8 @@ public class History extends Table {
     public boolean load(String fileName) throws LoadException {
         try {
             DefaultElement root = super.getRootElement(fileName);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
-                DefaultElement elem = (DefaultElement) it.next();
-                recordsList.add(new HistoryRecord(
-                        Integer.parseInt(elem.attribute("id").getValue()),
-                        (Disc) Managers.getInstance().getDiscsManager().find(Integer.parseInt(elem.node(0).getText())),
-                        (Person) Managers.getInstance().getPersManager().find(Integer.parseInt(elem.node(1).getText())),
-                        format.parse(elem.node(3).getText()),
-                        format.parse(elem.node(5).getText()),
-                        format.parse(elem.node(4).getText()),
-                        elem.node(2).getText()));
+                recordsList.add(new HistoryRecord((DefaultElement) it.next()));
             }
             return true;
         } catch (Exception ex) {

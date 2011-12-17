@@ -1,8 +1,7 @@
 /*
  * MediatekaApp.java
  */
-
-package mediateka;
+package mediateka.client;
 
 import mediateka.view.MediatekaView;
 import org.jdesktop.application.Application;
@@ -16,7 +15,8 @@ public class MediatekaApp extends SingleFrameApplication {
     /**
      * At startup create and show the main frame of the application.
      */
-    @Override protected void startup() {
+    @Override
+    protected void startup() {
         show(new MediatekaView(this));
     }
 
@@ -25,7 +25,8 @@ public class MediatekaApp extends SingleFrameApplication {
      * Windows shown in our application come fully initialized from the GUI
      * builder, so this additional configuration is not needed.
      */
-    @Override protected void configureWindow(java.awt.Window root) {
+    @Override
+    protected void configureWindow(java.awt.Window root) {
     }
 
     /**

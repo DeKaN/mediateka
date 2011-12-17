@@ -6,7 +6,6 @@ import mediateka.datamanagers.Condition;
 import mediateka.datamanagers.Manager;
 import mediateka.datamanagers.Managers;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.dom4j.tree.DefaultElement;
 
 /**
@@ -29,19 +28,7 @@ public class Discs extends Table {
             DefaultElement root = super.getRootElement(fileName);
             for (Iterator<Element> it = root.elements().iterator(); it.hasNext();) {
                 try {
-                    DefaultElement elem = (DefaultElement) it.next(), elem2 = (DefaultElement) elem.element("films");
-                    Films films = new Films();
-                    for (Iterator<Node> it1 = elem2.iterator(); it1.hasNext();) {
-                        Node node = it1.next();
-                        films.add(Managers.getInstance().getFilmsManager().find(Integer.parseInt(node.getText())));
-                    }
-                    recordsList.add(new Disc(
-                            Integer.parseInt(elem.attribute("id").getValue()),
-                            films,
-                            Integer.parseInt(elem.node(0).getText()),
-                            Disc.Format.valueOf(elem.node(1).getText()),
-                            Integer.parseInt(elem.node(2).getText()),
-                            elem.node(3).getText().equals("true")));
+                    recordsList.add(new Disc((DefaultElement) it.next()));
                 } catch (Exception exc) {
                 }
             }
